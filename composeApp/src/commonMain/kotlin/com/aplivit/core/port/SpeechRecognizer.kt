@@ -7,6 +7,7 @@ sealed class RecognitionResult {
     object SoundDetected : RecognitionResult()
     object NoSound : RecognitionResult()
     object Error : RecognitionResult()
+    object PermissionDenied : RecognitionResult()
 }
 
 interface SpeechRecognizer {

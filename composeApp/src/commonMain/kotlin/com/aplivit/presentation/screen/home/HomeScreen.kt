@@ -27,14 +27,16 @@ import com.aplivit.presentation.component.LevelCard
 import org.koin.compose.koinInject
 
 @Composable
-fun HomeScreen(onLevelClick: (Int) -> Unit) {
+fun HomeScreen(onLevelClick: (Int) -> Unit, completed: Boolean = false) {
     val getLevels: GetLevelsUseCase = koinInject()
     val repo: ProgressRepository = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val vm: HomeViewModel = viewModel { HomeViewModel(getLevels, repo, tts) }
     val state by vm.state.collectAsState()
 
-    LaunchedEffect(Unit) { vm.speakWelcome() }
+    LaunchedEffect(Unit) {
+        vm.reload(completedLevel = completed)
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(top = 24.dp),

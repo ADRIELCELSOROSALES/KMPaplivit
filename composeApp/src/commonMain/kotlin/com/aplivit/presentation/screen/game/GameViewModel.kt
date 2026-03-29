@@ -95,7 +95,7 @@ class GameViewModel(
         _state.value = _state.value.copy(isListening = false)
     }
 
-    private fun handleRecognitionResult(result: RecognitionResult, expected: String) {
+    private suspend fun handleRecognitionResult(result: RecognitionResult, expected: String) {
         _state.value = _state.value.copy(isListening = false)
         when (result) {
             is RecognitionResult.Transcription -> {
@@ -111,13 +111,17 @@ class GameViewModel(
                 tts.speak("Hubo un error. Inténtalo de nuevo.")
                 _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = "Error al reconocer")
             }
+            is RecognitionResult.PermissionDenied -> {
+                tts.speak("Se necesita permiso de micrófono para este ejercicio.")
+                _state.value = _state.value.copy(feedback = "Se necesita permiso de micrófono")
+            }
         }
     }
 
-    private fun onRepeatSuccess() {
-        tts.speak("Muy bien. Completaste el nivel.")
+    private suspend fun onRepeatSuccess() {
         completeGame.execute(levelId, _state.value.errors)
         unlockNext.execute(levelId)
+        tts.speakAndWait("¡Muy bien! Completaste el nivel.")
         _state.value = _state.value.copy(currentStep = GameStep.COMPLETED, feedback = null)
     }
 

@@ -15,6 +15,10 @@ class IosSpeechSynthesizer : SpeechSynthesizer {
         synthesizer.speakUtterance(utterance)
     }
 
+    override suspend fun speakAndWait(text: String) {
+        speak(text)
+    }
+
     override fun stop() {
         synthesizer.stopSpeakingAtBoundary(platform.AVFAudio.AVSpeechBoundary.AVSpeechBoundaryImmediate)
     }

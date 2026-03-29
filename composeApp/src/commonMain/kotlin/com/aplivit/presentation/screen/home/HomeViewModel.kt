@@ -27,18 +27,28 @@ class HomeViewModel(
     val state: StateFlow<HomeUiState> = _state
 
     init {
-        load()
-    }
-
-    private fun load() {
         viewModelScope.launch {
             val levels = getLevels.execute()
-            val progress = progressRepository.loadProgress()
-            _state.value = HomeUiState(levels = levels, progress = progress, isLoading = false)
+            _state.value = _state.value.copy(levels = levels, isLoading = false)
         }
     }
 
-    fun speakWelcome() {
+    fun reload(completedLevel: Boolean = false) {
+        viewModelScope.launch {
+            val progress = progressRepository.loadProgress()
+            _state.value = _state.value.copy(progress = progress)
+            when {
+                progress.isFirstLaunch -> {
+                    progressRepository.saveProgress(progress.copy(isFirstLaunch = false))
+                    speakWelcome()
+                }
+                completedLevel -> tts.speak("¡Muy bien! Seleccioná el siguiente nivel para continuar.")
+                else -> tts.speak("Seleccioná un nivel para continuar.")
+            }
+        }
+    }
+
+    private fun speakWelcome() {
         tts.speak("Bienvenido a Aplivit. Elegí un nivel para comenzar.")
     }
 

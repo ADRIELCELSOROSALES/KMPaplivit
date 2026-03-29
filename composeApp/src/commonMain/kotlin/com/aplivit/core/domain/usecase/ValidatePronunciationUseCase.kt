@@ -8,6 +8,7 @@ class ValidatePronunciationUseCase {
         is RecognitionResult.SoundDetected -> true
         is RecognitionResult.NoSound -> false
         is RecognitionResult.Error -> false
+        is RecognitionResult.PermissionDenied -> false
     }
 
     private fun normalize(text: String): String =
