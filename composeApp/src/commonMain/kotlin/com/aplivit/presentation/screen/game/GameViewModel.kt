@@ -24,7 +24,9 @@ data class GameUiState(
     val feedback: String? = null,
     val errors: Int = 0,
     val recognitionMode: RecognitionMode = RecognitionMode.AMPLITUDE,
-    val isListening: Boolean = false
+    val isListening: Boolean = false,
+    val availableSyllables: List<String> = emptyList(),
+    val arrangedSyllables: List<String> = emptyList()
 )
 
 class GameViewModel(
@@ -50,9 +52,25 @@ class GameViewModel(
             _state.value = GameUiState(
                 level = level,
                 isLoading = false,
-                recognitionMode = recognizer.mode
+                recognitionMode = recognizer.mode,
+                availableSyllables = level?.syllables?.map { it.text }?.shuffled() ?: emptyList()
             )
         }
+    }
+
+    fun onSyllableMoved(syllable: String) {
+        _state.value = _state.value.copy(
+            availableSyllables = _state.value.availableSyllables - syllable,
+            arrangedSyllables = _state.value.arrangedSyllables + syllable
+        )
+    }
+
+    fun onDragDropReset() {
+        val all = _state.value.arrangedSyllables + _state.value.availableSyllables
+        _state.value = _state.value.copy(
+            availableSyllables = all,
+            arrangedSyllables = emptyList()
+        )
     }
 
     fun onDragDropCompleted(correct: Boolean) {
@@ -121,6 +139,8 @@ class GameViewModel(
     private suspend fun onRepeatSuccess() {
         completeGame.execute(levelId, _state.value.errors)
         unlockNext.execute(levelId)
+        // Hablar ANTES de cambiar el estado para que la navegación ocurra
+        // solo después de que el audio haya terminado completamente
         tts.speakAndWait("¡Muy bien! Completaste el nivel.")
         _state.value = _state.value.copy(currentStep = GameStep.COMPLETED, feedback = null)
     }
@@ -131,8 +151,8 @@ class GameViewModel(
     }
 
     override fun onCleared() {
+        println("TTS_VM [GameViewModel] onCleared() levelId=$levelId — NO llama tts.stop()")
         recognizer.stopListening()
-        tts.stop()
         super.onCleared()
     }
 }

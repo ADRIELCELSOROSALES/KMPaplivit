@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,10 @@ fun RepeatGameScreen(
     onStopListening: () -> Unit
 ) {
     val tts: SpeechSynthesizer = koinInject()
+
+    DisposableEffect(Unit) {
+        onDispose { onStopListening() }
+    }
 
     LaunchedEffect(Unit) {
         tts.speak("Repite: ${level.word}")
@@ -56,10 +61,11 @@ fun RepeatGameScreen(
         )
         Spacer(Modifier.height(8.dp))
         AudioButton(
-            label = "▶ Escuchar",
+            icon = "👂",
+            label = "Escuchar",
             onClick = { tts.speak(level.word) }
         )
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(40.dp))
         Text(
             text = if (isListening) "Escuchando..." else "Toca para hablar",
             fontSize = 16.sp,
@@ -67,7 +73,8 @@ fun RepeatGameScreen(
         )
         Spacer(Modifier.height(16.dp))
         AudioButton(
-            label = if (isListening) "⏹ Detener" else "🎤 Hablar",
+            icon = if (isListening) "⏹" else "🎤",
+            label = if (isListening) "Detener" else "Hablar",
             isActive = isListening,
             onClick = {
                 if (isListening) onStopListening()

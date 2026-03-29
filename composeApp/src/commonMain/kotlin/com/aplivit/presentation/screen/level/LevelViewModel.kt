@@ -40,7 +40,7 @@ class LevelViewModel(
     }
 
     override fun onCleared() {
-        tts.stop()
+        println("TTS_VM [LevelViewModel] onCleared() levelId=$levelId — NO llama tts.stop()")
         super.onCleared()
     }
 }

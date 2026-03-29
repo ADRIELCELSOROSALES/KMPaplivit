@@ -19,11 +19,14 @@ import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.util.LockPortrait
 import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
 @Composable
 fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
+    LockPortrait()
+
     val getLevels: GetLevelsUseCase = koinInject()
     val completeGame: CompleteGameUseCase = koinInject()
     val unlockNext: UnlockNextLevelUseCase = koinInject()
@@ -48,7 +51,11 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
     when (state.currentStep) {
         GameStep.DRAG_DROP -> DragDropGameScreen(
             level = level,
+            availableSyllables = state.availableSyllables,
+            arrangedSyllables = state.arrangedSyllables,
             feedback = state.feedback,
+            onSyllableMoved = { syllable -> vm.onSyllableMoved(syllable) },
+            onReset = { vm.onDragDropReset() },
             onResult = { correct -> vm.onDragDropCompleted(correct) }
         )
         GameStep.SELECTION -> SelectionGameScreen(

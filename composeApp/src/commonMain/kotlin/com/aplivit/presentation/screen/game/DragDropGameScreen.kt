@@ -11,33 +11,31 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 
 @Composable
-fun DragDropGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> Unit) {
-    val shuffled = remember { level.syllables.map { it.text }.shuffled().toMutableList() }
-    val arranged = remember { mutableStateListOf<String>() }
-
+fun DragDropGameScreen(
+    level: Level,
+    availableSyllables: List<String>,
+    arrangedSyllables: List<String>,
+    feedback: String?,
+    onSyllableMoved: (String) -> Unit,
+    onReset: () -> Unit,
+    onResult: (Boolean) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -46,7 +44,6 @@ fun DragDropGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> U
         Text("Forma la palabra: ${level.word}", fontSize = 16.sp, color = Color.Gray)
         Spacer(Modifier.height(24.dp))
 
-        // Drop zone
         Text("Tu respuesta:", fontSize = 14.sp)
         Spacer(Modifier.height(8.dp))
         Row(
@@ -58,10 +55,10 @@ fun DragDropGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> U
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (arranged.isEmpty()) {
+            if (arrangedSyllables.isEmpty()) {
                 Text("Suelta las sílabas aquí", color = Color.LightGray)
             } else {
-                arranged.forEach { syl ->
+                arrangedSyllables.forEach { syl ->
                     Box(
                         modifier = Modifier
                             .size(60.dp)
@@ -80,17 +77,14 @@ fun DragDropGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> U
         Spacer(Modifier.height(8.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            shuffled.toList().forEach { syl ->
+            availableSyllables.forEach { syl ->
                 Box(
                     modifier = Modifier
                         .size(70.dp)
                         .background(Color(0xFF2196F3), RoundedCornerShape(12.dp))
                         .pointerInput(syl) {
                             detectDragGestures(
-                                onDragEnd = {
-                                    shuffled.remove(syl)
-                                    arranged.add(syl)
-                                }
+                                onDragEnd = { onSyllableMoved(syl) }
                             ) { _, _ -> }
                         }
                         .padding(4.dp),
@@ -109,21 +103,16 @@ fun DragDropGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> U
         Spacer(Modifier.height(24.dp))
         Button(
             onClick = {
-                val answer = arranged.joinToString("")
+                val answer = arrangedSyllables.joinToString("")
                 onResult(answer == level.word)
             },
-            enabled = arranged.size == level.syllables.size
+            enabled = arrangedSyllables.size == level.syllables.size
         ) {
             Text("Verificar", fontSize = 18.sp)
         }
 
         Spacer(Modifier.height(8.dp))
-        Button(
-            onClick = {
-                shuffled.addAll(arranged)
-                arranged.clear()
-            }
-        ) {
+        Button(onClick = onReset) {
             Text("Reiniciar", fontSize = 16.sp)
         }
     }

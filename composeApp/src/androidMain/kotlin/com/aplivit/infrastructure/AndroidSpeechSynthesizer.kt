@@ -4,10 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.util.Log
 import com.aplivit.core.port.SpeechSynthesizer
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
-import java.util.UUID
 import kotlin.coroutines.resume
 
 class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
@@ -17,11 +17,14 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
     private var pendingText: String? = null
 
     init {
+        Log.d("TTS", "init: creando TextToSpeech")
         tts = TextToSpeech(context) { status ->
+            Log.d("TTS", "init callback: status=$status isReady=${status == TextToSpeech.SUCCESS}")
             if (status == TextToSpeech.SUCCESS) {
                 tts?.language = Locale("es", "ES")
                 isReady = true
                 pendingText?.let { text ->
+                    Log.d("TTS", "init: reproduciendo pendingText='$text'")
                     tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
                     pendingText = null
                 }
@@ -30,44 +33,81 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
     }
 
     override fun speak(text: String) {
+        Log.d("TTS", "speak() isReady=$isReady text='$text'")
         if (isReady) {
             tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
         } else {
+            Log.w("TTS", "speak() TTS no listo, guardando en pendingText")
             pendingText = text
         }
     }
 
     override suspend fun speakAndWait(text: String) {
+        Log.d("TTS", "speakAndWait() INICIO isReady=$isReady text='$text'")
         if (!isReady) {
+            Log.w("TTS", "speakAndWait() TTS no listo, guardando en pendingText")
             pendingText = text
             return
         }
         suspendCancellableCoroutine { cont ->
-            val utteranceId = UUID.randomUUID().toString()
+            val utteranceId = "aplivit_${System.currentTimeMillis()}"
+            Log.d("TTS", "speakAndWait() suspendiendo utteranceId=$utteranceId text='$text'")
+
             tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                override fun onStart(utteranceId: String) {}
-                override fun onDone(utteranceId: String) {
-                    if (cont.isActive) cont.resume(Unit)
+                override fun onStart(id: String?) {
+                    Log.d("TTS", "onStart id=$id  esperado=$utteranceId  match=${id == utteranceId}")
                 }
+
+                override fun onDone(id: String?) {
+                    Log.d("TTS", "onDone id=$id  esperado=$utteranceId  match=${id == utteranceId}  contActive=${cont.isActive}")
+                    if (id != utteranceId) return
+                    tts?.setOnUtteranceProgressListener(null)
+                    if (cont.isActive) cont.resume(Unit)
+                    Log.d("TTS", "speakAndWait() COMPLETO para '$text'")
+                }
+
                 @Suppress("DEPRECATION")
-                override fun onError(utteranceId: String) {
+                override fun onError(id: String?) {
+                    Log.e("TTS", "onError(deprecated) id=$id  esperado=$utteranceId  match=${id == utteranceId}")
+                    if (id != utteranceId) return
+                    tts?.setOnUtteranceProgressListener(null)
                     if (cont.isActive) cont.resume(Unit)
                 }
-                override fun onError(utteranceId: String, errorCode: Int) {
+
+                override fun onError(id: String?, errorCode: Int) {
+                    Log.e("TTS", "onError id=$id code=$errorCode  esperado=$utteranceId  match=${id == utteranceId}")
+                    if (id != utteranceId) return
+                    tts?.setOnUtteranceProgressListener(null)
+                    if (cont.isActive) cont.resume(Unit)
+                }
+
+                override fun onStop(id: String?, interrupted: Boolean) {
+                    Log.w("TTS", "onStop id=$id interrupted=$interrupted  esperado=$utteranceId  match=${id == utteranceId}  contActive=${cont.isActive}")
+                    if (id != utteranceId) return
+                    tts?.setOnUtteranceProgressListener(null)
                     if (cont.isActive) cont.resume(Unit)
                 }
             })
-            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, Bundle(), utteranceId)
-            cont.invokeOnCancellation { tts?.stop() }
+
+            val bundle = Bundle()
+            bundle.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId)
+            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, bundle, utteranceId)
+
+            cont.invokeOnCancellation {
+                Log.w("TTS", "speakAndWait() CANCELADO (scope destruido) utteranceId=$utteranceId text='$text'")
+                tts?.stop()
+                tts?.setOnUtteranceProgressListener(null)
+            }
         }
     }
 
     override fun stop() {
-        pendingText = null
+        Log.w("TTS", "stop() llamado — caller: ${Thread.currentThread().stackTrace[3]}")
         tts?.stop()
     }
 
     override fun release() {
+        Log.d("TTS", "release()")
         pendingText = null
         tts?.shutdown()
         tts = null

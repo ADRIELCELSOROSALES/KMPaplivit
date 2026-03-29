@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import org.koin.java.KoinJavaComponent.getKoin
 
 class MainActivity : ComponentActivity() {
 
@@ -37,6 +39,13 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             App()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFinishing) {
+            getKoin().get<SpeechSynthesizer>().release()
         }
     }
 }

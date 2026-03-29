@@ -40,15 +40,25 @@ class AndroidSpeechRecognizer(private val context: Context) : SpeechRecognizer {
             recognizer = AndroidSpeechRecognizerApi.createSpeechRecognizer(context)
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-ES")
-                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es")
+                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
             }
             recognizer?.setRecognitionListener(object : RecognitionListener {
                 override fun onResults(results: Bundle?) {
-                    val text = results
+                    val candidates = results
                         ?.getStringArrayList(AndroidSpeechRecognizerApi.RESULTS_RECOGNITION)
-                        ?.firstOrNull() ?: ""
-                    onResult(RecognitionResult.Transcription(text))
+                        ?: emptyList<String>()
+                    val normalizedExpected = expected.trim().uppercase().replace(" ", "")
+                    // Prefer the candidate that contains or most closely matches the expected word
+                    val best = candidates.maxByOrNull { candidate ->
+                        val n = candidate.trim().uppercase().replace(" ", "")
+                        when {
+                            n.contains(normalizedExpected) -> 2
+                            normalizedExpected.contains(n) -> 1
+                            else -> 0
+                        }
+                    } ?: candidates.firstOrNull() ?: ""
+                    onResult(RecognitionResult.Transcription(best))
                 }
                 override fun onError(error: Int) { onResult(RecognitionResult.Error) }
                 override fun onReadyForSpeech(params: Bundle?) {}
