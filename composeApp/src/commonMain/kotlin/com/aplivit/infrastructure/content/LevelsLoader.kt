@@ -1,9 +1,26 @@
 package com.aplivit.infrastructure.content
 
-import kmpaplivit.composeapp.generated.resources.Res
 import com.aplivit.core.domain.model.Level
+import com.aplivit.core.domain.model.Syllable
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import kmpaplivit.composeapp.generated.resources.Res
+
+@Serializable
+private data class LevelDto(
+    val id: Int,
+    val syllables: List<String>,
+    val word: String,
+    val instruction: String
+)
+
+private fun LevelDto.toDomain() = Level(
+    id = id,
+    syllables = syllables.map { Syllable(it) },
+    word = word,
+    instruction = instruction
+)
 
 class LevelsLoader {
     private val json = Json { ignoreUnknownKeys = true }
@@ -11,6 +28,7 @@ class LevelsLoader {
     @OptIn(ExperimentalResourceApi::class)
     suspend fun load(): List<Level> {
         val bytes = Res.readBytes("files/levels.json")
-        return json.decodeFromString(bytes.decodeToString())
+        val dtos: List<LevelDto> = json.decodeFromString(bytes.decodeToString())
+        return dtos.map { it.toDomain() }
     }
 }

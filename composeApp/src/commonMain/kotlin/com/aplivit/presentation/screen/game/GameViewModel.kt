@@ -2,9 +2,7 @@ package com.aplivit.presentation.screen.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aplivit.core.domain.model.GameResult
 import com.aplivit.core.domain.model.Level
-import com.aplivit.core.domain.model.UserProgress
 import com.aplivit.core.domain.usecase.CompleteGameUseCase
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
@@ -13,7 +11,6 @@ import com.aplivit.core.port.RecognitionMode
 import com.aplivit.core.port.RecognitionResult
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
-import com.aplivit.core.port.ProgressRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +19,6 @@ enum class GameStep { DRAG_DROP, SELECTION, REPEAT, COMPLETED }
 
 data class GameUiState(
     val level: Level? = null,
-    val progress: UserProgress = UserProgress(),
     val currentStep: GameStep = GameStep.DRAG_DROP,
     val isLoading: Boolean = true,
     val feedback: String = "",
@@ -38,8 +34,7 @@ class GameViewModel(
     private val unlockNext: UnlockNextLevelUseCase,
     private val validatePronunciation: ValidatePronunciationUseCase,
     private val tts: SpeechSynthesizer,
-    private val recognizer: SpeechRecognizer,
-    private val progressRepository: ProgressRepository
+    private val recognizer: SpeechRecognizer
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameUiState())
@@ -51,11 +46,9 @@ class GameViewModel(
 
     private fun load() {
         viewModelScope.launch {
-            val level = getLevels().find { it.id == levelId }
-            val progress = progressRepository.loadProgress()
+            val level = getLevels.execute().find { it.id == levelId }
             _state.value = GameUiState(
                 level = level,
-                progress = progress,
                 isLoading = false,
                 recognitionMode = recognizer.mode
             )
@@ -106,7 +99,7 @@ class GameViewModel(
         _state.value = _state.value.copy(isListening = false)
         when (result) {
             is RecognitionResult.Transcription -> {
-                val correct = validatePronunciation(result.text, expected)
+                val correct = validatePronunciation.execute(result, expected)
                 if (correct) onRepeatSuccess() else onRepeatError()
             }
             is RecognitionResult.SoundDetected -> onRepeatSuccess()
@@ -123,15 +116,9 @@ class GameViewModel(
 
     private fun onRepeatSuccess() {
         tts.speak("Muy bien. Completaste el nivel.")
-        val currentProgress = _state.value.progress
-        val errors = _state.value.errors
-        val updatedProgress = completeGame(currentProgress, levelId, errors)
-        val finalProgress = unlockNext(updatedProgress, levelId)
-        _state.value = _state.value.copy(
-            currentStep = GameStep.COMPLETED,
-            progress = finalProgress,
-            feedback = ""
-        )
+        completeGame.execute(levelId, _state.value.errors)
+        unlockNext.execute(levelId)
+        _state.value = _state.value.copy(currentStep = GameStep.COMPLETED, feedback = "")
     }
 
     private fun onRepeatError() {

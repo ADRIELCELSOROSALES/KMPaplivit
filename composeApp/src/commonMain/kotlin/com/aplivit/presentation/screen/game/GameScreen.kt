@@ -17,7 +17,6 @@ import com.aplivit.core.domain.usecase.CompleteGameUseCase
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
-import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
 import kotlinx.coroutines.delay
@@ -31,10 +30,9 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
     val validate: ValidatePronunciationUseCase = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val recognizer: SpeechRecognizer = koinInject()
-    val repo: ProgressRepository = koinInject()
 
     val vm: GameViewModel = viewModel(key = "game_$levelId") {
-        GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, tts, recognizer, repo)
+        GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, tts, recognizer)
     }
     val state by vm.state.collectAsState()
 

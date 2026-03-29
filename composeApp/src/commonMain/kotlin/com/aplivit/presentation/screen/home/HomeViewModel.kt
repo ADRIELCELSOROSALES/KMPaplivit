@@ -32,7 +32,7 @@ class HomeViewModel(
 
     private fun load() {
         viewModelScope.launch {
-            val levels = getLevels()
+            val levels = getLevels.execute()
             val progress = progressRepository.loadProgress()
             _state.value = HomeUiState(levels = levels, progress = progress, isLoading = false)
             tts.speak("Bienvenido a Aplivit. Elige un nivel para comenzar.")

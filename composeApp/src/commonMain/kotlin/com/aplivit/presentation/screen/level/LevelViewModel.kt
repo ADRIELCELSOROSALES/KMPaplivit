@@ -29,9 +29,9 @@ class LevelViewModel(
 
     private fun load() {
         viewModelScope.launch {
-            val level = getLevels().find { it.id == levelId }
+            val level = getLevels.execute().find { it.id == levelId }
             _state.value = LevelUiState(level = level, isLoading = false)
-            level?.let { tts.speak(it.instruction) }
+            level?.let { l -> tts.speak(l.instruction) }
         }
     }
 
