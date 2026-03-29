@@ -35,8 +35,11 @@ class HomeViewModel(
             val levels = getLevels.execute()
             val progress = progressRepository.loadProgress()
             _state.value = HomeUiState(levels = levels, progress = progress, isLoading = false)
-            tts.speak("Bienvenido a Aplivit. Elige un nivel para comenzar.")
         }
+    }
+
+    fun speakWelcome() {
+        tts.speak("Bienvenido a Aplivit. Elegí un nivel para comenzar.")
     }
 
     override fun onCleared() {

@@ -1,6 +1,6 @@
 package com.aplivit.infrastructure
 
-import android.content.Context
+import android.preference.PreferenceManager
 import com.aplivit.AppContext
 import com.aplivit.core.port.ConnectivityChecker
 import com.aplivit.core.port.SpeechRecognizer
@@ -12,12 +12,12 @@ actual fun provideSpeechSynthesizer(): SpeechSynthesizer =
     AndroidSpeechSynthesizer(AppContext.context)
 
 actual fun provideSpeechRecognizer(connectivityChecker: ConnectivityChecker): SpeechRecognizer =
-    AndroidSpeechRecognizer(AppContext.context, connectivityChecker)
+    if (connectivityChecker.isConnected()) AndroidSpeechRecognizer(AppContext.context)
+    else AmplitudeSpeechRecognizer(AppContext.context)
 
 actual fun provideConnectivityChecker(): ConnectivityChecker =
     AndroidConnectivityChecker(AppContext.context)
 
-actual fun provideSettings(): Settings {
-    val prefs = AppContext.context.getSharedPreferences("aplivit_prefs", Context.MODE_PRIVATE)
-    return SharedPreferencesSettings(prefs)
-}
+@Suppress("DEPRECATION")
+actual fun provideSettings(): Settings =
+    SharedPreferencesSettings(PreferenceManager.getDefaultSharedPreferences(AppContext.context))

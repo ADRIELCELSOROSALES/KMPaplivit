@@ -25,7 +25,7 @@ fun RepeatGameScreen(
     level: Level,
     recognitionMode: RecognitionMode,
     isListening: Boolean,
-    feedback: String,
+    feedback: String?,
     onStartListening: (String) -> Unit,
     onStopListening: () -> Unit
 ) {
@@ -75,7 +75,7 @@ fun RepeatGameScreen(
             }
         )
 
-        if (feedback.isNotEmpty()) {
+        if (feedback != null) {
             Spacer(Modifier.height(16.dp))
             Text(feedback, color = Color.Red, fontSize = 16.sp)
         }

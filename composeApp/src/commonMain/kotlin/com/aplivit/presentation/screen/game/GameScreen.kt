@@ -32,7 +32,7 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
     val recognizer: SpeechRecognizer = koinInject()
 
     val vm: GameViewModel = viewModel(key = "game_$levelId") {
-        GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, tts, recognizer)
+        GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, recognizer, tts)
     }
     val state by vm.state.collectAsState()
 

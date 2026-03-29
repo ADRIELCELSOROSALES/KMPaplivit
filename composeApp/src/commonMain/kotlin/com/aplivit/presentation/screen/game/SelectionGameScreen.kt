@@ -33,7 +33,7 @@ private val ALL_SYLLABLES = listOf(
 )
 
 @Composable
-fun SelectionGameScreen(level: Level, feedback: String, onResult: (Boolean) -> Unit) {
+fun SelectionGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> Unit) {
     val tts: SpeechSynthesizer = koinInject()
     var currentSyllableIndex by remember { mutableIntStateOf(0) }
     val targetSyllable = level.syllables.getOrNull(currentSyllableIndex)?.text ?: ""
@@ -84,7 +84,7 @@ fun SelectionGameScreen(level: Level, feedback: String, onResult: (Boolean) -> U
             }
         }
 
-        if (feedback.isNotEmpty()) {
+        if (feedback != null) {
             Spacer(Modifier.height(16.dp))
             Text(feedback, color = Color.Red, fontSize = 16.sp)
         }

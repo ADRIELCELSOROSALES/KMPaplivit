@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,6 +33,8 @@ fun HomeScreen(onLevelClick: (Int) -> Unit) {
     val tts: SpeechSynthesizer = koinInject()
     val vm: HomeViewModel = viewModel { HomeViewModel(getLevels, repo, tts) }
     val state by vm.state.collectAsState()
+
+    LaunchedEffect(Unit) { vm.speakWelcome() }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(top = 24.dp),

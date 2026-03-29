@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 
 @Composable
-fun DragDropGameScreen(level: Level, feedback: String, onResult: (Boolean) -> Unit) {
+fun DragDropGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> Unit) {
     val shuffled = remember { level.syllables.map { it.text }.shuffled().toMutableList() }
     val arranged = remember { mutableStateListOf<String>() }
 
@@ -101,7 +101,7 @@ fun DragDropGameScreen(level: Level, feedback: String, onResult: (Boolean) -> Un
             }
         }
 
-        if (feedback.isNotEmpty()) {
+        if (feedback != null) {
             Spacer(Modifier.height(16.dp))
             Text(feedback, color = Color.Red, fontSize = 16.sp)
         }

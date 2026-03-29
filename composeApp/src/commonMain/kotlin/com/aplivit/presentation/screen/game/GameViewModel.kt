@@ -21,7 +21,7 @@ data class GameUiState(
     val level: Level? = null,
     val currentStep: GameStep = GameStep.DRAG_DROP,
     val isLoading: Boolean = true,
-    val feedback: String = "",
+    val feedback: String? = null,
     val errors: Int = 0,
     val recognitionMode: RecognitionMode = RecognitionMode.AMPLITUDE,
     val isListening: Boolean = false
@@ -33,8 +33,8 @@ class GameViewModel(
     private val completeGame: CompleteGameUseCase,
     private val unlockNext: UnlockNextLevelUseCase,
     private val validatePronunciation: ValidatePronunciationUseCase,
-    private val tts: SpeechSynthesizer,
-    private val recognizer: SpeechRecognizer
+    private val recognizer: SpeechRecognizer,
+    private val tts: SpeechSynthesizer
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameUiState())
@@ -58,7 +58,7 @@ class GameViewModel(
     fun onDragDropCompleted(correct: Boolean) {
         if (correct) {
             tts.speak("Muy bien. Ahora escucha y elige la sílaba correcta.")
-            _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = "")
+            _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = null)
         } else {
             val errors = _state.value.errors + 1
             tts.speak("Inténtalo de nuevo.")
@@ -71,7 +71,7 @@ class GameViewModel(
             tts.speak("Excelente. Ahora repite lo que escuchas.")
             _state.value = _state.value.copy(
                 currentStep = GameStep.REPEAT,
-                feedback = "",
+                feedback = null,
                 recognitionMode = recognizer.mode
             )
         } else {
@@ -118,7 +118,7 @@ class GameViewModel(
         tts.speak("Muy bien. Completaste el nivel.")
         completeGame.execute(levelId, _state.value.errors)
         unlockNext.execute(levelId)
-        _state.value = _state.value.copy(currentStep = GameStep.COMPLETED, feedback = "")
+        _state.value = _state.value.copy(currentStep = GameStep.COMPLETED, feedback = null)
     }
 
     private fun onRepeatError() {
