@@ -42,6 +42,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
         }
         androidMain.dependencies {
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.ui)
             implementation(libs.koin.android)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
         }
