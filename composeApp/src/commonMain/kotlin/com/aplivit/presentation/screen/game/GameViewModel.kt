@@ -2,15 +2,20 @@ package com.aplivit.presentation.screen.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.domain.usecase.CompleteGameUseCase
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
+import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.RecognitionMode
 import com.aplivit.core.port.RecognitionResult
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.shared.AppStrings
+import com.aplivit.shared.stringsFor
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,7 +31,8 @@ data class GameUiState(
     val recognitionMode: RecognitionMode = RecognitionMode.AMPLITUDE,
     val isListening: Boolean = false,
     val availableSyllables: List<String> = emptyList(),
-    val arrangedSyllables: List<String> = emptyList()
+    val arrangedSyllables: List<String> = emptyList(),
+    val strings: AppStrings = stringsFor(AppLanguage.SPANISH)
 )
 
 class GameViewModel(
@@ -36,7 +42,8 @@ class GameViewModel(
     private val unlockNext: UnlockNextLevelUseCase,
     private val validatePronunciation: ValidatePronunciationUseCase,
     private val recognizer: SpeechRecognizer,
-    private val tts: SpeechSynthesizer
+    private val tts: SpeechSynthesizer,
+    private val progressRepository: ProgressRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameUiState())
@@ -48,13 +55,17 @@ class GameViewModel(
 
     private fun load() {
         viewModelScope.launch {
-            val level = getLevels.execute().find { it.id == levelId }
+            val language = progressRepository.getSelectedLanguage()
+            val strings = stringsFor(language)
+            val level = getLevels.execute(language).find { it.id == levelId }
             _state.value = GameUiState(
                 level = level,
                 isLoading = false,
                 recognitionMode = recognizer.mode,
-                availableSyllables = level?.syllables?.map { it.text }?.shuffled() ?: emptyList()
+                availableSyllables = level?.syllables?.map { it.text }?.shuffled() ?: emptyList(),
+                strings = strings
             )
+            tts.setLanguage(language)
         }
     }
 
@@ -74,19 +85,21 @@ class GameViewModel(
     }
 
     fun onDragDropCompleted(correct: Boolean) {
+        val strings = _state.value.strings
         if (correct) {
-            tts.speak("Muy bien. Ahora escucha y elige la sílaba correcta.")
+            tts.speak(strings.dragDropSuccess)
             _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = null)
         } else {
             val errors = _state.value.errors + 1
-            tts.speak("Inténtalo de nuevo.")
-            _state.value = _state.value.copy(errors = errors, feedback = "Inténtalo de nuevo")
+            tts.speak(strings.tryAgain)
+            _state.value = _state.value.copy(errors = errors, feedback = strings.tryAgain)
         }
     }
 
     fun onSelectionCompleted(correct: Boolean) {
+        val strings = _state.value.strings
         if (correct) {
-            tts.speak("Excelente. Ahora repite lo que escuchas.")
+            tts.speak(strings.selectionSuccess)
             _state.value = _state.value.copy(
                 currentStep = GameStep.REPEAT,
                 feedback = null,
@@ -94,8 +107,8 @@ class GameViewModel(
             )
         } else {
             val errors = _state.value.errors + 1
-            tts.speak("Eso no es correcto. Inténtalo de nuevo.")
-            _state.value = _state.value.copy(errors = errors, feedback = "Inténtalo de nuevo")
+            tts.speak(strings.selectionError)
+            _state.value = _state.value.copy(errors = errors, feedback = strings.tryAgain)
         }
     }
 
@@ -115,6 +128,7 @@ class GameViewModel(
 
     private suspend fun handleRecognitionResult(result: RecognitionResult, expected: String) {
         _state.value = _state.value.copy(isListening = false)
+        val strings = _state.value.strings
         when (result) {
             is RecognitionResult.Transcription -> {
                 val correct = validatePronunciation.execute(result, expected)
@@ -122,16 +136,16 @@ class GameViewModel(
             }
             is RecognitionResult.SoundDetected -> onRepeatSuccess()
             is RecognitionResult.NoSound -> {
-                tts.speak("No te escuché. Inténtalo de nuevo.")
-                _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = "No te escuché")
+                tts.speak(strings.noSoundDetected)
+                _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = strings.noSoundDetected)
             }
             is RecognitionResult.Error -> {
-                tts.speak("Hubo un error. Inténtalo de nuevo.")
-                _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = "Error al reconocer")
+                tts.speak(strings.recognitionError)
+                _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = strings.recognitionError)
             }
             is RecognitionResult.PermissionDenied -> {
-                tts.speak("Se necesita permiso de micrófono para este ejercicio.")
-                _state.value = _state.value.copy(feedback = "Se necesita permiso de micrófono")
+                tts.speak(strings.permissionNeeded)
+                _state.value = _state.value.copy(feedback = strings.permissionNeeded)
             }
         }
     }
@@ -139,15 +153,14 @@ class GameViewModel(
     private suspend fun onRepeatSuccess() {
         completeGame.execute(levelId, _state.value.errors)
         unlockNext.execute(levelId)
-        // Hablar ANTES de cambiar el estado para que la navegación ocurra
-        // solo después de que el audio haya terminado completamente
-        tts.speakAndWait("¡Muy bien! Completaste el nivel.")
+        tts.speakAndWait(_state.value.strings.levelCompleted)
         _state.value = _state.value.copy(currentStep = GameStep.COMPLETED, feedback = null)
     }
 
     private fun onRepeatError() {
-        tts.speak("No fue correcto. Inténtalo de nuevo.")
-        _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = "Inténtalo de nuevo")
+        val strings = _state.value.strings
+        tts.speak(strings.repeatError)
+        _state.value = _state.value.copy(errors = _state.value.errors + 1, feedback = strings.tryAgain)
     }
 
     override fun onCleared() {

@@ -24,6 +24,9 @@ fun LevelCard(
     level: Level,
     isUnlocked: Boolean,
     isCompleted: Boolean,
+    lockedLabel: String = "Bloqueado",
+    completedLabel: String = "Completado",
+    availableLabel: String = "Disponible",
     onClick: () -> Unit
 ) {
     val backgroundColor = when {
@@ -56,9 +59,9 @@ fun LevelCard(
             )
             Text(
                 text = when {
-                    isCompleted -> "Completado"
-                    isUnlocked -> "Disponible"
-                    else -> "Bloqueado"
+                    isCompleted -> completedLabel
+                    isUnlocked -> availableLabel
+                    else -> lockedLabel
                 },
                 fontSize = 12.sp,
                 color = Color.White.copy(alpha = 0.8f)

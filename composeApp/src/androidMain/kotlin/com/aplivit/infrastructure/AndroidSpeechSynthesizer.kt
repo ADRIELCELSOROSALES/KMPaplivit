@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.SpeechSynthesizer
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
@@ -29,6 +30,17 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
                     pendingText = null
                 }
             }
+        }
+    }
+
+    override suspend fun setLanguage(language: AppLanguage) {
+        val locale = Locale.forLanguageTag(language.ttsLocale)
+        val result = tts?.setLanguage(locale)
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            Log.w("TTS", "setLanguage: idioma ${language.ttsLocale} no soportado, usando default es-ES")
+            tts?.setLanguage(Locale("es", "ES"))
+        } else {
+            Log.d("TTS", "setLanguage: idioma ${language.ttsLocale} configurado correctamente")
         }
     }
 

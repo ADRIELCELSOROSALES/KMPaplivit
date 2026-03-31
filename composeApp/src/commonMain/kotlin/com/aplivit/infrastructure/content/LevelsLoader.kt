@@ -1,5 +1,6 @@
 package com.aplivit.infrastructure.content
 
+import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.domain.model.Syllable
 import kotlinx.serialization.Serializable
@@ -26,8 +27,8 @@ class LevelsLoader {
     private val json = Json { ignoreUnknownKeys = true }
 
     @OptIn(ExperimentalResourceApi::class)
-    suspend fun load(): List<Level> {
-        val bytes = Res.readBytes("files/levels.json")
+    suspend fun load(language: AppLanguage = AppLanguage.SPANISH): List<Level> {
+        val bytes = Res.readBytes("files/levels_${language.code}.json")
         val dtos: List<LevelDto> = json.decodeFromString(bytes.decodeToString())
         return dtos.map { it.toDomain() }
     }

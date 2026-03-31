@@ -2,6 +2,7 @@ package com.aplivit.presentation.screen.game
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,12 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplivit.core.domain.usecase.CompleteGameUseCase
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
+import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.util.LockPortrait
@@ -33,9 +36,10 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
     val validate: ValidatePronunciationUseCase = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val recognizer: SpeechRecognizer = koinInject()
+    val repo: ProgressRepository = koinInject()
 
     val vm: GameViewModel = viewModel(key = "game_$levelId") {
-        GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, recognizer, tts)
+        GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, recognizer, tts, repo)
     }
     val state by vm.state.collectAsState()
 
@@ -54,6 +58,7 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
             availableSyllables = state.availableSyllables,
             arrangedSyllables = state.arrangedSyllables,
             feedback = state.feedback,
+            strings = state.strings,
             onSyllableMoved = { syllable -> vm.onSyllableMoved(syllable) },
             onReset = { vm.onDragDropReset() },
             onResult = { correct -> vm.onDragDropCompleted(correct) }
@@ -61,6 +66,7 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
         GameStep.SELECTION -> SelectionGameScreen(
             level = level,
             feedback = state.feedback,
+            strings = state.strings,
             onResult = { correct -> vm.onSelectionCompleted(correct) }
         )
         GameStep.REPEAT -> RepeatGameScreen(
@@ -68,12 +74,19 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
             recognitionMode = state.recognitionMode,
             isListening = state.isListening,
             feedback = state.feedback,
+            strings = state.strings,
             onStartListening = { expected -> vm.startListening(expected) },
             onStopListening = { vm.stopListening() }
         )
         GameStep.COMPLETED -> {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("¡Nivel completado!", fontSize = 32.sp, color = Color(0xFF4CAF50))
+                Text(
+                    text = state.strings.levelCompleted,
+                    fontSize = 32.sp,
+                    color = Color(0xFF4CAF50),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    modifier = Modifier.padding(24.dp)
+                )
             }
             LaunchedEffect(Unit) {
                 delay(2000)

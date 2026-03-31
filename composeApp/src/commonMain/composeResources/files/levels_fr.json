@@ -1,0 +1,17 @@
+[
+  {"id":1,"syllables":["MA","MA"],"word":"MAMA","instruction":"Apprenons la syllabe MA. Écoute et répète."},
+  {"id":2,"syllables":["PA","PA"],"word":"PAPA","instruction":"Apprenons PA."},
+  {"id":3,"syllables":["RO","BE"],"word":"ROBE","instruction":"Formons le mot ROBE."},
+  {"id":4,"syllables":["TU","BE"],"word":"TUBE","instruction":"Apprenons TU et BE."},
+  {"id":5,"syllables":["CA","FE"],"word":"CAFE","instruction":"Formons CAFE."},
+  {"id":6,"syllables":["RO","SE"],"word":"ROSE","instruction":"Formons ROSE."},
+  {"id":7,"syllables":["LU","NE"],"word":"LUNE","instruction":"Apprenons LU et NE."},
+  {"id":8,"syllables":["DU","NE"],"word":"DUNE","instruction":"Formons DUNE."},
+  {"id":9,"syllables":["FU","ME"],"word":"FUME","instruction":"Formons FUME."},
+  {"id":10,"syllables":["MU","LE"],"word":"MULE","instruction":"Apprenons MU et LE."},
+  {"id":11,"syllables":["SO","LE"],"word":"SOLE","instruction":"Formons SOLE."},
+  {"id":12,"syllables":["MO","DE"],"word":"MODE","instruction":"Apprenons MO et DE."},
+  {"id":13,"syllables":["CO","DE"],"word":"CODE","instruction":"Formons CODE."},
+  {"id":14,"syllables":["NO","DE"],"word":"NODE","instruction":"Formons NODE."},
+  {"id":15,"syllables":["ODE",""],"word":"ODE","instruction":"Formons ODE."}
+]

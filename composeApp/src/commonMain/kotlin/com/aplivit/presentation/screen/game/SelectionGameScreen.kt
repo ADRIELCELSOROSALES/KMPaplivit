@@ -3,9 +3,8 @@ package com.aplivit.presentation.screen.game
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,11 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.SyllableCard
+import com.aplivit.shared.AppStrings
 import org.koin.compose.koinInject
 
 // Fixed pool of all syllables for generating distractors
@@ -33,7 +34,12 @@ private val ALL_SYLLABLES = listOf(
 )
 
 @Composable
-fun SelectionGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> Unit) {
+fun SelectionGameScreen(
+    level: Level,
+    feedback: String?,
+    strings: AppStrings,
+    onResult: (Boolean) -> Unit
+) {
     val tts: SpeechSynthesizer = koinInject()
     var currentSyllableIndex by remember { mutableIntStateOf(0) }
     val targetSyllable = level.syllables.getOrNull(currentSyllableIndex)?.text ?: ""
@@ -52,23 +58,40 @@ fun SelectionGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> 
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Juego 2: Escucha y elige", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = "Juego 2: Escucha y elige",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
         Text(
             text = "Sílaba ${currentSyllableIndex + 1} de ${level.syllables.size}",
-            fontSize = 14.sp, color = Color.Gray
+            fontSize = 14.sp,
+            color = Color.Gray,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
         )
-        Spacer(Modifier.height(24.dp))
-        Text("¿Qué sílaba escuchaste?", fontSize = 16.sp)
-        Spacer(Modifier.height(8.dp))
+        Text(
+            text = "¿Qué sílaba escuchaste?",
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
         SyllableCard(
             text = "▶",
             onClick = { tts.speak(targetSyllable) },
             backgroundColor = Color(0xFF2196F3)
         )
-        Spacer(Modifier.height(32.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             options.forEach { option ->
                 SyllableCard(
                     text = option,
@@ -85,8 +108,13 @@ fun SelectionGameScreen(level: Level, feedback: String?, onResult: (Boolean) -> 
         }
 
         if (feedback != null) {
-            Spacer(Modifier.height(16.dp))
-            Text(feedback, color = Color.Red, fontSize = 16.sp)
+            Text(
+                text = feedback,
+                color = Color.Red,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+            )
         }
     }
 }

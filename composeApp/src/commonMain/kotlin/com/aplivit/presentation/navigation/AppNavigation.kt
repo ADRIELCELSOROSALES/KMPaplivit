@@ -9,11 +9,13 @@ import androidx.navigation.navArgument
 import com.aplivit.presentation.screen.game.GameScreen
 import com.aplivit.presentation.screen.home.HomeScreen
 import com.aplivit.presentation.screen.level.LevelScreen
+import com.aplivit.presentation.screen.settings.SettingsScreen
 
 private const val ROUTE_HOME = "home"
 private const val ROUTE_HOME_PATTERN = "home?completed={completed}"
 private const val ROUTE_LEVEL = "level/{levelId}"
 private const val ROUTE_GAME = "game/{levelId}"
+private const val ROUTE_SETTINGS = "settings"
 
 @Composable
 fun AppNavigation() {
@@ -32,6 +34,7 @@ fun AppNavigation() {
             val completed = backStackEntry.arguments?.getBoolean("completed") ?: false
             HomeScreen(
                 onLevelClick = { levelId -> navController.navigate("level/$levelId") },
+                onSettingsClick = { navController.navigate(ROUTE_SETTINGS) },
                 completed = completed
             )
         }
@@ -49,6 +52,15 @@ fun AppNavigation() {
                 levelId = levelId,
                 onCompleted = {
                     navController.navigate("home?completed=true") {
+                        popUpTo(ROUTE_HOME_PATTERN) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(ROUTE_SETTINGS) {
+            SettingsScreen(
+                onBack = {
+                    navController.navigate(ROUTE_HOME) {
                         popUpTo(ROUTE_HOME_PATTERN) { inclusive = true }
                     }
                 }

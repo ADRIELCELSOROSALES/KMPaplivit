@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
+import com.aplivit.shared.AppStrings
 
 @Composable
 fun DragDropGameScreen(
@@ -32,20 +33,32 @@ fun DragDropGameScreen(
     availableSyllables: List<String>,
     arrangedSyllables: List<String>,
     feedback: String?,
+    strings: AppStrings,
     onSyllableMoved: (String) -> Unit,
     onReset: () -> Unit,
     onResult: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Juego 1: Arrastra las sílabas", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text("Forma la palabra: ${level.word}", fontSize = 16.sp, color = Color.Gray)
-        Spacer(Modifier.height(24.dp))
+        Text(
+            text = "Juego 1: Arrastra las sílabas",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = "Armá la palabra: ${level.word}",
+            fontSize = 16.sp,
+            color = Color.Gray,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        Text("Tu respuesta:", fontSize = 14.sp)
-        Spacer(Modifier.height(8.dp))
+        // Drop zone
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -56,14 +69,14 @@ fun DragDropGameScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (arrangedSyllables.isEmpty()) {
-                Text("Suelta las sílabas aquí", color = Color.LightGray)
+                Text("Suelta las sílabas aquí", color = Color.LightGray, textAlign = TextAlign.Center)
             } else {
                 arrangedSyllables.forEach { syl ->
                     Box(
                         modifier = Modifier
                             .size(60.dp)
-                            .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp))
-                            .padding(4.dp),
+                            .padding(4.dp)
+                            .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(syl, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
@@ -72,14 +85,16 @@ fun DragDropGameScreen(
             }
         }
 
-        Spacer(Modifier.height(32.dp))
-        Text("Sílabas disponibles:", fontSize = 14.sp)
-        Spacer(Modifier.height(8.dp))
+        Text("Sílabas disponibles:", fontSize = 14.sp, textAlign = TextAlign.Center)
 
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
             availableSyllables.forEach { syl ->
                 Box(
                     modifier = Modifier
+                        .padding(horizontal = 6.dp)
                         .size(70.dp)
                         .background(Color(0xFF2196F3), RoundedCornerShape(12.dp))
                         .pointerInput(syl) {
@@ -96,24 +111,31 @@ fun DragDropGameScreen(
         }
 
         if (feedback != null) {
-            Spacer(Modifier.height(16.dp))
-            Text(feedback, color = Color.Red, fontSize = 16.sp)
+            Text(
+                text = feedback,
+                color = Color.Red,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+            )
         }
 
-        Spacer(Modifier.height(24.dp))
-        Button(
-            onClick = {
-                val answer = arrangedSyllables.joinToString("")
-                onResult(answer == level.word)
-            },
-            enabled = arrangedSyllables.size == level.syllables.size
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text("Verificar", fontSize = 18.sp)
-        }
-
-        Spacer(Modifier.height(8.dp))
-        Button(onClick = onReset) {
-            Text("Reiniciar", fontSize = 16.sp)
+            Button(
+                onClick = {
+                    val answer = arrangedSyllables.joinToString("")
+                    onResult(answer == level.word)
+                },
+                enabled = arrangedSyllables.size == level.syllables.size
+            ) {
+                Text(strings.verify, fontSize = 18.sp)
+            }
+            Button(onClick = onReset) {
+                Text(strings.reset, fontSize = 16.sp)
+            }
         }
     }
 }

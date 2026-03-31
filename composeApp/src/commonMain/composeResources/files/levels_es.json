@@ -1,0 +1,17 @@
+[
+  {"id":1,"syllables":["MA","MA"],"word":"MAMA","instruction":"En este nivel aprenderemos MA. Escuchá y repetí."},
+  {"id":2,"syllables":["ME","SA"],"word":"MESA","instruction":"Ahora practicamos ME y SA."},
+  {"id":3,"syllables":["MI","SA"],"word":"MISA","instruction":"Combinamos MI y SA."},
+  {"id":4,"syllables":["PA","PA"],"word":"PAPA","instruction":"Aprendemos PA."},
+  {"id":5,"syllables":["PE","CA"],"word":"PECA","instruction":"Practicamos PE y CA."},
+  {"id":6,"syllables":["PI","PA"],"word":"PIPA","instruction":"Combinamos PI y PA."},
+  {"id":7,"syllables":["SA","LA"],"word":"SALA","instruction":"Aprendemos SA y LA."},
+  {"id":8,"syllables":["SE","TA"],"word":"SETA","instruction":"Practicamos SE y TA."},
+  {"id":9,"syllables":["SI","MA"],"word":"SIMA","instruction":"Combinamos SI y MA."},
+  {"id":10,"syllables":["LA","CA"],"word":"LACA","instruction":"Aprendemos LA y CA."},
+  {"id":11,"syllables":["LE","MA"],"word":"LEMA","instruction":"Practicamos LE y MA."},
+  {"id":12,"syllables":["LI","MA"],"word":"LIMA","instruction":"Combinamos LI y MA."},
+  {"id":13,"syllables":["CA","MA"],"word":"CAMA","instruction":"Aprendemos CA y MA."},
+  {"id":14,"syllables":["TA","PA"],"word":"TAPA","instruction":"Practicamos TA y PA."},
+  {"id":15,"syllables":["TE","LA"],"word":"TELA","instruction":"Combinamos TE y LA."}
+]

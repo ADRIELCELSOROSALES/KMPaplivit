@@ -1,0 +1,17 @@
+[
+  {"id":1,"syllables":["MA","MA"],"word":"MAMA","instruction":"Let's learn the syllable MA. Listen and repeat."},
+  {"id":2,"syllables":["PA","PA"],"word":"PAPA","instruction":"Now let's learn PA."},
+  {"id":3,"syllables":["CA","KE"],"word":"CAKE","instruction":"Let's form the word CAKE."},
+  {"id":4,"syllables":["LA","KE"],"word":"LAKE","instruction":"Let's learn LA and KE."},
+  {"id":5,"syllables":["BI","KE"],"word":"BIKE","instruction":"Let's form BIKE."},
+  {"id":6,"syllables":["LI","KE"],"word":"LIKE","instruction":"Let's form LIKE."},
+  {"id":7,"syllables":["RI","CE"],"word":"RICE","instruction":"Let's learn RI and CE."},
+  {"id":8,"syllables":["NI","CE"],"word":"NICE","instruction":"Let's form NICE."},
+  {"id":9,"syllables":["FA","CE"],"word":"FACE","instruction":"Let's form FACE."},
+  {"id":10,"syllables":["LA","CE"],"word":"LACE","instruction":"Let's form LACE."},
+  {"id":11,"syllables":["BA","SE"],"word":"BASE","instruction":"Let's learn BA and SE."},
+  {"id":12,"syllables":["CA","SE"],"word":"CASE","instruction":"Let's form CASE."},
+  {"id":13,"syllables":["RO","SE"],"word":"ROSE","instruction":"Let's learn RO and SE."},
+  {"id":14,"syllables":["NO","SE"],"word":"NOSE","instruction":"Let's form NOSE."},
+  {"id":15,"syllables":["PO","SE"],"word":"POSE","instruction":"Let's form POSE."}
+]
