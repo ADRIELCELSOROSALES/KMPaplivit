@@ -6,16 +6,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.aplivit.core.domain.model.TouchExercise
+import com.aplivit.core.domain.model.TouchType
+import com.aplivit.presentation.screen.exercise.TouchSimilarScreen
 import com.aplivit.presentation.screen.game.GameScreen
 import com.aplivit.presentation.screen.home.HomeScreen
 import com.aplivit.presentation.screen.level.LevelScreen
-import com.aplivit.presentation.screen.settings.SettingsScreen
 
 private const val ROUTE_HOME = "home"
 private const val ROUTE_HOME_PATTERN = "home?completed={completed}"
 private const val ROUTE_LEVEL = "level/{levelId}"
 private const val ROUTE_GAME = "game/{levelId}"
-private const val ROUTE_SETTINGS = "settings"
+private const val ROUTE_TOUCH_TEST = "touch_test"
 
 @Composable
 fun AppNavigation() {
@@ -33,8 +35,11 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val completed = backStackEntry.arguments?.getBoolean("completed") ?: false
             HomeScreen(
-                onLevelClick = { levelId -> navController.navigate("level/$levelId") },
-                onSettingsClick = { navController.navigate(ROUTE_SETTINGS) },
+                onLevelClick = { levelId ->
+                    navController.navigate("game/$levelId") {
+                        popUpTo(ROUTE_HOME_PATTERN) { inclusive = true }
+                    }
+                },
                 completed = completed
             )
         }
@@ -50,20 +55,26 @@ fun AppNavigation() {
             val levelId = backStackEntry.arguments?.getString("levelId")?.toIntOrNull() ?: 1
             GameScreen(
                 levelId = levelId,
-                onCompleted = {
-                    navController.navigate("home?completed=true") {
-                        popUpTo(ROUTE_HOME_PATTERN) { inclusive = true }
+                onCompleted = { nextLevelId ->
+                    navController.navigate("game/$nextLevelId") {
+                        popUpTo(ROUTE_GAME) { inclusive = true }
                     }
-                }
+                },
+                onBackNavigate = { navController.popBackStack() }
             )
         }
-        composable(ROUTE_SETTINGS) {
-            SettingsScreen(
-                onBack = {
-                    navController.navigate(ROUTE_HOME) {
-                        popUpTo(ROUTE_HOME_PATTERN) { inclusive = true }
-                    }
-                }
+        composable(ROUTE_TOUCH_TEST) {
+            val sampleExercise = TouchExercise(
+                id = 1,
+                type = TouchType.SIMILAR_FORMS,
+                target = "MA",
+                options = listOf("MA", "ME", "MA", "MI", "MA"),
+                correctIndices = listOf(0, 2, 4)
+            )
+            TouchSimilarScreen(
+                exercise = sampleExercise,
+                onBackClick = { navController.popBackStack() },
+                onForwardClick = { navController.popBackStack() }
             )
         }
     }

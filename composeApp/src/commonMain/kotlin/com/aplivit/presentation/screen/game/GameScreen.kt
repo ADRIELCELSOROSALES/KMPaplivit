@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,12 +22,16 @@ import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.component.BaseExerciseScreen
 import com.aplivit.presentation.util.LockPortrait
-import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 
 @Composable
-fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
+fun GameScreen(
+    levelId: Int,
+    onCompleted: (nextLevelId: Int) -> Unit,
+    onBackNavigate: () -> Unit
+) {
     LockPortrait()
 
     val getLevels: GetLevelsUseCase = koinInject()
@@ -52,45 +56,52 @@ fun GameScreen(levelId: Int, onCompleted: () -> Unit) {
 
     val level = state.level ?: return
 
-    when (state.currentStep) {
-        GameStep.DRAG_DROP -> DragDropGameScreen(
-            level = level,
-            availableSyllables = state.availableSyllables,
-            arrangedSyllables = state.arrangedSyllables,
-            feedback = state.feedback,
-            strings = state.strings,
-            onSyllableMoved = { syllable -> vm.onSyllableMoved(syllable) },
-            onReset = { vm.onDragDropReset() },
-            onResult = { correct -> vm.onDragDropCompleted(correct) }
-        )
-        GameStep.SELECTION -> SelectionGameScreen(
-            level = level,
-            feedback = state.feedback,
-            strings = state.strings,
-            onResult = { correct -> vm.onSelectionCompleted(correct) }
-        )
-        GameStep.REPEAT -> RepeatGameScreen(
-            level = level,
-            recognitionMode = state.recognitionMode,
-            isListening = state.isListening,
-            feedback = state.feedback,
-            strings = state.strings,
-            onStartListening = { expected -> vm.startListening(expected) },
-            onStopListening = { vm.stopListening() }
-        )
-        GameStep.COMPLETED -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    text = state.strings.levelCompleted,
-                    fontSize = 32.sp,
-                    color = Color(0xFF4CAF50),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    modifier = Modifier.padding(24.dp)
-                )
+    BaseExerciseScreen(
+        onMicClick = {
+            if (state.currentStep == GameStep.REPEAT) {
+                if (state.isListening) vm.stopListening()
+                else vm.startListening(level.word)
             }
-            LaunchedEffect(Unit) {
-                delay(2000)
-                onCompleted()
+        },
+        onListenClick = { tts.speak(level.word) },
+        onBackClick = onBackNavigate,
+        onForwardClick = { onCompleted(levelId + 1) },
+        forwardEnabled = state.currentStep == GameStep.COMPLETED
+    ) {
+        when (state.currentStep) {
+            GameStep.DRAG_DROP -> DragDropGameScreen(
+                level = level,
+                availableSyllables = state.availableSyllables,
+                arrangedSyllables = state.arrangedSyllables,
+                feedback = state.feedback,
+                strings = state.strings,
+                onSyllableMoved = { syllable -> vm.onSyllableMoved(syllable) },
+                onReset = { vm.onDragDropReset() },
+                onResult = { correct -> vm.onDragDropCompleted(correct) }
+            )
+            GameStep.SELECTION -> SelectionGameScreen(
+                level = level,
+                feedback = state.feedback,
+                strings = state.strings,
+                onResult = { correct -> vm.onSelectionCompleted(correct) }
+            )
+            GameStep.REPEAT -> RepeatGameScreen(
+                level = level,
+                isListening = state.isListening,
+                feedback = state.feedback,
+                strings = state.strings,
+                onStopListening = { vm.stopListening() }
+            )
+            GameStep.COMPLETED -> {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = state.strings.levelCompleted,
+                        fontSize = 32.sp,
+                        color = Color(0xFF4CAF50),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(24.dp)
+                    )
+                }
             }
         }
     }
