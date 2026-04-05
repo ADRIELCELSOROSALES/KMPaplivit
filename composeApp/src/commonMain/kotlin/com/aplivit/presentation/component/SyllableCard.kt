@@ -1,7 +1,6 @@
 package com.aplivit.presentation.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,22 +20,29 @@ fun SyllableCard(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Color(0xFF4CAF50)
+    backgroundColor: Color = Color(0xFF4CAF50),
+    salientEnabled: Boolean = true
 ) {
-    Box(
-        modifier = modifier
-            .size(80.dp)
-            .shadow(4.dp, RoundedCornerShape(12.dp))
-            .background(backgroundColor, RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
+    // SalientText envuelve TODO el contenido: graphicsLayer escala fondo + sombra + texto juntos.
+    SalientText(
+        onClick = onClick,
+        modifier = modifier,
+        salientEnabled = salientEnabled
     ) {
-        Text(
-            text = text,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
+        Box(
+            modifier = Modifier
+                .size(80.dp)
+                .shadow(4.dp, RoundedCornerShape(12.dp))
+                .background(backgroundColor, RoundedCornerShape(12.dp))
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        }
     }
 }

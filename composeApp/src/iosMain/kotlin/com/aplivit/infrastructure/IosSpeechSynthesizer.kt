@@ -14,12 +14,20 @@ class IosSpeechSynthesizer : SpeechSynthesizer {
         currentLocale = language.ttsLocale
     }
 
-    override fun speak(text: String) {
+    private fun speakWithRate(text: String, rate: Float) {
         val utterance = AVSpeechUtterance(string = text)
         utterance.voice = AVSpeechSynthesisVoice.voiceWithLanguage(currentLocale)
-        utterance.rate = 0.5f
+        utterance.rate = rate
         synthesizer.speakUtterance(utterance)
     }
+
+    override fun speak(text: String) = speakWithRate(text, 0.5f)
+
+    override fun speakSyllable(text: String) = speakWithRate(text, 0.35f)
+
+    override fun speakWord(text: String) = speakWithRate(text, 0.5f)
+
+    override fun speakSentence(text: String) = speakWithRate(text, 0.55f)
 
     override suspend fun speakAndWait(text: String) {
         speak(text)

@@ -8,7 +8,8 @@ data class TouchExercise(
     val type: TouchType,
     val target: String,
     val options: List<String>,
-    val correctIndices: List<Int>
+    val correctIndices: List<Int>,
+    val useSalience: Boolean = true
 )
 
 enum class TouchType {

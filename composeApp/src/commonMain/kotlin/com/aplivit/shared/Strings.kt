@@ -29,7 +29,8 @@ data class AppStrings(
     val repeatError: String,
     val tapSyllableHint: String,
     val back: String,
-    val learnToRead: String
+    val learnToRead: String,
+    val recapTitle: String
 )
 
 fun stringsFor(language: AppLanguage): AppStrings = when (language) {
@@ -60,7 +61,8 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         repeatError = "No fue correcto. Intentá de nuevo.",
         tapSyllableHint = "Tocá cada sílaba para escucharla",
         back = "Volver",
-        learnToRead = "Aprende a leer"
+        learnToRead = "Aprende a leer",
+        recapTitle = "Repaso"
     )
     AppLanguage.ENGLISH -> AppStrings(
         welcome = "Welcome to Aplivit. Choose a level to start.",
@@ -89,7 +91,8 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         repeatError = "That was not correct. Try again.",
         tapSyllableHint = "Tap each syllable to hear it",
         back = "Back",
-        learnToRead = "Learn to read"
+        learnToRead = "Learn to read",
+        recapTitle = "Review"
     )
     AppLanguage.FRENCH -> AppStrings(
         welcome = "Bienvenue sur Aplivit. Choisissez un niveau pour commencer.",
@@ -118,6 +121,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         repeatError = "Ce n'était pas correct. Réessaie.",
         tapSyllableHint = "Appuie sur chaque syllabe pour l'entendre",
         back = "Retour",
-        learnToRead = "Apprendre à lire"
+        learnToRead = "Apprendre à lire",
+        recapTitle = "Révision"
     )
 }

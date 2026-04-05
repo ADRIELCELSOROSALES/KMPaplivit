@@ -1,11 +1,11 @@
 package com.aplivit.presentation.screen.exercise
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,11 +23,11 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
-import com.aplivit.presentation.component.SalientText
+import com.aplivit.presentation.component.WordWithSyllables
 import org.koin.compose.koinInject
 
 @Composable
-fun TouchSimilarScreen(
+fun TouchSyllableInWordScreen(
     exercise: TouchExercise,
     onBackClick: () -> Unit,
     onForwardClick: () -> Unit
@@ -42,6 +41,19 @@ fun TouchSimilarScreen(
         vm.loadExercise(exercise)
     }
 
+    val syllableColors = exercise.options.indices.associate { index ->
+        val color = when (state.flashState[index]) {
+            FlashState.CORRECT -> AppColors.FeedbackCorrect
+            FlashState.INCORRECT -> AppColors.FeedbackIncorrect
+            null -> if (index in state.foundCorrect) AppColors.FeedbackCorrect else Color(0xFF4CAF50)
+        }
+        index to color
+    }
+
+    val enabledIndices = exercise.options.indices
+        .filter { it !in state.foundCorrect && !state.flashState.containsKey(it) }
+        .toSet()
+
     BaseExerciseScreen(
         onMicClick = {},
         onListenClick = { vm.playTarget() },
@@ -49,36 +61,34 @@ fun TouchSimilarScreen(
         onForwardClick = onForwardClick,
         forwardEnabled = state.isCompleted
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            itemsIndexed(exercise.options) { index, option ->
-                val flash = state.flashState[index]
-                val textColor = when (flash) {
-                    FlashState.CORRECT -> AppColors.FeedbackCorrect
-                    FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                    null -> if (index in state.foundCorrect) AppColors.FeedbackCorrect else Color.Black
-                }
-                val enabled = index !in state.foundCorrect && !state.flashState.containsKey(index)
-                SalientText(
-                    onClick = { vm.onOptionTapped(index) },
-                    salientEnabled = exercise.useSalience && enabled,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                ) {
-                    Text(
-                        text = option,
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = textColor,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+            Text(
+                text = "Toca la sílaba:",
+                fontSize = 20.sp,
+                color = Color.Gray,
+                fontWeight = FontWeight.Medium
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = exercise.target,
+                fontSize = 64.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1A237E)
+            )
+            Spacer(Modifier.height(48.dp))
+            WordWithSyllables(
+                word = exercise.options.joinToString("-"),
+                syllables = exercise.options,
+                onSyllableTap = { vm.onOptionTapped(it) },
+                syllableColors = syllableColors,
+                enabledIndices = enabledIndices
+            )
         }
     }
 }

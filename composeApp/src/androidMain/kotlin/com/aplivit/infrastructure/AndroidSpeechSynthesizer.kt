@@ -44,14 +44,33 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
         }
     }
 
-    override fun speak(text: String) {
-        Log.d("TTS", "speak() isReady=$isReady text='$text'")
+    private fun speakWithRate(text: String, rate: Float) {
         if (isReady) {
+            tts?.setSpeechRate(rate)
             tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
         } else {
-            Log.w("TTS", "speak() TTS no listo, guardando en pendingText")
             pendingText = text
         }
+    }
+
+    override fun speak(text: String) {
+        Log.d("TTS", "speak() isReady=$isReady text='$text'")
+        speakWithRate(text, 1.0f)
+    }
+
+    override fun speakSyllable(text: String) {
+        Log.d("TTS", "speakSyllable() text='$text'")
+        speakWithRate(text, 0.5f)
+    }
+
+    override fun speakWord(text: String) {
+        Log.d("TTS", "speakWord() text='$text'")
+        speakWithRate(text, 1.0f)
+    }
+
+    override fun speakSentence(text: String) {
+        Log.d("TTS", "speakSentence() text='$text'")
+        speakWithRate(text, 1.0f)
     }
 
     override suspend fun speakAndWait(text: String) {
