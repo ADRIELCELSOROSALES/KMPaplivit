@@ -6,6 +6,7 @@ import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.domain.model.UserProgress
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
+import com.aplivit.core.domain.usecase.SessionResumeUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.shared.AppStrings
@@ -26,7 +27,8 @@ data class HomeUiState(
 class HomeViewModel(
     private val getLevels: GetLevelsUseCase,
     private val progressRepository: ProgressRepository,
-    private val tts: SpeechSynthesizer
+    private val tts: SpeechSynthesizer,
+    private val sessionResume: SessionResumeUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -40,36 +42,42 @@ class HomeViewModel(
             val language = progressRepository.getSelectedLanguage()
             val strings = stringsFor(language)
             val levels = getLevels.execute(language)
+            val resumeInfo = sessionResume.getResumeInfo()
             val progress = progressRepository.loadProgress(language)
 
+            // Actualizar datos pero mantener isLoading=true mientras hablamos
             _state.value = HomeUiState(
                 levels = levels,
                 progress = progress,
-                isLoading = false,
+                isLoading = true,
                 strings = strings,
                 selectedLanguage = language
             )
 
-            println("TTS_VM [HomeViewModel] datos cargados, esperando 300ms antes de hablar")
+            println("TTS_VM [HomeViewModel] datos cargados — target nivel=${resumeInfo.targetLevel} ejercicio=${resumeInfo.targetExercise}")
             delay(300)
             tts.setLanguage(language)
             delay(150)
 
             val message = when {
-                progress.isFirstLaunch -> {
-                    progressRepository.saveProgress(progress.copy(isFirstLaunch = false), language)
-                    strings.welcome
+                resumeInfo.isFirstTime -> {
+                    progressRepository.markLaunched()
+                    strings.welcome                         // "Bienvenido. Empecemos desde el principio."
                 }
                 completedLevel && !completionAnnounced -> {
                     completionAnnounced = true
-                    strings.nextLevel
+                    strings.nextLevel                       // "Muy bien! Seguimos con el siguiente nivel."
                 }
+                resumeInfo.hasProgress -> strings.resumeSession  // "Continuamos donde lo dejaste."
                 else -> strings.selectLevel
             }
 
             println("TTS_VM [HomeViewModel] hablando: '$message'")
             tts.speakAndWait(message)
             println("TTS_VM [HomeViewModel] speakAndWait COMPLETÓ")
+
+            // Navegación DESPUÉS de que el TTS termina, para no interrumpir la instrucción del nivel
+            _state.value = _state.value.copy(isLoading = false)
         }
     }
 

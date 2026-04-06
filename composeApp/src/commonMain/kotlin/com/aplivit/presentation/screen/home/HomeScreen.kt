@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
+import com.aplivit.core.domain.usecase.SessionResumeUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import org.koin.compose.koinInject
@@ -32,7 +33,8 @@ fun HomeScreen(
     val getLevels: GetLevelsUseCase = koinInject()
     val repo: ProgressRepository = koinInject()
     val tts: SpeechSynthesizer = koinInject()
-    val vm: HomeViewModel = viewModel { HomeViewModel(getLevels, repo, tts) }
+    val sessionResume: SessionResumeUseCase = koinInject()
+    val vm: HomeViewModel = viewModel { HomeViewModel(getLevels, repo, tts, sessionResume) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(Unit) {

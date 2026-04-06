@@ -1,12 +1,10 @@
 package com.aplivit.presentation.screen.exercise
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 data class LetterTracingUiState(
     val letter: String = "",
@@ -31,10 +29,9 @@ class LetterTracingViewModel(
         triggerAnimation()
     }
 
-    /** Called by the ear button — replays TTS and the tracing animation. */
+    /** Called by the ear button — replays TTS pronunciation only. */
     fun replay() {
         speakLetter(_state.value.letter)
-        triggerAnimation()
     }
 
     /** Called by the composable when the animation finishes all strokes. */
@@ -51,8 +48,6 @@ class LetterTracingViewModel(
     }
 
     private fun speakLetter(letter: String) {
-        if (letter.isNotBlank()) {
-            viewModelScope.launch { tts.speak(letter) }
-        }
+        if (letter.isNotBlank()) tts.speak(letter)
     }
 }

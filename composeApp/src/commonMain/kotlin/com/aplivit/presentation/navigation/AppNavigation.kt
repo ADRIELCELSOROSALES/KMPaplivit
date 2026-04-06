@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.aplivit.core.domain.usecase.NavigationUseCase
+import org.koin.compose.koinInject
 import com.aplivit.core.domain.model.LinkExercise
 import com.aplivit.core.domain.model.LinkItem
 import com.aplivit.core.domain.model.LinkPair
@@ -50,6 +52,7 @@ private const val RECAP_EVERY_N_LEVELS = 3
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val navUseCase: NavigationUseCase = koinInject()
 
     NavHost(navController = navController, startDestination = ROUTE_HOME) {
         composable(
@@ -96,7 +99,20 @@ fun AppNavigation() {
                         }
                     }
                 },
-                onBackNavigate = { navController.popBackStack() }
+                onBackNavigate = {
+                    val (prevLevel, _) = navUseCase.goBack(levelId, 1)
+                    if (prevLevel < levelId) {
+                        // Navigate to the previous level
+                        navController.navigate("game/$prevLevel") {
+                            popUpTo(ROUTE_GAME) { inclusive = true }
+                        }
+                    } else {
+                        // Already at level 1 — go home
+                        navController.navigate(ROUTE_HOME) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                }
             )
         }
         composable(

@@ -4,6 +4,7 @@ import com.aplivit.core.domain.model.AppLanguage
 
 data class AppStrings(
     val welcome: String,
+    val resumeSession: String,
     val selectLevel: String,
     val nextLevel: String,
     val levelCompleted: String,
@@ -21,6 +22,7 @@ data class AppStrings(
     val settings: String,
     val selectLanguage: String,
     val permissionNeeded: String,
+    val dragDropInstruction: String,
     val dragDropSuccess: String,
     val selectionSuccess: String,
     val selectionError: String,
@@ -35,9 +37,10 @@ data class AppStrings(
 
 fun stringsFor(language: AppLanguage): AppStrings = when (language) {
     AppLanguage.SPANISH -> AppStrings(
-        welcome = "Bienvenido a Aplivit. Elegí un nivel para comenzar.",
+        welcome = "Bienvenido. Empecemos desde el principio.",
+        resumeSession = "Continuamos donde lo dejaste.",
         selectLevel = "Seleccioná un nivel para continuar.",
-        nextLevel = "¡Muy bien! Seleccioná el siguiente nivel para continuar.",
+        nextLevel = "¡Muy bien! Seguimos con el siguiente nivel.",
         levelCompleted = "¡Muy bien! Completaste el nivel.",
         lockedLevel = "Bloqueado",
         completedLabel = "Completado",
@@ -53,6 +56,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         settings = "Configuración",
         selectLanguage = "Elegí tu idioma",
         permissionNeeded = "Se necesita permiso de micrófono para este ejercicio.",
+        dragDropInstruction = "Arrastrá las sílabas para armar la palabra.",
         dragDropSuccess = "Muy bien. Ahora escuchá y elegí la sílaba correcta.",
         selectionSuccess = "Excelente. Ahora repetí lo que escuchás.",
         selectionError = "Eso no es correcto. Intentá de nuevo.",
@@ -65,9 +69,10 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         recapTitle = "Repaso"
     )
     AppLanguage.ENGLISH -> AppStrings(
-        welcome = "Welcome to Aplivit. Choose a level to start.",
+        welcome = "Welcome. Let's start from the beginning.",
+        resumeSession = "Continuing where you left off.",
         selectLevel = "Select a level to continue.",
-        nextLevel = "Great job! Select the next level to continue.",
+        nextLevel = "Great job! Let's continue with the next level.",
         levelCompleted = "Great job! You completed the level.",
         lockedLevel = "Locked",
         completedLabel = "Completed",
@@ -83,6 +88,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         settings = "Settings",
         selectLanguage = "Choose your language",
         permissionNeeded = "Microphone permission is needed for this exercise.",
+        dragDropInstruction = "Drag the syllables to form the word.",
         dragDropSuccess = "Great. Now listen and choose the correct syllable.",
         selectionSuccess = "Excellent. Now repeat what you hear.",
         selectionError = "That is not correct. Try again.",
@@ -95,9 +101,10 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         recapTitle = "Review"
     )
     AppLanguage.FRENCH -> AppStrings(
-        welcome = "Bienvenue sur Aplivit. Choisissez un niveau pour commencer.",
+        welcome = "Bienvenue. Commençons depuis le début.",
+        resumeSession = "Continuons là où tu t'es arrêté.",
         selectLevel = "Sélectionne un niveau pour continuer.",
-        nextLevel = "Bravo ! Sélectionne le niveau suivant pour continuer.",
+        nextLevel = "Bravo ! Continuons avec le niveau suivant.",
         levelCompleted = "Bravo ! Tu as complété le niveau.",
         lockedLevel = "Bloqué",
         completedLabel = "Complété",
@@ -113,6 +120,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         settings = "Paramètres",
         selectLanguage = "Choisis ta langue",
         permissionNeeded = "Permission du microphone nécessaire pour cet exercice.",
+        dragDropInstruction = "Fais glisser les syllabes pour former le mot.",
         dragDropSuccess = "Bien. Maintenant écoute et choisis la bonne syllabe.",
         selectionSuccess = "Excellent. Maintenant répète ce que tu entends.",
         selectionError = "Ce n'est pas correct. Réessaie.",

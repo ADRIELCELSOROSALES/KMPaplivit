@@ -66,6 +66,14 @@ class GameViewModel(
                 strings = strings
             )
             tts.setLanguage(language)
+            level?.let { tts.speak("${it.instruction} ${strings.dragDropInstruction}") }
+
+            // Guardar posición actual para retomar sesión al volver a abrir la app
+            val progress = progressRepository.loadProgress(language)
+            progressRepository.saveProgress(
+                progress.copy(currentLevel = levelId, currentExercise = 1),
+                language
+            )
         }
     }
 
@@ -87,8 +95,10 @@ class GameViewModel(
     fun onDragDropCompleted(correct: Boolean) {
         val strings = _state.value.strings
         if (correct) {
-            tts.speak(strings.dragDropSuccess)
-            _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = null)
+            viewModelScope.launch {
+                tts.speakAndWait(strings.dragDropSuccess)
+                _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = null)
+            }
         } else {
             val errors = _state.value.errors + 1
             tts.speak(strings.tryAgain)
@@ -99,12 +109,14 @@ class GameViewModel(
     fun onSelectionCompleted(correct: Boolean) {
         val strings = _state.value.strings
         if (correct) {
-            tts.speak(strings.selectionSuccess)
-            _state.value = _state.value.copy(
-                currentStep = GameStep.REPEAT,
-                feedback = null,
-                recognitionMode = recognizer.mode
-            )
+            viewModelScope.launch {
+                tts.speakAndWait(strings.selectionSuccess)
+                _state.value = _state.value.copy(
+                    currentStep = GameStep.REPEAT,
+                    feedback = null,
+                    recognitionMode = recognizer.mode
+                )
+            }
         } else {
             val errors = _state.value.errors + 1
             tts.speak(strings.selectionError)
