@@ -14,6 +14,7 @@ import com.aplivit.infrastructure.provideSettings
 import com.aplivit.infrastructure.provideSpeechRecognizer
 import com.aplivit.infrastructure.provideSpeechSynthesizer
 import com.aplivit.infrastructure.storage.SettingsProgressRepository
+import com.aplivit.presentation.screen.exercise.LetterTracingViewModel
 import com.aplivit.presentation.screen.exercise.TouchViewModel
 import com.aplivit.presentation.screen.settings.SettingsViewModel
 import org.koin.dsl.module
@@ -32,4 +33,5 @@ val appModule = module {
     factory { UnlockNextLevelUseCase(get()) }
     factory { SettingsViewModel(get(), get()) }
     factory { TouchViewModel(get(), get()) }
+    factory { LetterTracingViewModel(get(), get()) }
 }

@@ -18,6 +18,7 @@ import com.aplivit.core.domain.model.DragType
 import com.aplivit.core.domain.model.VocalizeExercise
 import com.aplivit.core.domain.model.VocalizeType
 import com.aplivit.presentation.screen.exercise.DragExerciseScreen
+import com.aplivit.presentation.screen.exercise.LetterTracingScreen
 import com.aplivit.presentation.screen.exercise.VocalizeExerciseScreen
 import com.aplivit.presentation.screen.exercise.LinkExerciseScreen
 import com.aplivit.presentation.screen.exercise.TouchOrderSyllablesScreen
@@ -41,6 +42,7 @@ private const val ROUTE_TOUCH_ORDER_WORDS_TEST = "touch_order_words_test"
 private const val ROUTE_LINK_TEST = "link_test"
 private const val ROUTE_DRAG_TEST = "drag_test"
 private const val ROUTE_VOCALIZE_TEST = "vocalize_test"
+private const val ROUTE_LETTER_TRACING_TEST = "letter_tracing_test"
 
 /** Mostrar RecapScreen cada N niveles completados. Cambiar este valor para ajustar la frecuencia. */
 private const val RECAP_EVERY_N_LEVELS = 3
@@ -230,6 +232,14 @@ fun AppNavigation() {
             )
             TouchSyllableInWordScreen(
                 exercise = sampleExercise,
+                onBackClick = { navController.popBackStack() },
+                onForwardClick = { navController.popBackStack() }
+            )
+        }
+        composable(ROUTE_LETTER_TRACING_TEST) {
+            // Cambiar "letter" para probar distintas letras o sílabas
+            LetterTracingScreen(
+                letter = "A",
                 onBackClick = { navController.popBackStack() },
                 onForwardClick = { navController.popBackStack() }
             )

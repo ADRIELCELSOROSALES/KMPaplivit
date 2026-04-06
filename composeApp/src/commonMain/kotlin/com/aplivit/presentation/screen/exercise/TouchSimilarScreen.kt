@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -67,8 +66,7 @@ fun TouchSimilarScreen(
                 val enabled = index !in state.foundCorrect && !state.flashState.containsKey(index)
                 SalientText(
                     onClick = { vm.onOptionTapped(index) },
-                    salientEnabled = exercise.useSalience && enabled,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    salientEnabled = exercise.useSalience && enabled
                 ) {
                     Text(
                         text = option,
