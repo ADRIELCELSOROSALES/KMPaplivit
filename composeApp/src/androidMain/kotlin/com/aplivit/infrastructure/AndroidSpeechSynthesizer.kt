@@ -60,12 +60,14 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
 
     override fun speakSyllable(text: String) {
         Log.d("TTS", "speakSyllable() text='$text'")
-        speakWithRate(text, 0.5f)
+        // Lowercase prevents TTS from reading uppercase syllables as Roman numerals (e.g. "LI" → 51)
+        speakWithRate(text.lowercase(), 0.5f)
     }
 
     override fun speakWord(text: String) {
         Log.d("TTS", "speakWord() text='$text'")
-        speakWithRate(text, 1.0f)
+        // Lowercase prevents all-caps words/syllables from being read as acronyms or Roman numerals
+        speakWithRate(text.lowercase(), 1.0f)
     }
 
     override fun speakSentence(text: String) {
@@ -122,6 +124,7 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
 
             val bundle = Bundle()
             bundle.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId)
+            tts?.setSpeechRate(1.0f)  // reset rate — may have been lowered by speakSyllable
             tts?.speak(text, TextToSpeech.QUEUE_FLUSH, bundle, utteranceId)
 
             cont.invokeOnCancellation {

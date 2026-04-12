@@ -49,7 +49,7 @@ fun RecapScreen(
 
     BaseExerciseScreen(
         onMicClick = {},
-        onListenClick = {},
+        onListenClick = { vm.speakInstruction() },
         onBackClick = onBackClick,
         onForwardClick = onForwardClick,
         forwardEnabled = true   // repaso: siempre se puede avanzar

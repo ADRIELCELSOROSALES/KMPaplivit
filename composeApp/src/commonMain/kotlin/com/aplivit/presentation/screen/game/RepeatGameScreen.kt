@@ -36,7 +36,7 @@ fun RepeatGameScreen(
     }
 
     LaunchedEffect(Unit) {
-        tts.speak(level.word)
+        tts.speak(level.word.lowercase())
     }
 
     Column(

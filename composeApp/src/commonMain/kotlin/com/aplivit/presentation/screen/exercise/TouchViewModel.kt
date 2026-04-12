@@ -30,11 +30,11 @@ class TouchViewModel(
 
     fun loadExercise(exercise: TouchExercise) {
         _state.value = TouchUiState(exercise = exercise)
-        tts.speak(exercise.target)
+        tts.speakSyllable(exercise.target)
     }
 
     fun playTarget() {
-        _state.value.exercise?.let { tts.speak(it.target) }
+        _state.value.exercise?.let { tts.speakSyllable(it.target) }
     }
 
     fun onOptionTapped(index: Int) {

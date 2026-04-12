@@ -72,7 +72,7 @@ fun GameScreen(
                 else vm.startListening(level.word)
             }
         },
-        onListenClick = { tts.speak(level.word) },
+        onListenClick = { tts.speak(level.word.lowercase()) },
         onBackClick = onBackNavigate,
         onForwardClick = {
             val (nextLevel, _) = navUseCase.goForward(levelId, 1)

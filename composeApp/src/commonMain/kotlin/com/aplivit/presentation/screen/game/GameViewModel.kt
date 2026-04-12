@@ -66,7 +66,9 @@ class GameViewModel(
                 strings = strings
             )
             tts.setLanguage(language)
-            level?.let { tts.speak("${it.instruction} ${strings.dragDropInstruction}") }
+            // Speak the word + generic instruction — avoids TTS misreading isolated syllables
+            // e.g. "me y sa" → "mesabado", "ca" → "sea", "li" → "cincuenta y uno"
+            level?.let { tts.speak("${strings.levelIntro} ${it.word.lowercase()}. ${strings.dragDropInstruction.lowercase()}") }
 
             // Guardar posición actual para retomar sesión al volver a abrir la app
             val progress = progressRepository.loadProgress(language)

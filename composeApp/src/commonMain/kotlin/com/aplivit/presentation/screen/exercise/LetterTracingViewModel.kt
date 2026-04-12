@@ -48,6 +48,6 @@ class LetterTracingViewModel(
     }
 
     private fun speakLetter(letter: String) {
-        if (letter.isNotBlank()) tts.speak(letter)
+        if (letter.isNotBlank()) tts.speakSyllable(letter)
     }
 }

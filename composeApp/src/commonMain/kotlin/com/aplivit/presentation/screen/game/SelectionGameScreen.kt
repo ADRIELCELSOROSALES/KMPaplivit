@@ -53,7 +53,7 @@ fun SelectionGameScreen(
     }
 
     LaunchedEffect(targetSyllable) {
-        if (targetSyllable.isNotEmpty()) tts.speak(targetSyllable)
+        if (targetSyllable.isNotEmpty()) tts.speakSyllable(targetSyllable)
     }
 
     Column(
@@ -83,7 +83,7 @@ fun SelectionGameScreen(
         )
         SyllableCard(
             text = "▶",
-            onClick = { tts.speak(targetSyllable) },
+            onClick = { tts.speakSyllable(targetSyllable) },
             backgroundColor = Color(0xFF2196F3)
         )
 
