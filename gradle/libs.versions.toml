@@ -1,17 +1,17 @@
 [versions]
-agp = "8.5.2"
+agp = "8.9.3"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
-androidx-lifecycle = "2.9.0-alpha03"
-composeMultiplatform = "1.8.0"
-kotlin = "2.1.20"
+androidx-lifecycle = "2.10.0"
+composeMultiplatform = "1.10.3"
+kotlin = "2.2.21"
 koin = "3.5.6"
 koinCompose = "1.1.5"
 multiplatformSettings = "1.1.1"
 kotlinxCoroutines = "1.9.0"
 kotlinxSerializationJson = "1.7.3"
-navigationCompose = "2.8.0-alpha10"
+navigationCompose = "2.9.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

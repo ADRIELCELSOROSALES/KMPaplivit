@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.SentenceExercise
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -44,7 +44,7 @@ fun TouchOrderWordsScreen(
 ) {
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: TouchOrderWordsViewModel = viewModel { TouchOrderWordsViewModel(tts, repo) }
+    val vm: TouchOrderWordsViewModel = remember { TouchOrderWordsViewModel(tts, repo) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(exercise.id) {

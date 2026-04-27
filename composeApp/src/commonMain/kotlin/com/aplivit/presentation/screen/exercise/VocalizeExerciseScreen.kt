@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.VocalizeExercise
 import com.aplivit.core.domain.model.VocalizeType
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
@@ -51,7 +51,7 @@ fun VocalizeExerciseScreen(
     val validate: ValidatePronunciationUseCase = koinInject()
     val repo: ProgressRepository = koinInject()
 
-    val vm: VocalizeViewModel = viewModel {
+    val vm: VocalizeViewModel = remember {
         VocalizeViewModel(tts, recognizer, connectivity, validate, repo)
     }
     val state by vm.state.collectAsState()

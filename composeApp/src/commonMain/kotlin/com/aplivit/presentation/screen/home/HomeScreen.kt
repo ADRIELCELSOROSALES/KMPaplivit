@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.SessionResumeUseCase
 import com.aplivit.core.port.ProgressRepository
@@ -34,7 +34,7 @@ fun HomeScreen(
     val repo: ProgressRepository = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val sessionResume: SessionResumeUseCase = koinInject()
-    val vm: HomeViewModel = viewModel { HomeViewModel(getLevels, repo, tts, sessionResume) }
+    val vm: HomeViewModel = remember { HomeViewModel(getLevels, repo, tts, sessionResume) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(Unit) {

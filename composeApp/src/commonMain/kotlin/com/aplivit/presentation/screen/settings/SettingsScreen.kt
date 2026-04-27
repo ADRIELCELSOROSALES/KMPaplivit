@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -41,7 +41,7 @@ private val languageFlags = mapOf(
 fun SettingsScreen(onBack: () -> Unit) {
     val repo: ProgressRepository = koinInject()
     val tts: SpeechSynthesizer = koinInject()
-    val vm: SettingsViewModel = viewModel { SettingsViewModel(repo, tts) }
+    val vm: SettingsViewModel = remember { SettingsViewModel(repo, tts) }
     val state by vm.state.collectAsState()
 
     val strings = stringsFor(state.selectedLanguage)

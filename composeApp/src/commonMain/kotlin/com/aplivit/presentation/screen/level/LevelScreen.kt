@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -31,7 +31,7 @@ fun LevelScreen(levelId: Int, onStartGames: () -> Unit, onBack: () -> Unit) {
     val getLevels: GetLevelsUseCase = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: LevelViewModel = viewModel(key = "level_$levelId") { LevelViewModel(levelId, getLevels, tts, repo) }
+    val vm: LevelViewModel = remember(levelId) { LevelViewModel(levelId, getLevels, tts, repo) }
     val state by vm.state.collectAsState()
 
     Column(

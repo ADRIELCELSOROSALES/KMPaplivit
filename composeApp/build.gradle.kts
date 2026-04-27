@@ -28,11 +28,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
-            implementation(libs.compose.components.resources)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
@@ -42,8 +42,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
         }
         androidMain.dependencies {
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.ui)
+            implementation(compose.runtime)
+            implementation(compose.ui)
             implementation(libs.koin.android)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
         }

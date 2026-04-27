@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplivit.core.domain.model.DragExercise
 import com.aplivit.core.domain.model.DragType
 import com.aplivit.core.port.ProgressRepository
@@ -66,7 +65,7 @@ fun DragExerciseScreen(
 ) {
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: DragViewModel = viewModel { DragViewModel(tts, repo) }
+    val vm: DragViewModel = remember { DragViewModel(tts, repo) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(exercise.id) {

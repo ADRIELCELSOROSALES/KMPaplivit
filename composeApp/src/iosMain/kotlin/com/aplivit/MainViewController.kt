@@ -4,9 +4,16 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.aplivit.di.appModule
 import org.koin.core.context.startKoin
 
-fun MainViewController() = ComposeUIViewController {
-    startKoin {
-        modules(appModule)
+private var koinStarted = false
+
+fun MainViewController() = run {
+    if (!koinStarted) {
+        koinStarted = true
+        startKoin {
+            modules(appModule)
+        }
     }
-    App()
+    ComposeUIViewController {
+        App()
+    }
 }

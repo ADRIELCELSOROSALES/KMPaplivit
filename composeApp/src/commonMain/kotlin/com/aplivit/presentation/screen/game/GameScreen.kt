@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplivit.core.domain.usecase.CompleteGameUseCase
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.NavigationUseCase
@@ -45,7 +44,7 @@ fun GameScreen(
     val repo: ProgressRepository = koinInject()
     val navUseCase: NavigationUseCase = koinInject()
 
-    val vm: GameViewModel = viewModel(key = "game_$levelId") {
+    val vm: GameViewModel = remember(levelId) {
         GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, recognizer, tts, repo)
     }
     val state by vm.state.collectAsState()

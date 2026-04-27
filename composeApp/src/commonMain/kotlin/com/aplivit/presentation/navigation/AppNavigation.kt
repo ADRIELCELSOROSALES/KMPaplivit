@@ -1,13 +1,11 @@
 package com.aplivit.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.aplivit.core.domain.usecase.NavigationUseCase
-import org.koin.compose.koinInject
 import com.aplivit.core.domain.model.LinkExercise
 import com.aplivit.core.domain.model.LinkItem
 import com.aplivit.core.domain.model.LinkPair
@@ -31,12 +29,21 @@ import com.aplivit.presentation.screen.game.GameScreen
 import com.aplivit.presentation.screen.home.HomeScreen
 import com.aplivit.presentation.screen.level.LevelScreen
 import com.aplivit.presentation.screen.recap.RecapScreen
+import kotlinx.serialization.Serializable
+import org.koin.compose.koinInject
 
-private const val ROUTE_HOME = "home"
-private const val ROUTE_HOME_PATTERN = "home?completed={completed}"
-private const val ROUTE_LEVEL = "level/{levelId}"
-private const val ROUTE_GAME = "game/{levelId}"
-private const val ROUTE_RECAP = "recap/{nextLevelId}"
+@Serializable
+private data class HomeRoute(val completed: Boolean = false)
+
+@Serializable
+private data class LevelRoute(val levelId: Int)
+
+@Serializable
+private data class GameRoute(val levelId: Int)
+
+@Serializable
+private data class RecapRoute(val nextLevelId: Int)
+
 private const val ROUTE_TOUCH_TEST = "touch_test"
 private const val ROUTE_TOUCH_SYLLABLE_TEST = "touch_syllable_test"
 private const val ROUTE_TOUCH_ORDER_TEST = "touch_order_test"
@@ -54,83 +61,70 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val navUseCase: NavigationUseCase = koinInject()
 
-    NavHost(navController = navController, startDestination = ROUTE_HOME) {
-        composable(
-            route = ROUTE_HOME_PATTERN,
-            arguments = listOf(
-                navArgument("completed") {
-                    type = NavType.BoolType
-                    defaultValue = false
-                }
-            )
-        ) { backStackEntry ->
-            val completed = backStackEntry.arguments?.getBoolean("completed") ?: false
+    NavHost(navController = navController, startDestination = HomeRoute()) {
+        composable<HomeRoute> { backStackEntry ->
+            val route = backStackEntry.toRoute<HomeRoute>()
             HomeScreen(
                 onLevelClick = { levelId ->
-                    navController.navigate("game/$levelId") {
-                        popUpTo(ROUTE_HOME_PATTERN) { inclusive = true }
+                    navController.navigate(GameRoute(levelId)) {
+                        popUpTo<HomeRoute> { inclusive = true }
                     }
                 },
-                completed = completed
+                completed = route.completed
             )
         }
-        composable(ROUTE_LEVEL) { backStackEntry ->
-            val levelId = backStackEntry.arguments?.getString("levelId")?.toIntOrNull() ?: 1
+        composable<LevelRoute> { backStackEntry ->
+            val route = backStackEntry.toRoute<LevelRoute>()
             LevelScreen(
-                levelId = levelId,
-                onStartGames = { navController.navigate("game/$levelId") },
+                levelId = route.levelId,
+                onStartGames = { navController.navigate(GameRoute(route.levelId)) },
                 onBack = { navController.popBackStack() }
             )
         }
-        composable(ROUTE_GAME) { backStackEntry ->
-            val levelId = backStackEntry.arguments?.getString("levelId")?.toIntOrNull() ?: 1
+        composable<GameRoute> { backStackEntry ->
+            val route = backStackEntry.toRoute<GameRoute>()
+            val levelId = route.levelId
             GameScreen(
                 levelId = levelId,
                 onCompleted = { nextLevelId ->
                     val completedLevelId = nextLevelId - 1
                     val showRecap = completedLevelId % RECAP_EVERY_N_LEVELS == 0
                     if (showRecap) {
-                        navController.navigate("recap/$nextLevelId") {
-                            popUpTo(ROUTE_GAME) { inclusive = true }
+                        navController.navigate(RecapRoute(nextLevelId)) {
+                            popUpTo<GameRoute> { inclusive = true }
                         }
                     } else {
-                        navController.navigate("game/$nextLevelId") {
-                            popUpTo(ROUTE_GAME) { inclusive = true }
+                        navController.navigate(GameRoute(nextLevelId)) {
+                            popUpTo<GameRoute> { inclusive = true }
                         }
                     }
                 },
                 onBackNavigate = {
                     val (prevLevel, _) = navUseCase.goBack(levelId, 1)
                     if (prevLevel < levelId) {
-                        // Navigate to the previous level
-                        navController.navigate("game/$prevLevel") {
-                            popUpTo(ROUTE_GAME) { inclusive = true }
+                        navController.navigate(GameRoute(prevLevel)) {
+                            popUpTo<GameRoute> { inclusive = true }
                         }
                     } else {
-                        // Already at level 1 — go home
-                        navController.navigate(ROUTE_HOME) {
+                        navController.navigate(HomeRoute()) {
                             popUpTo(0) { inclusive = true }
                         }
                     }
                 }
             )
         }
-        composable(
-            route = ROUTE_RECAP,
-            arguments = listOf(navArgument("nextLevelId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val nextLevelId = backStackEntry.arguments?.getInt("nextLevelId") ?: 1
+        composable<RecapRoute> { backStackEntry ->
+            val route = backStackEntry.toRoute<RecapRoute>()
             RecapScreen(
                 onBackClick = { navController.popBackStack() },
                 onForwardClick = {
-                    navController.navigate("game/$nextLevelId") {
-                        popUpTo(ROUTE_RECAP) { inclusive = true }
+                    navController.navigate(GameRoute(route.nextLevelId)) {
+                        popUpTo<RecapRoute> { inclusive = true }
                     }
                 }
             )
         }
         composable(ROUTE_VOCALIZE_TEST) {
-            // Cambiar type/content para probar SYLLABLE, WORD o SENTENCE
             VocalizeExerciseScreen(
                 exercise = VocalizeExercise(
                     id = 8,
@@ -142,7 +136,6 @@ fun AppNavigation() {
             )
         }
         composable(ROUTE_DRAG_TEST) {
-            // Tarea 8: sílabas → palabra
             val sampleExercise = DragExercise(
                 id = 6,
                 type = DragType.SYLLABLES_TO_WORD,
@@ -156,7 +149,6 @@ fun AppNavigation() {
             )
         }
         composable("drag_sentence_test") {
-            // Tarea 9: palabras → oración
             val sampleExercise = DragExercise(
                 id = 7,
                 type = DragType.WORDS_TO_SENTENCE,
@@ -184,7 +176,6 @@ fun AppNavigation() {
             )
         }
         composable(ROUTE_TOUCH_ORDER_TEST) {
-            // Ejemplo: palabra "MAMÁ", sílabas desordenadas ["MÁ", "MA"], orden correcto → [1, 0]
             val sampleExercise = TouchExercise(
                 id = 3,
                 type = TouchType.ORDER_SYLLABLES,
@@ -199,7 +190,6 @@ fun AppNavigation() {
             )
         }
         composable(ROUTE_TOUCH_ORDER_WORDS_TEST) {
-            // Ejemplo: "El gato come" → mostrado como ["come", "El", "gato"] (shuffledIndices=[2,0,1])
             val sampleExercise = SentenceExercise(
                 id = 4,
                 words = listOf("El", "gato", "come"),
@@ -212,7 +202,6 @@ fun AppNavigation() {
             )
         }
         composable(ROUTE_LINK_TEST) {
-            // Ejemplo SAME_FORMS: vincular sílabas iguales
             val sampleExercise = LinkExercise(
                 id = 5,
                 type = LinkType.SAME_FORMS,
@@ -253,7 +242,6 @@ fun AppNavigation() {
             )
         }
         composable(ROUTE_LETTER_TRACING_TEST) {
-            // Cambiar "letter" para probar distintas letras o sílabas
             LetterTracingScreen(
                 letter = "A",
                 onBackClick = { navController.popBackStack() },
