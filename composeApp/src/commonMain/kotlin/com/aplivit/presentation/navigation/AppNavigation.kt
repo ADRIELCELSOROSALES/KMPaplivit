@@ -56,6 +56,9 @@ private const val ROUTE_LETTER_TRACING_TEST = "letter_tracing_test"
 /** Mostrar RecapScreen cada N niveles completados. Cambiar este valor para ajustar la frecuencia. */
 private const val RECAP_EVERY_N_LEVELS = 3
 
+/** Total de niveles disponibles en los archivos JSON. Actualizar si se agregan niveles. */
+private const val TOTAL_LEVELS = 15
+
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -87,15 +90,21 @@ fun AppNavigation() {
             GameScreen(
                 levelId = levelId,
                 onCompleted = { nextLevelId ->
-                    val completedLevelId = nextLevelId - 1
-                    val showRecap = completedLevelId % RECAP_EVERY_N_LEVELS == 0
-                    if (showRecap) {
-                        navController.navigate(RecapRoute(nextLevelId)) {
-                            popUpTo<GameRoute> { inclusive = true }
+                    if (nextLevelId > TOTAL_LEVELS) {
+                        navController.navigate(HomeRoute(completed = true)) {
+                            popUpTo(0) { inclusive = true }
                         }
                     } else {
-                        navController.navigate(GameRoute(nextLevelId)) {
-                            popUpTo<GameRoute> { inclusive = true }
+                        val completedLevelId = nextLevelId - 1
+                        val showRecap = completedLevelId % RECAP_EVERY_N_LEVELS == 0
+                        if (showRecap) {
+                            navController.navigate(RecapRoute(nextLevelId)) {
+                                popUpTo<GameRoute> { inclusive = true }
+                            }
+                        } else {
+                            navController.navigate(GameRoute(nextLevelId)) {
+                                popUpTo<GameRoute> { inclusive = true }
+                            }
                         }
                     }
                 },
@@ -118,8 +127,14 @@ fun AppNavigation() {
             RecapScreen(
                 onBackClick = { navController.popBackStack() },
                 onForwardClick = {
-                    navController.navigate(GameRoute(route.nextLevelId)) {
-                        popUpTo<RecapRoute> { inclusive = true }
+                    if (route.nextLevelId > TOTAL_LEVELS) {
+                        navController.navigate(HomeRoute(completed = true)) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(GameRoute(route.nextLevelId)) {
+                            popUpTo<RecapRoute> { inclusive = true }
+                        }
                     }
                 }
             )

@@ -7,10 +7,11 @@ import com.aplivit.core.port.SpeechRecognizer
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.AVFAudio.AVAudioEngine
 import platform.AVFAudio.AVAudioSession
-import platform.AVFAudio.AVAudioSessionCategoryRecord
+import platform.AVFAudio.AVAudioSessionCategoryPlayAndRecord
 import platform.AVFAudio.setActive
 import platform.Foundation.NSLocale
 import platform.Speech.SFSpeechAudioBufferRecognitionRequest
+import platform.Speech.SFSpeechRecognitionTask
 import platform.Speech.SFSpeechRecognizer
 import platform.Speech.SFSpeechRecognizerAuthorizationStatus
 
@@ -24,9 +25,9 @@ class IosSpeechRecognizer(
     private val sfRecognizer = SFSpeechRecognizer(locale = NSLocale("es_ES"))
     private val audioEngine = AVAudioEngine()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest? = null
+    private var recognitionTask: SFSpeechRecognitionTask? = null
 
     init {
-        // Solicitar permisos al inicio para que iOS muestre los diálogos oportunamente
         SFSpeechRecognizer.requestAuthorization { _ -> }
         AVAudioSession.sharedInstance().requestRecordPermission { _ -> }
     }
@@ -46,31 +47,54 @@ class IosSpeechRecognizer(
 
     @OptIn(ExperimentalForeignApi::class)
     private fun startSttListening(expected: String, onResult: (RecognitionResult) -> Unit) {
+        // Cancel any previous task and clean up engine before starting fresh
+        recognitionTask?.cancel()
+        recognitionTask = null
+        if (audioEngine.running) {
+            audioEngine.stop()
+            audioEngine.inputNode.removeTapOnBus(0u)
+        }
+        recognitionRequest?.endAudio()
+        recognitionRequest = null
+
         try {
             val audioSession = AVAudioSession.sharedInstance()
-            audioSession.setCategory(AVAudioSessionCategoryRecord, error = null)
+            // PlayAndRecord avoids conflicting with AVSpeechSynthesizer's session
+            audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, error = null)
             audioSession.setActive(true, error = null)
-        } catch (_: Exception) {
-            // Continuar aunque falle la configuración de sesión
+        } catch (_: Exception) {}
+
+        var resultDelivered = false
+
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest().also {
+            // true = iOS envía audio al servidor continuamente y es más confiable en audios cortos.
+            // Con false, si el clip es muy corto puede devolver result=null sin error → onResult nunca se llama.
+            it.shouldReportPartialResults = true
         }
 
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        val inputNode = audioEngine.inputNode
-        recognitionRequest?.shouldReportPartialResults = false
+        recognitionTask = sfRecognizer?.recognitionTaskWithRequest(recognitionRequest!!) { result, error ->
+            if (resultDelivered) return@recognitionTaskWithRequest
 
-        sfRecognizer?.recognitionTaskWithRequest(recognitionRequest!!) { result, error ->
             if (error != null) {
+                resultDelivered = true
                 onResult(RecognitionResult.Error)
                 return@recognitionTaskWithRequest
             }
+
             result?.let {
                 if (it.isFinal()) {
+                    resultDelivered = true
                     val text = it.bestTranscription.formattedString
-                    onResult(RecognitionResult.Transcription(text))
+                    if (text.isBlank()) {
+                        onResult(RecognitionResult.NoSound)
+                    } else {
+                        onResult(RecognitionResult.Transcription(text))
+                    }
                 }
             }
         }
 
+        val inputNode = audioEngine.inputNode
         val format = inputNode.outputFormatForBus(0u)
         inputNode.installTapOnBus(0u, bufferSize = 1024u, format = format) { buffer, _ ->
             recognitionRequest?.appendAudioPCMBuffer(buffer!!)
@@ -86,6 +110,7 @@ class IosSpeechRecognizer(
         audioEngine.inputNode.removeTapOnBus(0u)
         recognitionRequest?.endAudio()
         recognitionRequest = null
+        recognitionTask = null
         try {
             AVAudioSession.sharedInstance().setActive(false, error = null)
         } catch (_: Exception) {}

@@ -27,17 +27,17 @@ class IosSpeechSynthesizer : SpeechSynthesizer {
         synthesizer.speakUtterance(utterance)
     }
 
-    override fun speak(text: String) = speakWithRate(text, 0.5f)
+    override fun speak(text: String) = speakWithRate(text, 0.4f)
     // Lowercase prevents TTS from reading uppercase syllables as Roman numerals (e.g. "LI" → 51)
-    override fun speakSyllable(text: String) = speakWithRate(text.lowercase(), 0.35f)
+    override fun speakSyllable(text: String) = speakWithRate(text.lowercase(), 0.3f)
     // Lowercase prevents all-caps words/syllables from being read as acronyms or Roman numerals
-    override fun speakWord(text: String) = speakWithRate(text.lowercase(), 0.5f)
-    override fun speakSentence(text: String) = speakWithRate(text, 0.55f)
+    override fun speakWord(text: String) = speakWithRate(text.lowercase(), 0.4f)
+    override fun speakSentence(text: String) = speakWithRate(text, 0.4f)
 
     override suspend fun speakAndWait(text: String) {
         suspendCancellableCoroutine { cont ->
             synthDelegate.onFinish = { cont.resume(Unit) }
-            speakWithRate(text, 0.55f)  // sentence rate, same as speakSentence
+            speakWithRate(text, 0.4f)
             cont.invokeOnCancellation {
                 synthDelegate.onFinish = null
                 stop()

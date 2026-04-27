@@ -56,7 +56,18 @@ fun GameScreen(
         return
     }
 
-    val level = state.level ?: return
+    val level = state.level ?: run {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(
+                text = state.strings.allLevelsCompleted,
+                fontSize = 28.sp,
+                color = Color(0xFF4CAF50),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(24.dp)
+            )
+        }
+        return
+    }
 
     // Forward is enabled when:
     // 1. The exercise was just completed in this session, OR

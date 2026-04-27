@@ -45,10 +45,15 @@ class HomeViewModel(
             val resumeInfo = sessionResume.getResumeInfo()
             val progress = progressRepository.loadProgress(language)
 
-            // Actualizar datos pero mantener isLoading=true mientras hablamos
+            val safeProgress = if (progress.currentLevel > levels.size && levels.isNotEmpty()) {
+                progress.copy(currentLevel = levels.size)
+            } else {
+                progress
+            }
+
             _state.value = HomeUiState(
                 levels = levels,
-                progress = progress,
+                progress = safeProgress,
                 isLoading = true,
                 strings = strings,
                 selectedLanguage = language

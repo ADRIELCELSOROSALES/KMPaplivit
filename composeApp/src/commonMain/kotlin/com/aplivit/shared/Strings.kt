@@ -33,7 +33,8 @@ data class AppStrings(
     val back: String,
     val learnToRead: String,
     val recapTitle: String,
-    val levelIntro: String      // "Vamos a aprender la palabra" — used for TTS to avoid isolated syllable tokens
+    val levelIntro: String,     // "Vamos a aprender la palabra" — used for TTS to avoid isolated syllable tokens
+    val allLevelsCompleted: String
 )
 
 fun stringsFor(language: AppLanguage): AppStrings = when (language) {
@@ -68,7 +69,8 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         back = "Volver",
         learnToRead = "Aprende a leer",
         recapTitle = "Repaso",
-        levelIntro = "Vamos a aprender la palabra"
+        levelIntro = "Vamos a aprender la palabra",
+        allLevelsCompleted = "¡Felicitaciones! Completaste todos los niveles."
     )
     AppLanguage.ENGLISH -> AppStrings(
         welcome = "Welcome. Let's start from the beginning.",
@@ -101,7 +103,8 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         back = "Back",
         learnToRead = "Learn to read",
         recapTitle = "Review",
-        levelIntro = "Let's learn the word"
+        levelIntro = "Let's learn the word",
+        allLevelsCompleted = "Congratulations! You completed all levels."
     )
     AppLanguage.FRENCH -> AppStrings(
         welcome = "Bienvenue. Commençons depuis le début.",
@@ -134,6 +137,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         back = "Retour",
         learnToRead = "Apprendre à lire",
         recapTitle = "Révision",
-        levelIntro = "Apprenons le mot"
+        levelIntro = "Apprenons le mot",
+        allLevelsCompleted = "Félicitations ! Tu as complété tous les niveaux."
     )
 }
