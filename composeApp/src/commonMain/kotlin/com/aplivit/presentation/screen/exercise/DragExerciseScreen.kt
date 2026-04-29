@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.DragExercise
-import com.aplivit.core.domain.model.DragType
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
@@ -81,9 +80,6 @@ fun DragExerciseScreen(
     var rootCoords by remember { mutableStateOf<LayoutCoordinates?>(null) }
     val density = LocalDensity.current
 
-    val instruction = if (exercise.type == DragType.WORDS_TO_SENTENCE)
-        "Armá la oración" else "Armá la palabra"
-
     BaseExerciseScreen(
         onMicClick = {},
         onListenClick = { vm.playTarget() },
@@ -103,14 +99,6 @@ fun DragExerciseScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = instruction,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
-                )
-
                 Spacer(Modifier.weight(1f))
 
                 // Zona superior: chips arrastrables (desordenados)

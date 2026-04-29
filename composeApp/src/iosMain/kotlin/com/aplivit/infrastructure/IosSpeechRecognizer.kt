@@ -26,6 +26,8 @@ class IosSpeechRecognizer(
     private val audioEngine = AVAudioEngine()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest? = null
     private var recognitionTask: SFSpeechRecognitionTask? = null
+    private var audioSessionActivated = false
+    private var tapInstalled = false
 
     init {
         SFSpeechRecognizer.requestAuthorization { _ -> }
@@ -50,9 +52,13 @@ class IosSpeechRecognizer(
         // Cancel any previous task and clean up engine before starting fresh
         recognitionTask?.cancel()
         recognitionTask = null
-        if (audioEngine.running) {
-            audioEngine.stop()
-            audioEngine.inputNode.removeTapOnBus(0u)
+        // If the system interrupted the audio session, the engine may have stopped but the tap
+        // remains installed — always remove it if we installed one, otherwise installTapOnBus
+        // on the next attempt fails silently and the recognizer hangs forever.
+        if (audioEngine.running) audioEngine.stop()
+        if (tapInstalled) {
+            tapInstalled = false
+            try { audioEngine.inputNode.removeTapOnBus(0u) } catch (_: Exception) {}
         }
         recognitionRequest?.endAudio()
         recognitionRequest = null
@@ -62,6 +68,7 @@ class IosSpeechRecognizer(
             // PlayAndRecord avoids conflicting with AVSpeechSynthesizer's session
             audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, error = null)
             audioSession.setActive(true, error = null)
+            audioSessionActivated = true
         } catch (_: Exception) {}
 
         var resultDelivered = false
@@ -99,20 +106,31 @@ class IosSpeechRecognizer(
         inputNode.installTapOnBus(0u, bufferSize = 1024u, format = format) { buffer, _ ->
             recognitionRequest?.appendAudioPCMBuffer(buffer!!)
         }
+        tapInstalled = true
 
         audioEngine.prepare()
-        audioEngine.startAndReturnError(null)
+        val engineStarted = audioEngine.startAndReturnError(null)
+        if (!engineStarted) {
+            onResult(RecognitionResult.Error)
+            return
+        }
     }
 
     @OptIn(ExperimentalForeignApi::class)
     override fun stopListening() {
-        audioEngine.stop()
-        audioEngine.inputNode.removeTapOnBus(0u)
+        if (audioEngine.running) audioEngine.stop()
+        // Only access inputNode if we installed a tap — accessing it unconditionally activates
+        // the microphone hardware on iOS and reroutes audio from speaker to earpiece.
+        if (tapInstalled) {
+            tapInstalled = false
+            try { audioEngine.inputNode.removeTapOnBus(0u) } catch (_: Exception) {}
+        }
         recognitionRequest?.endAudio()
         recognitionRequest = null
         recognitionTask = null
-        try {
-            AVAudioSession.sharedInstance().setActive(false, error = null)
-        } catch (_: Exception) {}
+        if (audioSessionActivated) {
+            audioSessionActivated = false
+            try { AVAudioSession.sharedInstance().setActive(false, error = null) } catch (_: Exception) {}
+        }
     }
 }

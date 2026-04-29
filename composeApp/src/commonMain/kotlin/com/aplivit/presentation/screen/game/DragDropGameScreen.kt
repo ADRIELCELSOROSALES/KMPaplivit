@@ -6,10 +6,11 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,55 +44,59 @@ fun DragDropGameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Juego 1: Arrastra las sílabas",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = "Armá la palabra: ${level.word}",
-            fontSize = 16.sp,
-            color = Color.Gray,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-
         // Drop zone
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
+                .heightIn(min = 80.dp)
                 .border(2.dp, Color(0xFF2196F3), RoundedCornerShape(12.dp))
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            contentAlignment = Alignment.Center
         ) {
-            if (arrangedSyllables.isEmpty()) {
-                Text("Suelta las sílabas aquí", color = Color.LightGray, textAlign = TextAlign.Center)
-            } else {
-                arrangedSyllables.forEach { syl ->
-                    Box(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(4.dp)
-                            .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(syl, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            if (arrangedSyllables.isNotEmpty()) {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    arrangedSyllables.forEach { syl ->
+                        val dropFontSize = when {
+                            syl.length <= 3 -> 22.sp
+                            syl.length <= 6 -> 16.sp
+                            else            -> 13.sp
+                        }
+                        Box(
+                            modifier = Modifier
+                                .size(60.dp)
+                                .padding(4.dp)
+                                .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                syl,
+                                fontSize = dropFontSize,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                maxLines = 2
+                            )
+                        }
                     }
                 }
             }
         }
 
-        Text("Sílabas disponibles:", fontSize = 14.sp, textAlign = TextAlign.Center)
-
-        Row(
+        FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             availableSyllables.forEach { syl ->
+                val availFontSize = when {
+                    syl.length <= 3 -> 24.sp
+                    syl.length <= 6 -> 17.sp
+                    else            -> 13.sp
+                }
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 6.dp)
@@ -105,7 +110,14 @@ fun DragDropGameScreen(
                         .padding(4.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(syl, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text(
+                        syl,
+                        fontSize = availFontSize,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2
+                    )
                 }
             }
         }
@@ -127,7 +139,7 @@ fun DragDropGameScreen(
             Button(
                 onClick = {
                     val answer = arrangedSyllables.joinToString("")
-                    onResult(answer == level.word)
+                    onResult(answer == level.word.replace(" ", ""))
                 },
                 enabled = arrangedSyllables.size == level.syllables.size
             ) {

@@ -57,7 +57,7 @@ private const val ROUTE_LETTER_TRACING_TEST = "letter_tracing_test"
 private const val RECAP_EVERY_N_LEVELS = 3
 
 /** Total de niveles disponibles en los archivos JSON. Actualizar si se agregan niveles. */
-private const val TOTAL_LEVELS = 15
+private const val TOTAL_LEVELS = 45
 
 @Composable
 fun AppNavigation() {

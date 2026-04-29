@@ -69,13 +69,6 @@ fun TouchSyllableInWordScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Toca la sílaba:",
-                fontSize = 20.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Medium
-            )
-            Spacer(Modifier.height(12.dp))
-            Text(
                 text = exercise.target,
                 fontSize = 64.sp,
                 fontWeight = FontWeight.Bold,

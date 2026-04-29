@@ -61,15 +61,6 @@ fun TouchOrderSyllablesScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Forma la palabra",
-                fontSize = 20.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Medium
-            )
-
-            Spacer(Modifier.height(32.dp))
-
             // Ranuras de progreso: muestra las sílabas correctas ya tocadas
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),

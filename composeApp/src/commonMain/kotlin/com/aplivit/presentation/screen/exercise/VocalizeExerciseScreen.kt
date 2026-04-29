@@ -83,9 +83,6 @@ fun VocalizeExerciseScreen(
         VocalizeType.SENTENCE -> 30.sp
     }
 
-    // Indicador de modo: STT o amplitud
-    val modeHint = if (!state.useStrict) "🎙 Modo sin conexión" else null
-
     BaseExerciseScreen(
         onMicClick = { vm.toggleListening() },
         onListenClick = { vm.onListenClick() },
@@ -148,16 +145,6 @@ fun VocalizeExerciseScreen(
                 )
             }
 
-            // Indicador de modo de reconocimiento
-            if (modeHint != null) {
-                Spacer(Modifier.height(12.dp))
-                Text(
-                    text = modeHint,
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
-                )
-            }
         }
     }
 }

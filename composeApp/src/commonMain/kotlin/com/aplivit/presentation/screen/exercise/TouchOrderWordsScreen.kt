@@ -70,15 +70,6 @@ fun TouchOrderWordsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Ordena las palabras",
-                fontSize = 20.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Medium
-            )
-
-            Spacer(Modifier.height(24.dp))
-
             // Caja que muestra la oración armada progresivamente
             Box(
                 modifier = Modifier

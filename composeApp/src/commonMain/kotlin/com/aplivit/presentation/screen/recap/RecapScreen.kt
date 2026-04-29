@@ -72,13 +72,6 @@ fun RecapScreen(
                 color = Color(0xFF1A237E),
                 textAlign = TextAlign.Center
             )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = strings.tapSyllableHint,
-                fontSize = 15.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
-            )
             Spacer(Modifier.height(16.dp))
 
             if (state.syllables.isEmpty()) {

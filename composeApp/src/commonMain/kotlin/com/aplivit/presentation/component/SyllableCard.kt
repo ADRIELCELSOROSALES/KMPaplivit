@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -29,6 +31,12 @@ fun SyllableCard(
         modifier = modifier,
         salientEnabled = salientEnabled
     ) {
+        val adaptiveFontSize = when {
+            text.length <= 3 -> 28.sp
+            text.length <= 6 -> 20.sp
+            text.length <= 9 -> 15.sp
+            else             -> 12.sp
+        }
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -39,9 +47,12 @@ fun SyllableCard(
         ) {
             Text(
                 text = text,
-                fontSize = 28.sp,
+                fontSize = adaptiveFontSize,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
