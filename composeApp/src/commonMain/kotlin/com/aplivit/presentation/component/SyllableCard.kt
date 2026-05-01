@@ -2,8 +2,8 @@ package com.aplivit.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,10 +39,10 @@ fun SyllableCard(
         }
         Box(
             modifier = Modifier
-                .size(80.dp)
+                .defaultMinSize(minWidth = 80.dp, minHeight = 56.dp)
                 .shadow(4.dp, RoundedCornerShape(12.dp))
                 .background(backgroundColor, RoundedCornerShape(12.dp))
-                .padding(8.dp),
+                .padding(horizontal = 14.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -51,7 +51,7 @@ fun SyllableCard(
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 textAlign = TextAlign.Center,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
