@@ -53,8 +53,8 @@ class SettingsProgressRepository(private val settings: Settings) : ProgressRepos
     }
 
     override fun getSelectedLanguage(): AppLanguage {
-        val code = settings.getString(KEY_SELECTED_LANGUAGE, AppLanguage.SPANISH.code)
-        return AppLanguage.entries.find { it.code == code } ?: AppLanguage.SPANISH
+        val code = settings.getString(KEY_SELECTED_LANGUAGE, AppLanguage.ENGLISH.code)
+        return AppLanguage.entries.find { it.code == code } ?: AppLanguage.ENGLISH
     }
 
     override fun saveSelectedLanguage(language: AppLanguage) {

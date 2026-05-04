@@ -20,8 +20,8 @@ data class HomeUiState(
     val levels: List<Level> = emptyList(),
     val progress: UserProgress = UserProgress(),
     val isLoading: Boolean = true,
-    val strings: AppStrings = stringsFor(AppLanguage.SPANISH),
-    val selectedLanguage: AppLanguage = AppLanguage.SPANISH
+    val strings: AppStrings = stringsFor(AppLanguage.ENGLISH),
+    val selectedLanguage: AppLanguage = AppLanguage.ENGLISH
 )
 
 class HomeViewModel(
