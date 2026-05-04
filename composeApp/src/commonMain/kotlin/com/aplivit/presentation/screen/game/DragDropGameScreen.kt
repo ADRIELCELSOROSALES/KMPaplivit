@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -67,9 +67,9 @@ fun DragDropGameScreen(
                         }
                         Box(
                             modifier = Modifier
-                                .size(60.dp)
-                                .padding(4.dp)
-                                .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp)),
+                                .defaultMinSize(minWidth = 60.dp, minHeight = 52.dp)
+                                .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp))
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -78,7 +78,7 @@ fun DragDropGameScreen(
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
-                                maxLines = 2
+                                maxLines = 1
                             )
                         }
                     }
@@ -99,15 +99,14 @@ fun DragDropGameScreen(
                 }
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 6.dp)
-                        .size(70.dp)
+                        .defaultMinSize(minWidth = 64.dp, minHeight = 52.dp)
                         .background(Color(0xFF2196F3), RoundedCornerShape(12.dp))
                         .pointerInput(syl) {
                             detectDragGestures(
                                 onDragEnd = { onSyllableMoved(syl) }
                             ) { _, _ -> }
                         }
-                        .padding(4.dp),
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -116,7 +115,7 @@ fun DragDropGameScreen(
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         textAlign = TextAlign.Center,
-                        maxLines = 2
+                        maxLines = 1
                     )
                 }
             }
