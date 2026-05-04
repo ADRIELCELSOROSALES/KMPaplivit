@@ -1,6 +1,6 @@
 [
-  {"id":1,"syllables":["MA","MA"],"word":"MAMA","instruction":"Let's learn the syllable MA. Listen and repeat."},
-  {"id":2,"syllables":["PA","PA"],"word":"PAPA","instruction":"Now let's learn PA."},
+  {"id":1,"syllables":["MA","KE"],"word":"MAKE","instruction":"Let's learn the syllable MA. Listen and repeat."},
+  {"id":2,"syllables":["PA","GE"],"word":"PAGE","instruction":"Now let's learn PA."},
   {"id":3,"syllables":["CA","KE"],"word":"CAKE","instruction":"Let's form the word CAKE."},
   {"id":4,"syllables":["LA","KE"],"word":"LAKE","instruction":"Let's learn LA and KE."},
   {"id":5,"syllables":["BI","KE"],"word":"BIKE","instruction":"Let's form BIKE."},

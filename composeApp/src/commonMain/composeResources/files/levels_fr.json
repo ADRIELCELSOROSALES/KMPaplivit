@@ -1,5 +1,5 @@
 [
-  {"id":1,"syllables":["MA","MA"],"word":"MAMA","instruction":"Apprenons la syllabe MA. Écoute et répète."},
+  {"id":1,"syllables":["MA","MAN"],"word":"MAMAN","instruction":"Apprenons la syllabe MA. Écoute et répète."},
   {"id":2,"syllables":["PA","PA"],"word":"PAPA","instruction":"Apprenons PA."},
   {"id":3,"syllables":["RO","BE"],"word":"ROBE","instruction":"Formons le mot ROBE."},
   {"id":4,"syllables":["TU","BE"],"word":"TUBE","instruction":"Apprenons TU et BE."},
@@ -27,8 +27,8 @@
   {"id":26,"syllables":["GA","LA"],"word":"GALA","instruction":"Apprenons GA et LA. Le gala!"},
   {"id":27,"syllables":["NA","NA"],"word":"NANA","instruction":"Formons NANA."},
   {"id":28,"syllables":["KI","LO"],"word":"KILO","instruction":"Apprenons KI et LO. Le kilo!"},
-  {"id":29,"syllables":["PI","LO"],"word":"PILO","instruction":"Formons PILO."},
-  {"id":30,"syllables":["BI","GO"],"word":"BIGO","instruction":"Apprenons BI et GO. Bravo!"},
+  {"id":29,"syllables":["PI","LE"],"word":"PILE","instruction":"Formons PILE. La pile!"},
+  {"id":30,"syllables":["BI","JOU"],"word":"BIJOU","instruction":"Apprenons BI et JOU. Le bijou!"},
   {"id":31,"syllables":["BON","JOUR"],"word":"BONJOUR","instruction":"Bonjour! Salutation du matin."},
   {"id":32,"syllables":["BONNE","NUIT"],"word":"BONNE NUIT","instruction":"Bonne nuit! On dit ça avant de dormir."},
   {"id":33,"syllables":["MERCI","BEAUCOUP"],"word":"MERCI BEAUCOUP","instruction":"On dit MERCI BEAUCOUP pour remercier."},
