@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 data class SettingsUiState(
-    val selectedLanguage: AppLanguage = AppLanguage.SPANISH
+    val selectedLanguage: AppLanguage = AppLanguage.ENGLISH
 )
 
 class SettingsViewModel(

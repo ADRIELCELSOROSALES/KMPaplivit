@@ -15,7 +15,7 @@ struct ContentView: View {
         ComposeView()
             .ignoresSafeArea()
     }
-}
+} 
 
 
 

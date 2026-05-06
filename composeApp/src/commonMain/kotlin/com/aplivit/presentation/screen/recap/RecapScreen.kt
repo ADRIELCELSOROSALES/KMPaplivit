@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -43,7 +43,7 @@ fun RecapScreen(
     val getLevels: GetLevelsUseCase = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: RecapViewModel = viewModel { RecapViewModel(getLevels, repo, tts) }
+    val vm: RecapViewModel = remember { RecapViewModel(getLevels, repo, tts) }
     val state by vm.state.collectAsState()
     val strings = stringsFor(repo.getSelectedLanguage())
 
@@ -70,13 +70,6 @@ fun RecapScreen(
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF1A237E),
-                textAlign = TextAlign.Center
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = strings.tapSyllableHint,
-                fontSize = 15.sp,
-                color = Color.Gray,
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(16.dp))

@@ -39,6 +39,13 @@ fun RepeatGameScreen(
         tts.speak(level.word.lowercase())
     }
 
+    val wordFontSize = when {
+        level.word.length <= 8  -> 64.sp
+        level.word.length <= 14 -> 48.sp
+        level.word.length <= 20 -> 36.sp
+        else                    -> 28.sp
+    }
+
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +53,7 @@ fun RepeatGameScreen(
     ) {
         Text(
             text = level.word,
-            fontSize = 64.sp,
+            fontSize = wordFontSize,
             fontWeight = FontWeight.ExtraBold,
             color = Color(0xFF1565C0),
             textAlign = TextAlign.Center,

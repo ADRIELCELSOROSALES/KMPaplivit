@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.TouchExercise
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -34,7 +34,7 @@ fun TouchSyllableInWordScreen(
 ) {
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: TouchViewModel = viewModel { TouchViewModel(tts, repo) }
+    val vm: TouchViewModel = remember { TouchViewModel(tts, repo) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(exercise.id) {
@@ -68,13 +68,6 @@ fun TouchSyllableInWordScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Toca la sílaba:",
-                fontSize = 20.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Medium
-            )
-            Spacer(Modifier.height(12.dp))
             Text(
                 text = exercise.target,
                 fontSize = 64.sp,

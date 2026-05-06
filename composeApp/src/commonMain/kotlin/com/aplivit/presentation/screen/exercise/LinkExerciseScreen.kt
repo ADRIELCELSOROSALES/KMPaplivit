@@ -30,7 +30,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplivit.core.domain.model.LinkExercise
 import com.aplivit.core.domain.model.LinkItem
 import com.aplivit.core.port.ProgressRepository
@@ -49,7 +48,7 @@ fun LinkExerciseScreen(
 ) {
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: LinkViewModel = viewModel { LinkViewModel(tts, repo) }
+    val vm: LinkViewModel = remember { LinkViewModel(tts, repo) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(exercise.id) {

@@ -6,9 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.TouchExercise
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -32,6 +35,7 @@ import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import org.koin.compose.koinInject
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TouchOrderSyllablesScreen(
     exercise: TouchExercise,
@@ -40,7 +44,7 @@ fun TouchOrderSyllablesScreen(
 ) {
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: TouchOrderViewModel = viewModel { TouchOrderViewModel(tts, repo) }
+    val vm: TouchOrderViewModel = remember { TouchOrderViewModel(tts, repo) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(exercise.id) {
@@ -61,19 +65,11 @@ fun TouchOrderSyllablesScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "Forma la palabra",
-                fontSize = 20.sp,
-                color = Color.Gray,
-                fontWeight = FontWeight.Medium
-            )
-
-            Spacer(Modifier.height(32.dp))
-
             // Ranuras de progreso: muestra las sílabas correctas ya tocadas
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 exercise.correctIndices.forEachIndexed { position, correctIdx ->
                     val filledIndex = state.selectedOrder.getOrNull(position)
@@ -85,9 +81,10 @@ fun TouchOrderSyllablesScreen(
             Spacer(Modifier.height(48.dp))
 
             // Sílabas desordenadas para tocar
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 exercise.options.forEachIndexed { index, syllable ->
                     val flash = state.flashStates[index]

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.VocalizeExercise
 import com.aplivit.core.domain.model.VocalizeType
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
@@ -51,7 +51,7 @@ fun VocalizeExerciseScreen(
     val validate: ValidatePronunciationUseCase = koinInject()
     val repo: ProgressRepository = koinInject()
 
-    val vm: VocalizeViewModel = viewModel {
+    val vm: VocalizeViewModel = remember {
         VocalizeViewModel(tts, recognizer, connectivity, validate, repo)
     }
     val state by vm.state.collectAsState()
@@ -82,9 +82,6 @@ fun VocalizeExerciseScreen(
         VocalizeType.WORD -> 56.sp
         VocalizeType.SENTENCE -> 30.sp
     }
-
-    // Indicador de modo: STT o amplitud
-    val modeHint = if (!state.useStrict) "🎙 Modo sin conexión" else null
 
     BaseExerciseScreen(
         onMicClick = { vm.toggleListening() },
@@ -148,16 +145,6 @@ fun VocalizeExerciseScreen(
                 )
             }
 
-            // Indicador de modo de reconocimiento
-            if (modeHint != null) {
-                Spacer(Modifier.height(12.dp))
-                Text(
-                    text = modeHint,
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
-                )
-            }
         }
     }
 }

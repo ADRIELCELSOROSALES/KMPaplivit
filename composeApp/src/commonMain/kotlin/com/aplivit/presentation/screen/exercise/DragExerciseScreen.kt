@@ -41,9 +41,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplivit.core.domain.model.DragExercise
-import com.aplivit.core.domain.model.DragType
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
@@ -66,7 +64,7 @@ fun DragExerciseScreen(
 ) {
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
-    val vm: DragViewModel = viewModel { DragViewModel(tts, repo) }
+    val vm: DragViewModel = remember { DragViewModel(tts, repo) }
     val state by vm.state.collectAsState()
 
     LaunchedEffect(exercise.id) {
@@ -81,9 +79,6 @@ fun DragExerciseScreen(
     val slotRects = remember { mutableStateMapOf<Int, Rect>() }
     var rootCoords by remember { mutableStateOf<LayoutCoordinates?>(null) }
     val density = LocalDensity.current
-
-    val instruction = if (exercise.type == DragType.WORDS_TO_SENTENCE)
-        "Armá la oración" else "Armá la palabra"
 
     BaseExerciseScreen(
         onMicClick = {},
@@ -104,14 +99,6 @@ fun DragExerciseScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = instruction,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center
-                )
-
                 Spacer(Modifier.weight(1f))
 
                 // Zona superior: chips arrastrables (desordenados)
