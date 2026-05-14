@@ -72,7 +72,7 @@ fun TouchSyllableInWordScreen(
                 text = exercise.target,
                 fontSize = 64.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1A237E)
+                color = AppColors.Syllable
             )
             Spacer(Modifier.height(48.dp))
             WordWithSyllables(

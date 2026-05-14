@@ -110,7 +110,7 @@ fun VocalizeExerciseScreen(
                     text = exercise.content,
                     fontSize = fontSize,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFF1A237E),
+                    color = AppColors.InkDark,
                     textAlign = TextAlign.Center
                 )
             }

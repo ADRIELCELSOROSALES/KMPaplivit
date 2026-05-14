@@ -74,7 +74,7 @@ fun TouchOrderWordsScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(2.dp, Color(0xFFBDBDBD), RoundedCornerShape(12.dp))
+                    .border(2.dp, AppColors.Outline, RoundedCornerShape(12.dp))
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -82,7 +82,7 @@ fun TouchOrderWordsScreen(
                     text = assembledSentence.ifEmpty { "..." },
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (assembledSentence.isEmpty()) Color(0xFFBDBDBD) else Color(0xFF1A237E),
+                    color = if (assembledSentence.isEmpty()) AppColors.Outline else AppColors.InkDark,
                     textAlign = TextAlign.Center
                 )
             }

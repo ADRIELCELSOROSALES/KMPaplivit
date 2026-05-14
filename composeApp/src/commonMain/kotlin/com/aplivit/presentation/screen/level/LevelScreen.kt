@@ -14,12 +14,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.remember
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
@@ -50,7 +50,7 @@ fun LevelScreen(levelId: Int, onStartGames: () -> Unit, onBack: () -> Unit) {
             text = "Nivel ${level.id}",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF1565C0),
+            color = AppColors.InkDark,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -58,7 +58,7 @@ fun LevelScreen(levelId: Int, onStartGames: () -> Unit, onBack: () -> Unit) {
             text = level.word,
             fontSize = 48.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF1565C0),
+            color = AppColors.InkDark,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )

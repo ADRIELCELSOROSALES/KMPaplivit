@@ -18,7 +18,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,6 +26,7 @@ import androidx.compose.runtime.remember
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import com.aplivit.presentation.component.SyllableCard
 import com.aplivit.presentation.util.LockPortrait
@@ -69,7 +69,7 @@ fun RecapScreen(
                 text = strings.recapTitle,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1A237E),
+                color = AppColors.InkDark,
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(16.dp))
@@ -82,7 +82,7 @@ fun RecapScreen(
                     Text(
                         text = "—",
                         fontSize = 40.sp,
-                        color = Color(0xFFBDBDBD)
+                        color = AppColors.Outline
                     )
                 }
             } else {
