@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.shared.AppStrings
 
 @Composable
@@ -49,7 +50,7 @@ fun DragDropGameScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 80.dp)
-                .border(2.dp, Color(0xFF2196F3), RoundedCornerShape(12.dp))
+                .border(2.dp, AppColors.Outline, RoundedCornerShape(12.dp))
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -68,7 +69,7 @@ fun DragDropGameScreen(
                         Box(
                             modifier = Modifier
                                 .defaultMinSize(minWidth = 60.dp, minHeight = 52.dp)
-                                .background(Color(0xFF4CAF50), RoundedCornerShape(8.dp))
+                                .background(AppColors.PillDark, RoundedCornerShape(8.dp))
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -100,7 +101,7 @@ fun DragDropGameScreen(
                 Box(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 64.dp, minHeight = 52.dp)
-                        .background(Color(0xFF2196F3), RoundedCornerShape(12.dp))
+                        .background(AppColors.PillDark, RoundedCornerShape(12.dp))
                         .pointerInput(syl) {
                             detectDragGestures(
                                 onDragEnd = { onSyllableMoved(syl) }
@@ -124,7 +125,7 @@ fun DragDropGameScreen(
         if (feedback != null) {
             Text(
                 text = feedback,
-                color = Color.Red,
+                color = AppColors.FeedbackIncorrect,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)

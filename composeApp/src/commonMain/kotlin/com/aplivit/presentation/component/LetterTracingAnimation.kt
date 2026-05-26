@@ -98,12 +98,12 @@ fun LetterTracingAnimation(
                 drawPath(stroke, Color(0xFFDDDDDD), style = guideStyle)
             }
 
-            // 2. Fully completed strokes — drawn in blue
+            // 2. Fully completed strokes
             for (stroke in completedStrokes) {
-                drawPath(stroke, Color(0xFF1565C0), style = traceStyle)
+                drawPath(stroke, AppColors.InkDark, style = traceStyle)
             }
 
-            // 3. Currently animating stroke — partial path in blue + leading dot
+            // 3. Currently animating stroke — partial path + leading dot
             val idx = currentStrokeIndex
             if (idx in strokes.indices) {
                 val pm = PathMeasure()
@@ -114,13 +114,13 @@ fun LetterTracingAnimation(
                     val stopDistance = totalLength * currentProgress.value
                     val partialPath = Path()
                     pm.getSegment(0f, stopDistance, partialPath, startWithMoveTo = true)
-                    drawPath(partialPath, Color(0xFF1565C0), style = traceStyle)
+                    drawPath(partialPath, AppColors.InkDark, style = traceStyle)
 
                     // Animated leading dot
                     if (currentProgress.value > 0f) {
                         val dotCenter = pm.getPosition(stopDistance)
                         drawCircle(
-                            color = Color(0xFFFFC107),
+                            color = AppColors.Syllable,
                             radius = dotRadiusVp,
                             center = dotCenter
                         )

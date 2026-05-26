@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.SyllableCard
 import com.aplivit.shared.AppStrings
 import org.koin.compose.koinInject
@@ -77,7 +78,7 @@ fun SelectionGameScreen(
         SyllableCard(
             text = "▶",
             onClick = { tts.speakSyllable(targetSyllable) },
-            backgroundColor = Color(0xFF2196F3)
+            backgroundColor = AppColors.InkDark
         )
 
         Row(
@@ -94,8 +95,7 @@ fun SelectionGameScreen(
                             // Move to next syllable in this level
                         }
                         onResult(correct)
-                    },
-                    backgroundColor = Color(0xFF4CAF50)
+                    }
                 )
             }
         }
@@ -103,7 +103,7 @@ fun SelectionGameScreen(
         if (feedback != null) {
             Text(
                 text = feedback,
-                color = Color.Red,
+                color = AppColors.FeedbackIncorrect,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)

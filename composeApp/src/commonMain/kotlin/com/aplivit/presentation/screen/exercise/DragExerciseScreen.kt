@@ -186,7 +186,7 @@ fun DragExerciseScreen(
                         }
                         .defaultMinSize(minWidth = CHIP_MIN_WIDTH, minHeight = CHIP_HEIGHT)
                         .shadow(8.dp, RoundedCornerShape(12.dp))
-                        .background(Color(0xFF1565C0), RoundedCornerShape(12.dp))
+                        .background(AppColors.InkDark, RoundedCornerShape(12.dp))
                         .padding(horizontal = CHIP_H_PADDING, vertical = CHIP_V_PADDING),
                     contentAlignment = Alignment.Center
                 ) {
@@ -218,7 +218,7 @@ private fun DraggableChip(
             .onGloballyPositioned { onCoordinates(it) }
             .shadow(4.dp, RoundedCornerShape(12.dp))
             .background(
-                color = if (isBeingDragged) Color(0xFF90CAF9) else Color(0xFF2196F3),
+                color = if (isBeingDragged) AppColors.OutlineSoft else AppColors.PillDark,
                 shape = RoundedCornerShape(12.dp)
             )
             .pointerInput(text) {
@@ -260,7 +260,7 @@ private fun DropSlot(
     val borderColor = when {
         flash == FlashState.INCORRECT -> AppColors.FeedbackIncorrect
         content != null -> AppColors.FeedbackCorrect
-        else -> Color(0xFFBDBDBD)
+        else -> AppColors.Outline
     }
 
     Box(

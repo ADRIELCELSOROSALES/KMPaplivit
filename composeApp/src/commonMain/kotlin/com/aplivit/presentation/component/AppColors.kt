@@ -9,6 +9,6 @@ object AppColors {
     val Outline           = Color(0xFFE6E1DA)
     val OutlineSoft       = Color(0xFFEFEAE2)
     val Syllable          = Color(0xFF6B3A1F)
-    val FeedbackCorrect   = Color(0xFF2196F3)
+    val FeedbackCorrect   = Color(0xFF4CAF50)
     val FeedbackIncorrect = Color(0xFFF44336)
 }

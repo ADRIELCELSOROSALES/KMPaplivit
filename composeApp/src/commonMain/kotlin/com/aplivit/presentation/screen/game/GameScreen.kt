@@ -23,6 +23,7 @@ import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import org.koin.compose.koinInject
 
@@ -58,7 +59,7 @@ fun GameScreen(
             Text(
                 text = state.strings.allLevelsCompleted,
                 fontSize = 28.sp,
-                color = Color(0xFF4CAF50),
+                color = AppColors.FeedbackCorrect,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(24.dp)
             )
@@ -116,7 +117,7 @@ fun GameScreen(
                     Text(
                         text = state.strings.levelCompleted,
                         fontSize = 32.sp,
-                        color = Color(0xFF4CAF50),
+                        color = AppColors.FeedbackCorrect,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(24.dp)
                     )

@@ -104,7 +104,7 @@ fun TouchOrderWordsScreen(
                     val bgColor = when (flash) {
                         FlashState.CORRECT -> AppColors.FeedbackCorrect
                         FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> if (alreadySelected) AppColors.FeedbackCorrect else Color(0xFF4CAF50)
+                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.PillDark
                     }
                     val enabled = !alreadySelected && flash == null && !state.isCompleted
                     val word = exercise.words[exercise.shuffledIndices[displayIndex]]

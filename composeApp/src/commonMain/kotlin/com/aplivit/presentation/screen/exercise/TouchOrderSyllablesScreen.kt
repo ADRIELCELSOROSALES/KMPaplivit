@@ -99,7 +99,7 @@ fun TouchOrderSyllablesScreen(
                     val bgColor = when (flash) {
                         FlashState.CORRECT -> AppColors.FeedbackCorrect
                         FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> if (alreadySelected) AppColors.FeedbackCorrect else Color(0xFF4CAF50)
+                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.PillDark
                     }
                     val enabled = !alreadySelected && flash == null && !state.isCompleted
 
@@ -127,7 +127,7 @@ private fun ProgressSlot(syllable: String, filled: Boolean, fontSize: TextUnit =
             )
             .border(
                 width = if (filled) 0.dp else 2.dp,
-                color = if (filled) Color.Transparent else Color(0xFFBDBDBD),
+                color = if (filled) Color.Transparent else AppColors.Outline,
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(horizontal = 20.dp, vertical = 16.dp),

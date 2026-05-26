@@ -66,7 +66,7 @@ fun VocalizeExerciseScreen(
     val contentBorderColor = when (state.feedback) {
         VocalizeFeedback.CORRECT -> AppColors.FeedbackCorrect
         VocalizeFeedback.INCORRECT -> AppColors.FeedbackIncorrect
-        null -> if (state.isListening) Color(0xFFFFB300) else Color(0xFFBDBDBD)
+        null -> if (state.isListening) AppColors.InkDark else AppColors.Outline
     }
     val contentBgColor = when (state.feedback) {
         VocalizeFeedback.CORRECT -> AppColors.FeedbackCorrect.copy(alpha = 0.08f)
@@ -120,7 +120,7 @@ fun VocalizeExerciseScreen(
                 Text(
                     text = "🎙 Escuchando…",
                     fontSize = 18.sp,
-                    color = Color(0xFFFFB300),
+                    color = AppColors.InkDark,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
                 )
@@ -136,7 +136,7 @@ fun VocalizeExerciseScreen(
                     color = when (state.feedback) {
                         VocalizeFeedback.CORRECT -> AppColors.FeedbackCorrect
                         VocalizeFeedback.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> Color.Gray
+                        null -> AppColors.InkDark
                     },
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
