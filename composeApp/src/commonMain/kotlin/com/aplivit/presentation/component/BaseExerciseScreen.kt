@@ -25,7 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.aplivit.presentation.util.rememberIsLandscape
 
 @Composable
 fun BaseExerciseScreen(
@@ -36,20 +38,35 @@ fun BaseExerciseScreen(
     forwardEnabled: Boolean,
     content: @Composable () -> Unit
 ) {
+    val isLandscape = rememberIsLandscape()
+
+    // En landscape: misma estructura (arriba / centro / abajo) pero más compacta.
+    val topPadH = if (isLandscape) 16.dp else 20.dp
+    val topPadV = if (isLandscape) 8.dp else 16.dp
+    val botPadH = if (isLandscape) 16.dp else 24.dp
+    val botPadV = if (isLandscape) 8.dp else 20.dp
+    val iconBtnSize = if (isLandscape) 52.dp else 72.dp
+    val iconSize = if (isLandscape) 26.dp else 36.dp
+    val navBtnHeight = if (isLandscape) 52.dp else 72.dp
+    val navIconSize = if (isLandscape) 24.dp else 32.dp
+    val cornerRadius = if (isLandscape) 14.dp else 18.dp
+
     Surface(color = AppColors.BgWhite, modifier = Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
 
+            // Fila superior: Mic (izquierda) | Hearing (derecha)
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                    .padding(horizontal = topPadH, vertical = topPadV),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TopIconButton(Icons.Filled.Mic, onMicClick)
-                TopIconButton(Icons.Filled.Hearing, onListenClick)
+                TopIconButton(Icons.Filled.Mic, onMicClick, iconBtnSize, iconSize, cornerRadius)
+                TopIconButton(Icons.Filled.Hearing, onListenClick, iconBtnSize, iconSize, cornerRadius)
             }
 
+            // Centro: contenido de la actividad
             Box(
                 Modifier
                     .weight(1f)
@@ -59,17 +76,28 @@ fun BaseExerciseScreen(
                 content()
             }
 
+            // Fila inferior: Atrás (izquierda) | Adelante (derecha)
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                    .padding(horizontal = botPadH, vertical = botPadV),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                NavButton(Icons.AutoMirrored.Filled.ArrowBack, onBackClick, Modifier.weight(1f))
+                NavButton(
+                    icon = Icons.AutoMirrored.Filled.ArrowBack,
+                    onClick = onBackClick,
+                    modifier = Modifier.weight(1f),
+                    height = navBtnHeight,
+                    iconSize = navIconSize,
+                    cornerRadius = cornerRadius,
+                )
                 NavButton(
                     icon = Icons.AutoMirrored.Filled.ArrowForward,
                     onClick = { if (forwardEnabled) onForwardClick() },
                     modifier = Modifier.weight(1f),
+                    height = navBtnHeight,
+                    iconSize = navIconSize,
+                    cornerRadius = cornerRadius,
                     alpha = if (forwardEnabled) 1f else 0.35f,
                 )
             }
@@ -78,16 +106,22 @@ fun BaseExerciseScreen(
 }
 
 @Composable
-private fun TopIconButton(icon: ImageVector, onClick: () -> Unit) {
+private fun TopIconButton(
+    icon: ImageVector,
+    onClick: () -> Unit,
+    btnSize: Dp,
+    iconSize: Dp,
+    cornerRadius: Dp,
+) {
     Box(
         Modifier
-            .size(72.dp)
-            .background(AppColors.BgWhite, RoundedCornerShape(18.dp))
-            .border(1.dp, AppColors.Outline, RoundedCornerShape(18.dp)),
+            .size(btnSize)
+            .background(AppColors.BgWhite, RoundedCornerShape(cornerRadius))
+            .border(1.dp, AppColors.Outline, RoundedCornerShape(cornerRadius)),
         contentAlignment = Alignment.Center,
     ) {
-        IconButton(onClick = onClick, modifier = Modifier.size(72.dp)) {
-            Icon(icon, contentDescription = null, tint = AppColors.InkDark, modifier = Modifier.size(36.dp))
+        IconButton(onClick = onClick, modifier = Modifier.size(btnSize)) {
+            Icon(icon, contentDescription = null, tint = AppColors.InkDark, modifier = Modifier.size(iconSize))
         }
     }
 }
@@ -97,18 +131,21 @@ private fun NavButton(
     icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    height: Dp = 72.dp,
+    iconSize: Dp = 32.dp,
+    cornerRadius: Dp = 18.dp,
     alpha: Float = 1f,
 ) {
     Box(
         modifier
-            .height(72.dp)
-            .background(AppColors.BgWhite, RoundedCornerShape(18.dp))
-            .border(1.dp, AppColors.OutlineSoft, RoundedCornerShape(18.dp))
+            .height(height)
+            .background(AppColors.BgWhite, RoundedCornerShape(cornerRadius))
+            .border(1.dp, AppColors.OutlineSoft, RoundedCornerShape(cornerRadius))
             .alpha(alpha),
         contentAlignment = Alignment.Center,
     ) {
         IconButton(onClick = onClick, modifier = Modifier.fillMaxSize()) {
-            Icon(icon, contentDescription = null, tint = AppColors.InkDark.copy(alpha = 0.55f), modifier = Modifier.size(32.dp))
+            Icon(icon, contentDescription = null, tint = AppColors.InkDark.copy(alpha = 0.55f), modifier = Modifier.size(iconSize))
         }
     }
 }

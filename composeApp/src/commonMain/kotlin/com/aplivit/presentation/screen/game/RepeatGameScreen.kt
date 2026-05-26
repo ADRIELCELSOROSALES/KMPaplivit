@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.util.rememberIsLandscape
 import com.aplivit.shared.AppStrings
 import org.koin.compose.koinInject
 
@@ -39,10 +40,11 @@ fun RepeatGameScreen(
         tts.speak(level.word.lowercase())
     }
 
+    val isLandscape = rememberIsLandscape()
     val wordFontSize = when {
-        level.word.length <= 8  -> 64.sp
-        level.word.length <= 14 -> 48.sp
-        level.word.length <= 20 -> 36.sp
+        level.word.length <= 8  -> if (isLandscape) 40.sp else 64.sp
+        level.word.length <= 14 -> if (isLandscape) 32.sp else 48.sp
+        level.word.length <= 20 -> if (isLandscape) 24.sp else 36.sp
         else                    -> 28.sp
     }
 

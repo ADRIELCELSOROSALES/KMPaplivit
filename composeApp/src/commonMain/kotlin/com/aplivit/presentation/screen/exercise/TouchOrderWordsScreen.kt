@@ -33,6 +33,7 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -50,6 +51,8 @@ fun TouchOrderWordsScreen(
     LaunchedEffect(exercise.id) {
         vm.loadExercise(exercise)
     }
+
+    val isLandscape = rememberIsLandscape()
 
     // Oración armada hasta ahora
     val assembledSentence = state.selectedOrder.joinToString(" ") { displayIdx ->
@@ -87,7 +90,7 @@ fun TouchOrderWordsScreen(
                 )
             }
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(if (isLandscape) 12.dp else 40.dp))
 
             // Palabras desordenadas
             FlowRow(

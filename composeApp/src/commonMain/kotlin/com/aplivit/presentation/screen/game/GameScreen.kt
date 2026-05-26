@@ -24,7 +24,6 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.BaseExerciseScreen
-import com.aplivit.presentation.util.LockPortrait
 import org.koin.compose.koinInject
 
 @Composable
@@ -33,8 +32,6 @@ fun GameScreen(
     onCompleted: (nextLevelId: Int) -> Unit,
     onBackNavigate: () -> Unit
 ) {
-    LockPortrait()
-
     val getLevels: GetLevelsUseCase = koinInject()
     val completeGame: CompleteGameUseCase = koinInject()
     val unlockNext: UnlockNextLevelUseCase = koinInject()

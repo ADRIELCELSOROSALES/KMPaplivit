@@ -29,7 +29,7 @@ import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import com.aplivit.presentation.component.SyllableCard
-import com.aplivit.presentation.util.LockPortrait
+import com.aplivit.presentation.util.rememberIsLandscape
 import com.aplivit.shared.stringsFor
 import org.koin.compose.koinInject
 
@@ -38,14 +38,14 @@ fun RecapScreen(
     onBackClick: () -> Unit,
     onForwardClick: () -> Unit
 ) {
-    LockPortrait()
-
     val getLevels: GetLevelsUseCase = koinInject()
     val tts: SpeechSynthesizer = koinInject()
     val repo: ProgressRepository = koinInject()
     val vm: RecapViewModel = remember { RecapViewModel(getLevels, repo, tts) }
     val state by vm.state.collectAsState()
     val strings = stringsFor(repo.getSelectedLanguage())
+    val isLandscape = rememberIsLandscape()
+    val gridColumns = if (isLandscape) 6 else 4
 
     BaseExerciseScreen(
         onMicClick = {},
@@ -87,7 +87,7 @@ fun RecapScreen(
                 }
             } else {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(4),
+                    columns = GridCells.Fixed(gridColumns),
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)

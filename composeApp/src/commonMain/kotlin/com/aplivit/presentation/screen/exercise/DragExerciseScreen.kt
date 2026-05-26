@@ -46,6 +46,7 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
@@ -70,6 +71,8 @@ fun DragExerciseScreen(
     LaunchedEffect(exercise.id) {
         vm.loadExercise(exercise)
     }
+
+    val isLandscape = rememberIsLandscape()
 
     // ── Drag state (UI layer) ─────────────────────────────────────────────────
     var draggedItemId by remember { mutableStateOf<Int?>(null) }
@@ -136,7 +139,7 @@ fun DragExerciseScreen(
                     }
                 }
 
-                Spacer(Modifier.height(48.dp))
+                Spacer(Modifier.height(if (isLandscape) 12.dp else 48.dp))
 
                 // Zona inferior: slots en orden — FlowRow para que palabras largas se envuelvan
                 FlowRow(

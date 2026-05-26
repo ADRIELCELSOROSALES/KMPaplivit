@@ -24,6 +24,7 @@ import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import com.aplivit.presentation.component.SalientText
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @Composable
@@ -41,6 +42,10 @@ fun TouchSimilarScreen(
         vm.loadExercise(exercise)
     }
 
+    val isLandscape = rememberIsLandscape()
+    val gridColumns = if (isLandscape) 5 else 3
+    val itemFontSize = if (isLandscape) 32.sp else 48.sp
+
     BaseExerciseScreen(
         onMicClick = {},
         onListenClick = { vm.playTarget() },
@@ -49,12 +54,12 @@ fun TouchSimilarScreen(
         forwardEnabled = state.isCompleted
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+            columns = GridCells.Fixed(gridColumns),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(if (isLandscape) 12.dp else 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(if (isLandscape) 12.dp else 24.dp)
         ) {
             itemsIndexed(exercise.options) { index, option ->
                 val flash = state.flashState[index]
@@ -70,7 +75,7 @@ fun TouchSimilarScreen(
                 ) {
                     Text(
                         text = option,
-                        fontSize = 48.sp,
+                        fontSize = itemFontSize,
                         fontWeight = FontWeight.Bold,
                         color = textColor,
                         textAlign = TextAlign.Center

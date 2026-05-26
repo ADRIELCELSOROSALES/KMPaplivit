@@ -24,6 +24,7 @@ import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import com.aplivit.presentation.component.WordWithSyllables
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @Composable
@@ -54,6 +55,8 @@ fun TouchSyllableInWordScreen(
         .filter { it !in state.foundCorrect && !state.flashState.containsKey(it) }
         .toSet()
 
+    val isLandscape = rememberIsLandscape()
+
     BaseExerciseScreen(
         onMicClick = {},
         onListenClick = { vm.playTarget() },
@@ -64,17 +67,17 @@ fun TouchSyllableInWordScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(if (isLandscape) 12.dp else 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = exercise.target,
-                fontSize = 64.sp,
+                fontSize = if (isLandscape) 40.sp else 64.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppColors.Syllable
             )
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(if (isLandscape) 16.dp else 48.dp))
             WordWithSyllables(
                 word = exercise.options.joinToString("-"),
                 syllables = exercise.options,
