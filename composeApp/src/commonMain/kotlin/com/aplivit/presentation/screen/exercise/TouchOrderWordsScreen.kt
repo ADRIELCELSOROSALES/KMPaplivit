@@ -33,6 +33,7 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -50,6 +51,8 @@ fun TouchOrderWordsScreen(
     LaunchedEffect(exercise.id) {
         vm.loadExercise(exercise)
     }
+
+    val isLandscape = rememberIsLandscape()
 
     // Oración armada hasta ahora
     val assembledSentence = state.selectedOrder.joinToString(" ") { displayIdx ->
@@ -74,7 +77,7 @@ fun TouchOrderWordsScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(2.dp, Color(0xFFBDBDBD), RoundedCornerShape(12.dp))
+                    .border(2.dp, AppColors.Outline, RoundedCornerShape(12.dp))
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -82,12 +85,12 @@ fun TouchOrderWordsScreen(
                     text = assembledSentence.ifEmpty { "..." },
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (assembledSentence.isEmpty()) Color(0xFFBDBDBD) else Color(0xFF1A237E),
+                    color = if (assembledSentence.isEmpty()) AppColors.Outline else AppColors.InkDark,
                     textAlign = TextAlign.Center
                 )
             }
 
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(if (isLandscape) 12.dp else 40.dp))
 
             // Palabras desordenadas
             FlowRow(
@@ -101,7 +104,7 @@ fun TouchOrderWordsScreen(
                     val bgColor = when (flash) {
                         FlashState.CORRECT -> AppColors.FeedbackCorrect
                         FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> if (alreadySelected) AppColors.FeedbackCorrect else Color(0xFF4CAF50)
+                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.PillDark
                     }
                     val enabled = !alreadySelected && flash == null && !state.isCompleted
                     val word = exercise.words[exercise.shuffledIndices[displayIndex]]

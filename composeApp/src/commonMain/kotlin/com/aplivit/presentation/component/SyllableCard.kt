@@ -22,7 +22,7 @@ fun SyllableCard(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Color(0xFF4CAF50),
+    backgroundColor: Color = AppColors.PillDark,
     salientEnabled: Boolean = true
 ) {
     // SalientText envuelve TODO el contenido: graphicsLayer escala fondo + sombra + texto juntos.

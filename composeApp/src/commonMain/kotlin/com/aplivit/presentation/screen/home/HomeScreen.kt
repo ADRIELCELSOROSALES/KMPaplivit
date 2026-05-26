@@ -13,12 +13,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.remember
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.SessionResumeUseCase
 import com.aplivit.core.port.ProgressRepository
@@ -55,7 +55,7 @@ fun HomeScreen(
             text = "Aplivit",
             fontSize = 32.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF1565C0),
+            color = AppColors.InkDark,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
         )

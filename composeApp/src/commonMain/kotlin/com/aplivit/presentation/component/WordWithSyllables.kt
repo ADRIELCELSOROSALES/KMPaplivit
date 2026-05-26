@@ -45,7 +45,7 @@ fun WordWithSyllables(
             verticalAlignment = Alignment.CenterVertically
         ) {
             syllables.forEachIndexed { index, syllable ->
-                val bgColor = syllableColors[index] ?: Color(0xFF4CAF50)
+                val bgColor = syllableColors[index] ?: AppColors.PillDark
                 val enabled = index in enabledIndices
 
                 SalientText(

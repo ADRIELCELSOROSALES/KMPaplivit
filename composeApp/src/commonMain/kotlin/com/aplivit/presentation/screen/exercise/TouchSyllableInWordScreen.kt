@@ -24,6 +24,7 @@ import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
 import com.aplivit.presentation.component.WordWithSyllables
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @Composable
@@ -45,7 +46,7 @@ fun TouchSyllableInWordScreen(
         val color = when (state.flashState[index]) {
             FlashState.CORRECT -> AppColors.FeedbackCorrect
             FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-            null -> if (index in state.foundCorrect) AppColors.FeedbackCorrect else Color(0xFF4CAF50)
+            null -> if (index in state.foundCorrect) AppColors.FeedbackCorrect else AppColors.PillDark
         }
         index to color
     }
@@ -53,6 +54,8 @@ fun TouchSyllableInWordScreen(
     val enabledIndices = exercise.options.indices
         .filter { it !in state.foundCorrect && !state.flashState.containsKey(it) }
         .toSet()
+
+    val isLandscape = rememberIsLandscape()
 
     BaseExerciseScreen(
         onMicClick = {},
@@ -64,17 +67,17 @@ fun TouchSyllableInWordScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(if (isLandscape) 12.dp else 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = exercise.target,
-                fontSize = 64.sp,
+                fontSize = if (isLandscape) 40.sp else 64.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1A237E)
+                color = AppColors.Syllable
             )
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(if (isLandscape) 16.dp else 48.dp))
             WordWithSyllables(
                 word = exercise.options.joinToString("-"),
                 syllables = exercise.options,

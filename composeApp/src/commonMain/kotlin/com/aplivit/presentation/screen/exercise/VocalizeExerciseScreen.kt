@@ -34,7 +34,7 @@ import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
-import com.aplivit.presentation.util.LockPortrait
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @Composable
@@ -43,8 +43,6 @@ fun VocalizeExerciseScreen(
     onBackClick: () -> Unit,
     onForwardClick: () -> Unit
 ) {
-    LockPortrait()
-
     val tts: SpeechSynthesizer = koinInject()
     val recognizer: SpeechRecognizer = koinInject()
     val connectivity: ConnectivityChecker = koinInject()
@@ -68,7 +66,7 @@ fun VocalizeExerciseScreen(
     val contentBorderColor = when (state.feedback) {
         VocalizeFeedback.CORRECT -> AppColors.FeedbackCorrect
         VocalizeFeedback.INCORRECT -> AppColors.FeedbackIncorrect
-        null -> if (state.isListening) Color(0xFFFFB300) else Color(0xFFBDBDBD)
+        null -> if (state.isListening) AppColors.InkDark else AppColors.Outline
     }
     val contentBgColor = when (state.feedback) {
         VocalizeFeedback.CORRECT -> AppColors.FeedbackCorrect.copy(alpha = 0.08f)
@@ -76,11 +74,11 @@ fun VocalizeExerciseScreen(
         null -> Color.Transparent
     }
 
-    // Tamaño de fuente según el tipo de contenido
+    val isLandscape = rememberIsLandscape()
     val fontSize = when (exercise.type) {
-        VocalizeType.SYLLABLE -> 72.sp
-        VocalizeType.WORD -> 56.sp
-        VocalizeType.SENTENCE -> 30.sp
+        VocalizeType.SYLLABLE -> if (isLandscape) 48.sp else 72.sp
+        VocalizeType.WORD -> if (isLandscape) 36.sp else 56.sp
+        VocalizeType.SENTENCE -> if (isLandscape) 22.sp else 30.sp
     }
 
     BaseExerciseScreen(
@@ -110,7 +108,7 @@ fun VocalizeExerciseScreen(
                     text = exercise.content,
                     fontSize = fontSize,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFF1A237E),
+                    color = AppColors.InkDark,
                     textAlign = TextAlign.Center
                 )
             }
@@ -122,7 +120,7 @@ fun VocalizeExerciseScreen(
                 Text(
                     text = "🎙 Escuchando…",
                     fontSize = 18.sp,
-                    color = Color(0xFFFFB300),
+                    color = AppColors.InkDark,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
                 )
@@ -138,7 +136,7 @@ fun VocalizeExerciseScreen(
                     color = when (state.feedback) {
                         VocalizeFeedback.CORRECT -> AppColors.FeedbackCorrect
                         VocalizeFeedback.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> Color.Gray
+                        null -> AppColors.InkDark
                     },
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()

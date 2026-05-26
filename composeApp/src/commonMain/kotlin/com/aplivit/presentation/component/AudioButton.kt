@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +32,7 @@ fun AudioButton(
             onClick = onClick,
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isActive) Color(0xFFF44336) else Color(0xFF2196F3)
+                containerColor = if (isActive) AppColors.FeedbackIncorrect else AppColors.InkDark
             ),
             modifier = Modifier.size(96.dp)
         ) {
@@ -44,7 +43,7 @@ fun AudioButton(
             text = label,
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFF424242),
+            color = AppColors.InkDark,
             textAlign = TextAlign.Center
         )
     }

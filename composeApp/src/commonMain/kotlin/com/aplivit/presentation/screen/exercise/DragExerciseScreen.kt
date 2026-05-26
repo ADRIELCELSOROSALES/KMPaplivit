@@ -46,6 +46,7 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
@@ -70,6 +71,8 @@ fun DragExerciseScreen(
     LaunchedEffect(exercise.id) {
         vm.loadExercise(exercise)
     }
+
+    val isLandscape = rememberIsLandscape()
 
     // ── Drag state (UI layer) ─────────────────────────────────────────────────
     var draggedItemId by remember { mutableStateOf<Int?>(null) }
@@ -136,7 +139,7 @@ fun DragExerciseScreen(
                     }
                 }
 
-                Spacer(Modifier.height(48.dp))
+                Spacer(Modifier.height(if (isLandscape) 12.dp else 48.dp))
 
                 // Zona inferior: slots en orden — FlowRow para que palabras largas se envuelvan
                 FlowRow(
@@ -183,7 +186,7 @@ fun DragExerciseScreen(
                         }
                         .defaultMinSize(minWidth = CHIP_MIN_WIDTH, minHeight = CHIP_HEIGHT)
                         .shadow(8.dp, RoundedCornerShape(12.dp))
-                        .background(Color(0xFF1565C0), RoundedCornerShape(12.dp))
+                        .background(AppColors.InkDark, RoundedCornerShape(12.dp))
                         .padding(horizontal = CHIP_H_PADDING, vertical = CHIP_V_PADDING),
                     contentAlignment = Alignment.Center
                 ) {
@@ -215,7 +218,7 @@ private fun DraggableChip(
             .onGloballyPositioned { onCoordinates(it) }
             .shadow(4.dp, RoundedCornerShape(12.dp))
             .background(
-                color = if (isBeingDragged) Color(0xFF90CAF9) else Color(0xFF2196F3),
+                color = if (isBeingDragged) AppColors.OutlineSoft else AppColors.PillDark,
                 shape = RoundedCornerShape(12.dp)
             )
             .pointerInput(text) {
@@ -257,7 +260,7 @@ private fun DropSlot(
     val borderColor = when {
         flash == FlashState.INCORRECT -> AppColors.FeedbackIncorrect
         content != null -> AppColors.FeedbackCorrect
-        else -> Color(0xFFBDBDBD)
+        else -> AppColors.Outline
     }
 
     Box(

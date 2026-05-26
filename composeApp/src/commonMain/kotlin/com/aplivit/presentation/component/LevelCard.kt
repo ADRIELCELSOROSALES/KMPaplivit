@@ -30,9 +30,9 @@ fun LevelCard(
     onClick: () -> Unit
 ) {
     val backgroundColor = when {
-        isCompleted -> Color(0xFF4CAF50)
-        isUnlocked -> Color(0xFF2196F3)
-        else -> Color(0xFF9E9E9E)
+        isCompleted -> AppColors.FeedbackCorrect
+        isUnlocked -> AppColors.InkDark
+        else -> AppColors.Outline
     }
     Box(
         modifier = Modifier
@@ -45,17 +45,18 @@ fun LevelCard(
             .padding(16.dp)
     ) {
         Column {
+            val textColor = if (!isUnlocked) AppColors.InkDark else Color.White
             Text(
                 text = "Nivel ${level.id}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = textColor
             )
             Text(
                 text = level.word,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Color.White
+                color = textColor
             )
             Text(
                 text = when {
@@ -64,7 +65,7 @@ fun LevelCard(
                     else -> lockedLabel
                 },
                 fontSize = 12.sp,
-                color = Color.White.copy(alpha = 0.8f)
+                color = textColor.copy(alpha = 0.7f)
             )
         }
         if (!isUnlocked) {

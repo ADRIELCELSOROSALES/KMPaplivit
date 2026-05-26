@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.BaseExerciseScreen
+import com.aplivit.presentation.util.rememberIsLandscape
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -51,6 +53,8 @@ fun TouchOrderSyllablesScreen(
         vm.loadExercise(exercise)
     }
 
+    val isLandscape = rememberIsLandscape()
+
     BaseExerciseScreen(
         onMicClick = {},
         onListenClick = { vm.playTarget() },
@@ -65,6 +69,8 @@ fun TouchOrderSyllablesScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            val chipFontSize = if (isLandscape) 24.sp else 36.sp
+
             // Ranuras de progreso: muestra las sílabas correctas ya tocadas
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -74,11 +80,11 @@ fun TouchOrderSyllablesScreen(
                 exercise.correctIndices.forEachIndexed { position, correctIdx ->
                     val filledIndex = state.selectedOrder.getOrNull(position)
                     val syllable = if (filledIndex != null) exercise.options[filledIndex] else ""
-                    ProgressSlot(syllable = syllable, filled = filledIndex != null)
+                    ProgressSlot(syllable = syllable, filled = filledIndex != null, fontSize = chipFontSize)
                 }
             }
 
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(if (isLandscape) 12.dp else 48.dp))
 
             // Sílabas desordenadas para tocar
             FlowRow(
@@ -93,7 +99,7 @@ fun TouchOrderSyllablesScreen(
                     val bgColor = when (flash) {
                         FlashState.CORRECT -> AppColors.FeedbackCorrect
                         FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> if (alreadySelected) AppColors.FeedbackCorrect else Color(0xFF4CAF50)
+                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.PillDark
                     }
                     val enabled = !alreadySelected && flash == null && !state.isCompleted
 
@@ -101,6 +107,7 @@ fun TouchOrderSyllablesScreen(
                         text = syllable,
                         backgroundColor = bgColor,
                         enabled = enabled,
+                        fontSize = chipFontSize,
                         onClick = { vm.onSyllableTapped(index) }
                     )
                 }
@@ -110,7 +117,7 @@ fun TouchOrderSyllablesScreen(
 }
 
 @Composable
-private fun ProgressSlot(syllable: String, filled: Boolean) {
+private fun ProgressSlot(syllable: String, filled: Boolean, fontSize: TextUnit = 36.sp) {
     Box(
         modifier = Modifier
             .shadow(if (filled) 4.dp else 0.dp, RoundedCornerShape(12.dp))
@@ -120,7 +127,7 @@ private fun ProgressSlot(syllable: String, filled: Boolean) {
             )
             .border(
                 width = if (filled) 0.dp else 2.dp,
-                color = if (filled) Color.Transparent else Color(0xFFBDBDBD),
+                color = if (filled) Color.Transparent else AppColors.Outline,
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(horizontal = 20.dp, vertical = 16.dp),
@@ -128,7 +135,7 @@ private fun ProgressSlot(syllable: String, filled: Boolean) {
     ) {
         Text(
             text = if (filled) syllable else "  ",
-            fontSize = 36.sp,
+            fontSize = fontSize,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
@@ -140,6 +147,7 @@ private fun SyllableChip(
     text: String,
     backgroundColor: Color,
     enabled: Boolean,
+    fontSize: TextUnit = 36.sp,
     onClick: () -> Unit
 ) {
     Box(
@@ -152,7 +160,7 @@ private fun SyllableChip(
     ) {
         Text(
             text = text,
-            fontSize = 36.sp,
+            fontSize = fontSize,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
