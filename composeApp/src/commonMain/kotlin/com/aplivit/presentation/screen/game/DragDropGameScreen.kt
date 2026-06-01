@@ -14,7 +14,12 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 import com.aplivit.presentation.component.AppColors
-import com.aplivit.shared.AppStrings
 
 @Composable
 fun DragDropGameScreen(
@@ -35,7 +39,6 @@ fun DragDropGameScreen(
     availableSyllables: List<String>,
     arrangedSyllables: List<String>,
     feedback: String?,
-    strings: AppStrings,
     onSyllableMoved: (String) -> Unit,
     onReset: () -> Unit,
     onResult: (Boolean) -> Unit
@@ -145,10 +148,10 @@ fun DragDropGameScreen(
                 },
                 enabled = arrangedSyllables.size == level.syllables.size
             ) {
-                Text(strings.verify, fontSize = 18.sp)
+                Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(28.dp))
             }
             Button(onClick = onReset) {
-                Text(strings.reset, fontSize = 16.sp)
+                Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(26.dp))
             }
         }
     }
