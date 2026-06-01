@@ -186,7 +186,8 @@ fun DragExerciseScreen(
                         }
                         .defaultMinSize(minWidth = CHIP_MIN_WIDTH, minHeight = CHIP_HEIGHT)
                         .shadow(8.dp, RoundedCornerShape(12.dp))
-                        .background(AppColors.InkDark, RoundedCornerShape(12.dp))
+                        .background(AppColors.BgWhite, RoundedCornerShape(12.dp))
+                        .border(1.dp, AppColors.Outline, RoundedCornerShape(12.dp))
                         .padding(horizontal = CHIP_H_PADDING, vertical = CHIP_V_PADDING),
                     contentAlignment = Alignment.Center
                 ) {
@@ -194,7 +195,7 @@ fun DragExerciseScreen(
                         text = text,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = AppColors.InkDark,
                         maxLines = 1
                     )
                 }
@@ -218,7 +219,7 @@ private fun DraggableChip(
             .onGloballyPositioned { onCoordinates(it) }
             .shadow(4.dp, RoundedCornerShape(12.dp))
             .background(
-                color = if (isBeingDragged) AppColors.OutlineSoft else AppColors.PillDark,
+                color = if (isBeingDragged) AppColors.OutlineSoft else AppColors.BgWhite,
                 shape = RoundedCornerShape(12.dp)
             )
             .pointerInput(text) {
@@ -232,6 +233,7 @@ private fun DraggableChip(
                     onDragCancel = { onDragEnd() }
                 )
             }
+            .border(1.dp, AppColors.Outline, RoundedCornerShape(12.dp))
             .padding(horizontal = CHIP_H_PADDING, vertical = CHIP_V_PADDING),
         contentAlignment = Alignment.Center
     ) {
@@ -239,7 +241,7 @@ private fun DraggableChip(
             text = text,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = AppColors.InkDark,
             maxLines = 1
         )
     }
@@ -278,7 +280,7 @@ private fun DropSlot(
                 text = content,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = AppColors.InkDark,
                 maxLines = 1
             )
         }

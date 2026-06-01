@@ -78,7 +78,8 @@ fun SelectionGameScreen(
         SyllableCard(
             text = "▶",
             onClick = { tts.speakSyllable(targetSyllable) },
-            backgroundColor = AppColors.InkDark
+            backgroundColor = AppColors.InkDark,
+            textColor = Color.White
         )
 
         Row(

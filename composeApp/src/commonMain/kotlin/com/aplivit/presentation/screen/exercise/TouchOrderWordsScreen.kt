@@ -104,7 +104,7 @@ fun TouchOrderWordsScreen(
                     val bgColor = when (flash) {
                         FlashState.CORRECT -> AppColors.FeedbackCorrect
                         FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.PillDark
+                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.BgWhite
                     }
                     val enabled = !alreadySelected && flash == null && !state.isCompleted
                     val word = exercise.words[exercise.shuffledIndices[displayIndex]]
@@ -132,6 +132,7 @@ private fun WordChip(
         modifier = Modifier
             .shadow(4.dp, RoundedCornerShape(10.dp))
             .background(backgroundColor, RoundedCornerShape(10.dp))
+            .border(1.dp, AppColors.Outline, RoundedCornerShape(10.dp))
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
@@ -140,7 +141,7 @@ private fun WordChip(
             text = text,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = AppColors.InkDark
         )
     }
 }

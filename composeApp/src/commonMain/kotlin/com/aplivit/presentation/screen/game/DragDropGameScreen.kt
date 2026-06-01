@@ -69,7 +69,8 @@ fun DragDropGameScreen(
                         Box(
                             modifier = Modifier
                                 .defaultMinSize(minWidth = 60.dp, minHeight = 52.dp)
-                                .background(AppColors.PillDark, RoundedCornerShape(8.dp))
+                                .background(AppColors.BgWhite, RoundedCornerShape(8.dp))
+                                .border(1.dp, AppColors.Outline, RoundedCornerShape(8.dp))
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -77,7 +78,7 @@ fun DragDropGameScreen(
                                 syl,
                                 fontSize = dropFontSize,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
+                                color = AppColors.InkDark,
                                 textAlign = TextAlign.Center,
                                 maxLines = 1
                             )
@@ -101,7 +102,8 @@ fun DragDropGameScreen(
                 Box(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 64.dp, minHeight = 52.dp)
-                        .background(AppColors.PillDark, RoundedCornerShape(12.dp))
+                        .background(AppColors.BgWhite, RoundedCornerShape(12.dp))
+                        .border(1.dp, AppColors.Outline, RoundedCornerShape(12.dp))
                         .pointerInput(syl) {
                             detectDragGestures(
                                 onDragEnd = { onSyllableMoved(syl) }
@@ -114,7 +116,7 @@ fun DragDropGameScreen(
                         syl,
                         fontSize = availFontSize,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = AppColors.InkDark,
                         textAlign = TextAlign.Center,
                         maxLines = 1
                     )

@@ -99,7 +99,7 @@ fun TouchOrderSyllablesScreen(
                     val bgColor = when (flash) {
                         FlashState.CORRECT -> AppColors.FeedbackCorrect
                         FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.PillDark
+                        null -> if (alreadySelected) AppColors.FeedbackCorrect else AppColors.BgWhite
                     }
                     val enabled = !alreadySelected && flash == null && !state.isCompleted
 
@@ -137,7 +137,7 @@ private fun ProgressSlot(syllable: String, filled: Boolean, fontSize: TextUnit =
             text = if (filled) syllable else "  ",
             fontSize = fontSize,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = AppColors.InkDark
         )
     }
 }
@@ -154,6 +154,7 @@ private fun SyllableChip(
         modifier = Modifier
             .shadow(4.dp, RoundedCornerShape(12.dp))
             .background(backgroundColor, RoundedCornerShape(12.dp))
+            .border(1.dp, AppColors.Outline, RoundedCornerShape(12.dp))
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 16.dp),
         contentAlignment = Alignment.Center
@@ -162,7 +163,7 @@ private fun SyllableChip(
             text = text,
             fontSize = fontSize,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = AppColors.InkDark
         )
     }
 }

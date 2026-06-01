@@ -46,7 +46,7 @@ fun TouchSyllableInWordScreen(
         val color = when (state.flashState[index]) {
             FlashState.CORRECT -> AppColors.FeedbackCorrect
             FlashState.INCORRECT -> AppColors.FeedbackIncorrect
-            null -> if (index in state.foundCorrect) AppColors.FeedbackCorrect else AppColors.PillDark
+            null -> if (index in state.foundCorrect) AppColors.FeedbackCorrect else AppColors.BgWhite
         }
         index to color
     }

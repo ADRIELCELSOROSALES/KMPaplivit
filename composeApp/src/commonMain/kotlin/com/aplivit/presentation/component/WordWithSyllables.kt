@@ -1,6 +1,7 @@
 package com.aplivit.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,7 @@ fun WordWithSyllables(
             verticalAlignment = Alignment.CenterVertically
         ) {
             syllables.forEachIndexed { index, syllable ->
-                val bgColor = syllableColors[index] ?: AppColors.PillDark
+                val bgColor = syllableColors[index] ?: AppColors.BgWhite
                 val enabled = index in enabledIndices
 
                 SalientText(
@@ -56,7 +57,7 @@ fun WordWithSyllables(
                         modifier = Modifier
                             .shadow(4.dp, RoundedCornerShape(12.dp))
                             .background(bgColor, RoundedCornerShape(12.dp))
-                            // El clickable está en SalientText; aquí solo color y forma
+                            .border(1.dp, AppColors.Outline, RoundedCornerShape(12.dp))
                             .padding(horizontal = 20.dp, vertical = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -64,7 +65,7 @@ fun WordWithSyllables(
                             text = syllable,
                             fontSize = 36.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = AppColors.InkDark
                         )
                     }
                 }
