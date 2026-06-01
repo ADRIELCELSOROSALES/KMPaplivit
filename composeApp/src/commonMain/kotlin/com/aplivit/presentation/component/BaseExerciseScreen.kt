@@ -47,8 +47,8 @@ fun BaseExerciseScreen(
     val botPadV = if (isLandscape) 8.dp else 20.dp
     val iconBtnSize = if (isLandscape) 52.dp else 72.dp
     val iconSize = if (isLandscape) 26.dp else 36.dp
-    val navBtnHeight = if (isLandscape) 52.dp else 72.dp
-    val navIconSize = if (isLandscape) 24.dp else 32.dp
+    val navBtnHeight = 72.dp
+    val navIconSize = 46.dp
     val cornerRadius = if (isLandscape) 14.dp else 18.dp
 
     Surface(color = AppColors.BgWhite, modifier = Modifier.fillMaxSize()) {
@@ -145,7 +145,7 @@ private fun NavButton(
         contentAlignment = Alignment.Center,
     ) {
         IconButton(onClick = onClick, modifier = Modifier.fillMaxSize()) {
-            Icon(icon, contentDescription = null, tint = AppColors.InkDark.copy(alpha = 0.55f), modifier = Modifier.size(iconSize))
+            Icon(icon, contentDescription = null, tint = AppColors.InkDark, modifier = Modifier.size(iconSize))
         }
     }
 }
