@@ -7,24 +7,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 import com.aplivit.presentation.component.AppColors
+import kotlinx.coroutines.delay
 
 @Composable
 fun DragDropGameScreen(
@@ -40,20 +34,28 @@ fun DragDropGameScreen(
     arrangedSyllables: List<String>,
     feedback: String?,
     onSyllableMoved: (String) -> Unit,
-    onReset: () -> Unit,
     onResult: (Boolean) -> Unit
 ) {
+    LaunchedEffect(arrangedSyllables.size) {
+        if (arrangedSyllables.isNotEmpty() && arrangedSyllables.size == level.syllables.size) {
+            delay(300L)
+            val answer = arrangedSyllables.joinToString("")
+            onResult(answer == level.word.replace(" ", ""))
+        }
+    }
+
+    val dropZoneBorderColor = if (feedback != null) AppColors.FeedbackIncorrect else AppColors.Outline
+
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Drop zone
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 80.dp)
-                .border(2.dp, AppColors.Outline, RoundedCornerShape(12.dp))
+                .border(2.dp, dropZoneBorderColor, RoundedCornerShape(12.dp))
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -135,24 +137,6 @@ fun DragDropGameScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Button(
-                onClick = {
-                    val answer = arrangedSyllables.joinToString("")
-                    onResult(answer == level.word.replace(" ", ""))
-                },
-                enabled = arrangedSyllables.size == level.syllables.size
-            ) {
-                Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(28.dp))
-            }
-            Button(onClick = onReset) {
-                Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(26.dp))
-            }
         }
     }
 }

@@ -103,6 +103,11 @@ class GameViewModel(
             val errors = _state.value.errors + 1
             tts.speak(strings.tryAgain)
             _state.value = _state.value.copy(errors = errors, feedback = strings.tryAgain)
+            viewModelScope.launch {
+                delay(1500L)
+                onDragDropReset()
+                _state.value = _state.value.copy(feedback = null)
+            }
         }
     }
 

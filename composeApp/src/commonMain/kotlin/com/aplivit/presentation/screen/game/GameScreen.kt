@@ -95,7 +95,6 @@ fun GameScreen(
                 arrangedSyllables = state.arrangedSyllables,
                 feedback = state.feedback,
                 onSyllableMoved = { syllable -> vm.onSyllableMoved(syllable) },
-                onReset = { vm.onDragDropReset() },
                 onResult = { correct -> vm.onDragDropCompleted(correct) }
             )
             GameStep.SELECTION -> SelectionGameScreen(
