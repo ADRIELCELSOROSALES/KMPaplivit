@@ -108,7 +108,8 @@ fun GameScreen(
                 isListening = state.isListening,
                 feedback = state.feedback,
                 strings = state.strings,
-                onStopListening = { vm.stopListening() }
+                onStopListening = { vm.stopListening() },
+                onStartListening = { vm.startListening(level.word) }
             )
             GameStep.COMPLETED -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

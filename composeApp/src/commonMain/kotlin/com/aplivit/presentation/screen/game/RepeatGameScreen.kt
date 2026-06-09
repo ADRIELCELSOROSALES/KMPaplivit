@@ -28,7 +28,8 @@ fun RepeatGameScreen(
     isListening: Boolean,
     feedback: String?,
     strings: AppStrings,
-    onStopListening: () -> Unit
+    onStopListening: () -> Unit,
+    onStartListening: () -> Unit = {}
 ) {
     val tts: SpeechSynthesizer = koinInject()
 
@@ -37,7 +38,8 @@ fun RepeatGameScreen(
     }
 
     LaunchedEffect(Unit) {
-        tts.speak(level.word.lowercase())
+        tts.speakAndWait(level.word.lowercase())
+        onStartListening()
     }
 
     val isLandscape = rememberIsLandscape()
