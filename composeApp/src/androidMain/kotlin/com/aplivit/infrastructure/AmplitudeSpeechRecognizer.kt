@@ -7,6 +7,7 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import com.aplivit.AppContext
+import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.RecognitionMode
 import com.aplivit.core.port.RecognitionResult
 import com.aplivit.core.port.SpeechRecognizer
@@ -22,7 +23,7 @@ class AmplitudeSpeechRecognizer(private val context: Context) : SpeechRecognizer
 
     private var amplitudeJob: Job? = null
 
-    override fun startListening(expected: String, onResult: (RecognitionResult) -> Unit) {
+    override fun startListening(expected: String, language: AppLanguage, onResult: (RecognitionResult) -> Unit) {
         if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             val requestPermission = AppContext.requestMicPermission
             if (requestPermission != null) {

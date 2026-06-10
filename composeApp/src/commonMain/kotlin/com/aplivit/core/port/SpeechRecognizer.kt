@@ -1,5 +1,7 @@
 package com.aplivit.core.port
 
+import com.aplivit.core.domain.model.AppLanguage
+
 enum class RecognitionMode { STT, AMPLITUDE }
 
 sealed class RecognitionResult {
@@ -12,6 +14,6 @@ sealed class RecognitionResult {
 
 interface SpeechRecognizer {
     val mode: RecognitionMode
-    fun startListening(expected: String, onResult: (RecognitionResult) -> Unit)
+    fun startListening(expected: String, language: AppLanguage, onResult: (RecognitionResult) -> Unit)
     fun stopListening()
 }

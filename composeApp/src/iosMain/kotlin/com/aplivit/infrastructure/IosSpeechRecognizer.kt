@@ -1,5 +1,6 @@
 package com.aplivit.infrastructure
 
+import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.ConnectivityChecker
 import com.aplivit.core.port.RecognitionMode
 import com.aplivit.core.port.RecognitionResult
@@ -22,7 +23,7 @@ class IosSpeechRecognizer(
     override val mode: RecognitionMode
         get() = if (connectivityChecker.isConnected()) RecognitionMode.STT else RecognitionMode.AMPLITUDE
 
-    private val sfRecognizer = SFSpeechRecognizer(locale = NSLocale("es_ES"))
+    private var sfRecognizer: SFSpeechRecognizer? = null
     private val audioEngine = AVAudioEngine()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest? = null
     private var recognitionTask: SFSpeechRecognitionTask? = null
@@ -34,13 +35,14 @@ class IosSpeechRecognizer(
         AVAudioSession.sharedInstance().requestRecordPermission { _ -> }
     }
 
-    override fun startListening(expected: String, onResult: (RecognitionResult) -> Unit) {
+    override fun startListening(expected: String, language: AppLanguage, onResult: (RecognitionResult) -> Unit) {
         if (SFSpeechRecognizer.authorizationStatus() != SFSpeechRecognizerAuthorizationStatus.SFSpeechRecognizerAuthorizationStatusAuthorized) {
             onResult(RecognitionResult.PermissionDenied)
             return
         }
 
         if (mode == RecognitionMode.STT) {
+            sfRecognizer = SFSpeechRecognizer(locale = NSLocale(language.ttsLocale))
             startSttListening(expected, onResult)
         } else {
             onResult(RecognitionResult.SoundDetected)

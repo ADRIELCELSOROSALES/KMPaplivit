@@ -131,7 +131,8 @@ class GameViewModel(
 
     fun startListening(expected: String) {
         _state.value = _state.value.copy(isListening = true)
-        recognizer.startListening(expected) { result ->
+        val language = progressRepository.getSelectedLanguage()
+        recognizer.startListening(expected, language) { result ->
             viewModelScope.launch {
                 handleRecognitionResult(result, expected)
             }

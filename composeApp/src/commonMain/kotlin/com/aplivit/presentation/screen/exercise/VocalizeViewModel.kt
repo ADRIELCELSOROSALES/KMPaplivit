@@ -59,7 +59,8 @@ class VocalizeViewModel(
         val exercise = _state.value.exercise ?: return
         if (_state.value.isCompleted) return
         _state.value = _state.value.copy(isListening = true, feedback = null, feedbackMessage = "")
-        recognizer.startListening(exercise.content) { result ->
+        val language = progressRepository.getSelectedLanguage()
+        recognizer.startListening(exercise.content, language) { result ->
             viewModelScope.launch { handleResult(result) }
         }
     }
