@@ -80,7 +80,13 @@ fun GameScreen(
                 else vm.startListening(level.word)
             }
         },
-        onListenClick = { tts.speak(level.word.lowercase()) },
+        onListenClick = {
+            if (state.currentStep == GameStep.AUDIO_PAIR) {
+                tts.speakSyllable(level.syllables.first().text)
+            } else {
+                tts.speak(level.word.lowercase())
+            }
+        },
         onBackClick = onBackNavigate,
         onForwardClick = {
             val (nextLevel, _) = navUseCase.goForward(levelId, 1)
@@ -102,6 +108,12 @@ fun GameScreen(
                 feedback = state.feedback,
                 strings = state.strings,
                 onResult = { correct -> vm.onSelectionCompleted(correct) }
+            )
+            GameStep.AUDIO_PAIR -> AudioPairGameScreen(
+                level = level,
+                feedback = state.feedback,
+                strings = state.strings,
+                onCompleted = { vm.onAudioPairCompleted() }
             )
             GameStep.REPEAT -> RepeatGameScreen(
                 level = level,

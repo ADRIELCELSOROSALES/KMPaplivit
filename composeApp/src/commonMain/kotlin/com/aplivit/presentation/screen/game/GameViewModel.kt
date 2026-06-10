@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-enum class GameStep { DRAG_DROP, SELECTION, REPEAT, COMPLETED }
+enum class GameStep { DRAG_DROP, SELECTION, AUDIO_PAIR, REPEAT, COMPLETED }
 
 data class GameUiState(
     val level: Level? = null,
@@ -117,15 +117,26 @@ class GameViewModel(
             viewModelScope.launch {
                 tts.speakAndWait(strings.selectionSuccess)
                 _state.value = _state.value.copy(
-                    currentStep = GameStep.REPEAT,
-                    feedback = null,
-                    recognitionMode = recognizer.mode
+                    currentStep = GameStep.AUDIO_PAIR,
+                    feedback = null
                 )
             }
         } else {
             val errors = _state.value.errors + 1
             tts.speak(strings.selectionError)
             _state.value = _state.value.copy(errors = errors, feedback = strings.tryAgain)
+        }
+    }
+
+    fun onAudioPairCompleted() {
+        val strings = _state.value.strings
+        viewModelScope.launch {
+            tts.speakAndWait(strings.audioPairSuccess)
+            _state.value = _state.value.copy(
+                currentStep = GameStep.REPEAT,
+                feedback = null,
+                recognitionMode = recognizer.mode
+            )
         }
     }
 

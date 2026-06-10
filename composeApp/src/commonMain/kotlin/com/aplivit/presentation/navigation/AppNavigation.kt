@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.aplivit.core.domain.usecase.NavigationUseCase
+import com.aplivit.core.domain.model.AudioPairExercise
 import com.aplivit.core.domain.model.LinkExercise
 import com.aplivit.core.domain.model.LinkItem
 import com.aplivit.core.domain.model.LinkPair
@@ -17,6 +18,7 @@ import com.aplivit.core.domain.model.DragExercise
 import com.aplivit.core.domain.model.DragType
 import com.aplivit.core.domain.model.VocalizeExercise
 import com.aplivit.core.domain.model.VocalizeType
+import com.aplivit.presentation.screen.exercise.AudioPairExerciseScreen
 import com.aplivit.presentation.screen.exercise.DragExerciseScreen
 import com.aplivit.presentation.screen.exercise.LetterTracingScreen
 import com.aplivit.presentation.screen.exercise.VocalizeExerciseScreen
@@ -52,6 +54,8 @@ private const val ROUTE_LINK_TEST = "link_test"
 private const val ROUTE_DRAG_TEST = "drag_test"
 private const val ROUTE_VOCALIZE_TEST = "vocalize_test"
 private const val ROUTE_LETTER_TRACING_TEST = "letter_tracing_test"
+private const val ROUTE_AUDIO_PAIR_LETTER_TEST = "audio_pair_letter_test"
+private const val ROUTE_AUDIO_PAIR_SYLLABLE_TEST = "audio_pair_syllable_test"
 
 /** Mostrar RecapScreen cada N niveles completados. Cambiar este valor para ajustar la frecuencia. */
 private const val RECAP_EVERY_N_LEVELS = 3
@@ -259,6 +263,28 @@ fun AppNavigation() {
         composable(ROUTE_LETTER_TRACING_TEST) {
             LetterTracingScreen(
                 letter = "A",
+                onBackClick = { navController.popBackStack() },
+                onForwardClick = { navController.popBackStack() }
+            )
+        }
+        composable(ROUTE_AUDIO_PAIR_LETTER_TEST) {
+            AudioPairExerciseScreen(
+                exercise = AudioPairExercise(
+                    id = 100,
+                    target = "a",
+                    options = listOf("a", "E", "i", "A")
+                ),
+                onBackClick = { navController.popBackStack() },
+                onForwardClick = { navController.popBackStack() }
+            )
+        }
+        composable(ROUTE_AUDIO_PAIR_SYLLABLE_TEST) {
+            AudioPairExerciseScreen(
+                exercise = AudioPairExercise(
+                    id = 101,
+                    target = "ma",
+                    options = listOf("pa", "ma", "mA", "TE")
+                ),
                 onBackClick = { navController.popBackStack() },
                 onForwardClick = { navController.popBackStack() }
             )
