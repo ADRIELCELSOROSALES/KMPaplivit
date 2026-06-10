@@ -109,6 +109,12 @@ fun GameScreen(
                 strings = state.strings,
                 onResult = { correct -> vm.onSelectionCompleted(correct) }
             )
+            GameStep.LINK -> LinkGameScreen(
+                level = level,
+                feedback = state.feedback,
+                strings = state.strings,
+                onResult = { correct -> vm.onLinkCompleted(correct) }
+            )
             GameStep.AUDIO_PAIR -> AudioPairGameScreen(
                 level = level,
                 feedback = state.feedback,
