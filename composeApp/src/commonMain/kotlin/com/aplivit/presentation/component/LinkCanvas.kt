@@ -24,7 +24,8 @@ fun LinkCanvas(
     flashCorrect: Boolean,
     leftOffsets: Map<Int, Offset>,
     rightOffsets: Map<Int, Offset>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    dragLine: Pair<Offset, Offset>? = null
 ) {
     Canvas(modifier = modifier) {
         val strokeWidth = 6.dp.toPx()
@@ -48,6 +49,17 @@ fun LinkCanvas(
             val end = rightOffsets[pair.right] ?: return@let
             drawLine(
                 color = if (flashCorrect) AppColors.FeedbackCorrect else AppColors.FeedbackIncorrect,
+                start = start,
+                end = end,
+                strokeWidth = strokeWidth,
+                cap = StrokeCap.Round
+            )
+        }
+
+        // Línea activa que sigue el dedo durante el drag
+        dragLine?.let { (start, end) ->
+            drawLine(
+                color = AppColors.InkDark,
                 start = start,
                 end = end,
                 strokeWidth = strokeWidth,
