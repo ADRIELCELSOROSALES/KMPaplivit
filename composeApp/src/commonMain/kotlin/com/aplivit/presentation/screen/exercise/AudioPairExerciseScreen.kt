@@ -1,10 +1,8 @@
 package com.aplivit.presentation.screen.exercise
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,7 +38,6 @@ fun AudioPairExerciseScreen(
 
     val isLandscape = rememberIsLandscape()
     val outerPadding = if (isLandscape) 16.dp else 24.dp
-    val rowSpacing = if (isLandscape) 16.dp else 24.dp
 
     BaseExerciseScreen(
         onMicClick = {},
@@ -49,29 +46,20 @@ fun AudioPairExerciseScreen(
         onForwardClick = onForwardClick,
         forwardEnabled = state.isCompleted
     ) {
-        Column(
+        Row(
             modifier = Modifier.fillMaxSize().padding(outerPadding),
-            verticalArrangement = Arrangement.spacedBy(rowSpacing, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            exercise.options.chunked(2).forEachIndexed { rowIdx, rowOptions ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    rowOptions.forEachIndexed { colIdx, option ->
-                        val index = rowIdx * 2 + colIdx
-                        AudioPairOptionCard(
-                            option = option,
-                            index = index,
-                            flash = state.flashState[index],
-                            isFound = index in state.foundCorrect,
-                            salienceEnabled = exercise.useSalience,
-                            onClick = { vm.onOptionTapped(index) }
-                        )
-                    }
-                }
+            exercise.options.forEachIndexed { index, option ->
+                AudioPairOptionCard(
+                    option = option,
+                    index = index,
+                    flash = state.flashState[index],
+                    isFound = index in state.foundCorrect,
+                    salienceEnabled = exercise.useSalience,
+                    onClick = { vm.onOptionTapped(index) }
+                )
             }
         }
     }

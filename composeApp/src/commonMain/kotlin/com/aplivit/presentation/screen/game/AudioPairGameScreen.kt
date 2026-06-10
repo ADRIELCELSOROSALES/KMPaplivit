@@ -25,7 +25,6 @@ import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.SyllableCard
 import com.aplivit.presentation.screen.exercise.AudioPairViewModel
 import com.aplivit.presentation.screen.exercise.FlashState
-import com.aplivit.presentation.util.rememberIsLandscape
 import com.aplivit.shared.AppStrings
 import org.koin.compose.koinInject
 
@@ -59,36 +58,24 @@ fun AudioPairGameScreen(
         if (state.isCompleted) onCompleted()
     }
 
-    val isLandscape = rememberIsLandscape()
-    val rowSpacing = if (isLandscape) 16.dp else 24.dp
-
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Column(
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(rowSpacing),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            exercise.options.chunked(2).forEachIndexed { rowIdx, rowOptions ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    rowOptions.forEachIndexed { colIdx, option ->
-                        val index = rowIdx * 2 + colIdx
-                        AudioPairOptionCard(
-                            option = option,
-                            flash = state.flashState[index],
-                            isFound = index in state.foundCorrect,
-                            salienceEnabled = exercise.useSalience,
-                            onClick = { vm.onOptionTapped(index) }
-                        )
-                    }
-                }
+            exercise.options.forEachIndexed { index, option ->
+                AudioPairOptionCard(
+                    option = option,
+                    flash = state.flashState[index],
+                    isFound = index in state.foundCorrect,
+                    salienceEnabled = exercise.useSalience,
+                    onClick = { vm.onOptionTapped(index) }
+                )
             }
         }
 
