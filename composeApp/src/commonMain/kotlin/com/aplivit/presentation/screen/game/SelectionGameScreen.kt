@@ -15,22 +15,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.presentation.component.SyllableCard
 import com.aplivit.shared.AppStrings
 import org.koin.compose.koinInject
 
-// Fixed pool of all syllables for generating distractors
 private val ALL_SYLLABLES = listOf(
     "MA", "ME", "MI", "PA", "PE", "PI",
     "SA", "SE", "SI", "LA", "LE", "LI",
-    "CA", "CO", "CU", "TA", "TE", "TI"
+    "CA", "CO", "CU", "TA", "TE", "TI",
+    "HO", "PO", "GA", "BO", "DO", "NI",
+    "RO", "LU", "NO", "LO", "GO", "NU",
+    "BE", "JO", "GRA", "CIAS"
+)
+
+private val ALL_WORDS = listOf(
+    "BUENOS", "DIAS", "BUENAS", "NOCHES", "TARDES",
+    "MUCHAS", "GRACIAS", "NADA", "FAVOR", "COMO",
+    "ESTAS", "BIEN", "LUEGO", "HASTA", "PERMISO",
+    "SIENTO", "MUCHO", "GUSTO", "TAL", "ENTIENDO",
+    "POR", "CON", "LO", "QUE", "DE", "ESTOY",
+    "PROVECHO", "BUEN", "IGUALMENTE", "DISCULPA"
 )
 
 @Composable
@@ -43,9 +54,11 @@ fun SelectionGameScreen(
     val tts: SpeechSynthesizer = koinInject()
     var currentSyllableIndex by remember { mutableIntStateOf(0) }
     val targetSyllable = level.syllables.getOrNull(currentSyllableIndex)?.text ?: ""
+    val isPhrase = level.word.contains(" ")
 
     val options = remember(targetSyllable) {
-        val distractors = ALL_SYLLABLES
+        val pool = if (isPhrase) ALL_WORDS else ALL_SYLLABLES
+        val distractors = pool
             .filter { it != targetSyllable }
             .shuffled()
             .take(2)
@@ -53,7 +66,7 @@ fun SelectionGameScreen(
     }
 
     LaunchedEffect(targetSyllable) {
-        if (targetSyllable.isNotEmpty()) tts.speak(targetSyllable)
+        if (targetSyllable.isNotEmpty()) tts.speakSyllable(targetSyllable)
     }
 
     Column(
@@ -61,32 +74,6 @@ fun SelectionGameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Juego 2: Escucha y elige",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = "Sílaba ${currentSyllableIndex + 1} de ${level.syllables.size}",
-            fontSize = 14.sp,
-            color = Color.Gray,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = "¿Qué sílaba escuchaste?",
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        SyllableCard(
-            text = "▶",
-            onClick = { tts.speak(targetSyllable) },
-            backgroundColor = Color(0xFF2196F3)
-        )
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -101,8 +88,7 @@ fun SelectionGameScreen(
                             // Move to next syllable in this level
                         }
                         onResult(correct)
-                    },
-                    backgroundColor = Color(0xFF4CAF50)
+                    }
                 )
             }
         }
@@ -110,7 +96,7 @@ fun SelectionGameScreen(
         if (feedback != null) {
             Text(
                 text = feedback,
-                color = Color.Red,
+                color = AppColors.FeedbackIncorrect,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)

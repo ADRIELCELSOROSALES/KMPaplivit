@@ -11,27 +11,25 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.core.domain.model.Level
-import com.aplivit.core.port.RecognitionMode
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.core.port.SpeechSynthesizer
-import com.aplivit.presentation.component.AudioButton
+import com.aplivit.presentation.util.rememberIsLandscape
 import com.aplivit.shared.AppStrings
 import org.koin.compose.koinInject
 
 @Composable
 fun RepeatGameScreen(
     level: Level,
-    recognitionMode: RecognitionMode,
     isListening: Boolean,
     feedback: String?,
     strings: AppStrings,
-    onStartListening: (String) -> Unit,
-    onStopListening: () -> Unit
+    onStopListening: () -> Unit,
+    onStartListening: () -> Unit = {}
 ) {
     val tts: SpeechSynthesizer = koinInject()
 
@@ -40,66 +38,47 @@ fun RepeatGameScreen(
     }
 
     LaunchedEffect(Unit) {
-        tts.speak("${strings.speak}: ${level.word}")
+        tts.speakAndWait(level.word.lowercase())
+        onStartListening()
+    }
+
+    val isLandscape = rememberIsLandscape()
+    val wordFontSize = when {
+        level.word.length <= 8  -> if (isLandscape) 40.sp else 64.sp
+        level.word.length <= 14 -> if (isLandscape) 32.sp else 48.sp
+        level.word.length <= 20 -> if (isLandscape) 24.sp else 36.sp
+        else                    -> 28.sp
     }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Juego 3: Repite la palabra",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = if (recognitionMode == RecognitionMode.STT) "Modo: Reconocimiento de voz"
-                   else "Modo: Detección de sonido",
-            fontSize = 12.sp,
-            color = Color.Gray,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
             text = level.word,
-            fontSize = 48.sp,
+            fontSize = wordFontSize,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF1565C0),
+            color = AppColors.InkDark,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
-        AudioButton(
-            icon = "👂",
-            label = strings.speak,
-            onClick = { tts.speak(level.word) }
-        )
-        Text(
-            text = if (isListening) strings.listening else strings.speak,
-            fontSize = 16.sp,
-            color = if (isListening) Color(0xFFF44336) else Color.Black,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        AudioButton(
-            icon = if (isListening) "⏹" else "🎤",
-            label = if (isListening) strings.stop else strings.speak,
-            isActive = isListening,
-            onClick = {
-                if (isListening) onStopListening()
-                else onStartListening(level.word)
-            }
-        )
-
+        if (isListening) {
+            Text(
+                text = strings.listening,
+                fontSize = 18.sp,
+                color = AppColors.FeedbackIncorrect,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+            )
+        }
         if (feedback != null) {
             Text(
                 text = feedback,
-                color = Color.Red,
+                color = AppColors.FeedbackIncorrect,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
             )
         }
     }

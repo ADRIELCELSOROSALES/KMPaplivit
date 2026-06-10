@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-enum class GameStep { DRAG_DROP, SELECTION, REPEAT, COMPLETED }
+enum class GameStep { DRAG_DROP, SELECTION, AUDIO_PAIR, REPEAT, COMPLETED }
 
 data class GameUiState(
     val level: Level? = null,
@@ -66,6 +66,14 @@ class GameViewModel(
                 strings = strings
             )
             tts.setLanguage(language)
+            level?.let {
+                tts.speak("${strings.levelIntro} ${it.word.lowercase()}. ${strings.dragDropInstruction.lowercase()}")
+                val progress = progressRepository.loadProgress(language)
+                progressRepository.saveProgress(
+                    progress.copy(currentLevel = levelId, currentExercise = 1),
+                    language
+                )
+            }
         }
     }
 
@@ -87,24 +95,32 @@ class GameViewModel(
     fun onDragDropCompleted(correct: Boolean) {
         val strings = _state.value.strings
         if (correct) {
-            tts.speak(strings.dragDropSuccess)
-            _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = null)
+            viewModelScope.launch {
+                tts.speakAndWait(strings.dragDropSuccess)
+                _state.value = _state.value.copy(currentStep = GameStep.SELECTION, feedback = null)
+            }
         } else {
             val errors = _state.value.errors + 1
             tts.speak(strings.tryAgain)
             _state.value = _state.value.copy(errors = errors, feedback = strings.tryAgain)
+            viewModelScope.launch {
+                delay(1500L)
+                onDragDropReset()
+                _state.value = _state.value.copy(feedback = null)
+            }
         }
     }
 
     fun onSelectionCompleted(correct: Boolean) {
         val strings = _state.value.strings
         if (correct) {
-            tts.speak(strings.selectionSuccess)
-            _state.value = _state.value.copy(
-                currentStep = GameStep.REPEAT,
-                feedback = null,
-                recognitionMode = recognizer.mode
-            )
+            viewModelScope.launch {
+                tts.speakAndWait(strings.selectionSuccess)
+                _state.value = _state.value.copy(
+                    currentStep = GameStep.AUDIO_PAIR,
+                    feedback = null
+                )
+            }
         } else {
             val errors = _state.value.errors + 1
             tts.speak(strings.selectionError)
@@ -112,9 +128,22 @@ class GameViewModel(
         }
     }
 
+    fun onAudioPairCompleted() {
+        val strings = _state.value.strings
+        viewModelScope.launch {
+            tts.speakAndWait(strings.audioPairSuccess)
+            _state.value = _state.value.copy(
+                currentStep = GameStep.REPEAT,
+                feedback = null,
+                recognitionMode = recognizer.mode
+            )
+        }
+    }
+
     fun startListening(expected: String) {
         _state.value = _state.value.copy(isListening = true)
-        recognizer.startListening(expected) { result ->
+        val language = progressRepository.getSelectedLanguage()
+        recognizer.startListening(expected, language) { result ->
             viewModelScope.launch {
                 handleRecognitionResult(result, expected)
             }

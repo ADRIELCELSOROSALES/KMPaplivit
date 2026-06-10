@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.core.port.UsageTracker
 import com.aplivit.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -40,6 +41,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             App()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getKoin().get<UsageTracker>().startSession()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        getKoin().get<UsageTracker>().endSession()
     }
 
     override fun onDestroy() {

@@ -9,6 +9,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer as AndroidSpeechRecognizerApi
 import com.aplivit.AppContext
+import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.RecognitionMode
 import com.aplivit.core.port.RecognitionResult
 import com.aplivit.core.port.SpeechRecognizer
@@ -19,12 +20,12 @@ class AndroidSpeechRecognizer(private val context: Context) : SpeechRecognizer {
 
     private var recognizer: AndroidSpeechRecognizerApi? = null
 
-    override fun startListening(expected: String, onResult: (RecognitionResult) -> Unit) {
+    override fun startListening(expected: String, language: AppLanguage, onResult: (RecognitionResult) -> Unit) {
         if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             val requestPermission = AppContext.requestMicPermission
             if (requestPermission != null) {
                 requestPermission { isGranted ->
-                    if (isGranted) startListeningInternal(expected, onResult)
+                    if (isGranted) startListeningInternal(expected, language, onResult)
                     else onResult(RecognitionResult.PermissionDenied)
                 }
             } else {
@@ -32,15 +33,15 @@ class AndroidSpeechRecognizer(private val context: Context) : SpeechRecognizer {
             }
             return
         }
-        startListeningInternal(expected, onResult)
+        startListeningInternal(expected, language, onResult)
     }
 
-    private fun startListeningInternal(expected: String, onResult: (RecognitionResult) -> Unit) {
+    private fun startListeningInternal(expected: String, language: AppLanguage, onResult: (RecognitionResult) -> Unit) {
         try {
             recognizer = AndroidSpeechRecognizerApi.createSpeechRecognizer(context)
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es")
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, language.code)
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
             }
             recognizer?.setRecognitionListener(object : RecognitionListener {

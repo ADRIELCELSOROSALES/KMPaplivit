@@ -1,10 +1,10 @@
 package com.aplivit.presentation.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -21,22 +23,40 @@ fun SyllableCard(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = Color(0xFF4CAF50)
+    backgroundColor: Color = AppColors.BgWhite,
+    textColor: Color = AppColors.InkDark,
+    salientEnabled: Boolean = true
 ) {
-    Box(
-        modifier = modifier
-            .size(80.dp)
-            .shadow(4.dp, RoundedCornerShape(12.dp))
-            .background(backgroundColor, RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
+    // SalientText envuelve TODO el contenido: graphicsLayer escala fondo + sombra + texto juntos.
+    SalientText(
+        onClick = onClick,
+        modifier = modifier,
+        salientEnabled = salientEnabled
     ) {
-        Text(
-            text = text,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
+        val adaptiveFontSize = when {
+            text.length <= 3 -> 28.sp
+            text.length <= 6 -> 20.sp
+            text.length <= 9 -> 15.sp
+            else             -> 12.sp
+        }
+        Box(
+            modifier = Modifier
+                .defaultMinSize(minWidth = 80.dp, minHeight = 56.dp)
+                .shadow(4.dp, RoundedCornerShape(12.dp))
+                .background(backgroundColor, RoundedCornerShape(12.dp))
+                .border(1.dp, AppColors.Outline, RoundedCornerShape(12.dp))
+                .padding(horizontal = 14.dp, vertical = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                fontSize = adaptiveFontSize,
+                fontWeight = FontWeight.Bold,
+                color = textColor,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }

@@ -42,12 +42,14 @@ class LevelViewModel(
             _state.value = LevelUiState(level = level, isLoading = false, strings = strings)
             tts.setLanguage(language)
             delay(150)
-            level?.let { l -> tts.speak(l.instruction) }
+            // Speak the word directly — avoids TTS misreading isolated syllables in the instruction text
+            // e.g. "me y sa" → TTS predicts "mesa" + "sábado", "ca" → "ce-a", "li" → "51"
+            level?.let { l -> tts.speak("${strings.levelIntro} ${l.word.lowercase()}.") }
         }
     }
 
     fun speakSyllable(syllable: String) {
-        tts.speak(syllable)
+        tts.speakSyllable(syllable)
     }
 
     override fun onCleared() {

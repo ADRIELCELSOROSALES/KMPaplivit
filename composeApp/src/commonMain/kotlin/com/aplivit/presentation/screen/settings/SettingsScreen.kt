@@ -24,10 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.remember
 import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
+import com.aplivit.presentation.component.AppColors
 import com.aplivit.shared.stringsFor
 import org.koin.compose.koinInject
 
@@ -41,7 +42,7 @@ private val languageFlags = mapOf(
 fun SettingsScreen(onBack: () -> Unit) {
     val repo: ProgressRepository = koinInject()
     val tts: SpeechSynthesizer = koinInject()
-    val vm: SettingsViewModel = viewModel { SettingsViewModel(repo, tts) }
+    val vm: SettingsViewModel = remember { SettingsViewModel(repo, tts) }
     val state by vm.state.collectAsState()
 
     val strings = stringsFor(state.selectedLanguage)
@@ -61,14 +62,14 @@ fun SettingsScreen(onBack: () -> Unit) {
             text = strings.settings,
             fontSize = 28.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF1565C0),
+            color = AppColors.InkDark,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
         Text(
             text = strings.selectLanguage,
             fontSize = 16.sp,
-            color = Color(0xFF757575),
+            color = AppColors.InkDark.copy(alpha = 0.5f),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -95,7 +96,7 @@ private fun LanguageCard(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val borderColor = if (isSelected) Color(0xFF4CAF50) else Color.Transparent
+    val borderColor = if (isSelected) AppColors.FeedbackCorrect else Color.Transparent
     val borderWidth = if (isSelected) 3.dp else 0.dp
 
     Card(
@@ -106,7 +107,7 @@ private fun LanguageCard(
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) Color(0xFFE8F5E9) else Color(0xFFF5F5F5)
+            containerColor = if (isSelected) AppColors.OutlineSoft else AppColors.BgWhite
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -122,7 +123,7 @@ private fun LanguageCard(
                 text = "  ${language.displayName}",
                 fontSize = 22.sp,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                color = Color(0xFF1565C0)
+                color = AppColors.InkDark
             )
         }
     }

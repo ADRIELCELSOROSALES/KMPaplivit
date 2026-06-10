@@ -4,6 +4,7 @@ import com.aplivit.core.domain.model.AppLanguage
 
 data class AppStrings(
     val welcome: String,
+    val resumeSession: String,
     val selectLevel: String,
     val nextLevel: String,
     val levelCompleted: String,
@@ -21,22 +22,29 @@ data class AppStrings(
     val settings: String,
     val selectLanguage: String,
     val permissionNeeded: String,
+    val dragDropInstruction: String,
     val dragDropSuccess: String,
     val selectionSuccess: String,
     val selectionError: String,
+    val audioPairInstruction: String,
+    val audioPairSuccess: String,
     val noSoundDetected: String,
     val recognitionError: String,
     val repeatError: String,
     val tapSyllableHint: String,
     val back: String,
-    val learnToRead: String
+    val learnToRead: String,
+    val recapTitle: String,
+    val levelIntro: String,     // "Vamos a aprender la palabra" — used for TTS to avoid isolated syllable tokens
+    val allLevelsCompleted: String
 )
 
 fun stringsFor(language: AppLanguage): AppStrings = when (language) {
     AppLanguage.SPANISH -> AppStrings(
-        welcome = "Bienvenido a Aplivit. Elegí un nivel para comenzar.",
+        welcome = "Bienvenido. Empecemos desde el principio.",
+        resumeSession = "Continuamos donde lo dejaste.",
         selectLevel = "Seleccioná un nivel para continuar.",
-        nextLevel = "¡Muy bien! Seleccioná el siguiente nivel para continuar.",
+        nextLevel = "¡Muy bien! Seguimos con el siguiente nivel.",
         levelCompleted = "¡Muy bien! Completaste el nivel.",
         lockedLevel = "Bloqueado",
         completedLabel = "Completado",
@@ -52,20 +60,27 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         settings = "Configuración",
         selectLanguage = "Elegí tu idioma",
         permissionNeeded = "Se necesita permiso de micrófono para este ejercicio.",
+        dragDropInstruction = "Arrastrá las sílabas para armar la palabra.",
         dragDropSuccess = "Muy bien. Ahora escuchá y elegí la sílaba correcta.",
-        selectionSuccess = "Excelente. Ahora repetí lo que escuchás.",
+        selectionSuccess = "Excelente. Ahora encontrá las dos iguales que suenan.",
         selectionError = "Eso no es correcto. Intentá de nuevo.",
+        audioPairInstruction = "Escuchá y tocá las dos iguales.",
+        audioPairSuccess = "Muy bien. Ahora repetí lo que escuchás.",
         noSoundDetected = "No te escuché. Intentá de nuevo.",
         recognitionError = "Hubo un error. Intentá de nuevo.",
         repeatError = "No fue correcto. Intentá de nuevo.",
         tapSyllableHint = "Tocá cada sílaba para escucharla",
         back = "Volver",
-        learnToRead = "Aprende a leer"
+        learnToRead = "Aprende a leer",
+        recapTitle = "Repaso",
+        levelIntro = "Vamos a aprender la palabra",
+        allLevelsCompleted = "¡Felicitaciones! Completaste todos los niveles."
     )
     AppLanguage.ENGLISH -> AppStrings(
-        welcome = "Welcome to Aplivit. Choose a level to start.",
+        welcome = "Welcome. Let's start from the beginning.",
+        resumeSession = "Continuing where you left off.",
         selectLevel = "Select a level to continue.",
-        nextLevel = "Great job! Select the next level to continue.",
+        nextLevel = "Great job! Let's continue with the next level.",
         levelCompleted = "Great job! You completed the level.",
         lockedLevel = "Locked",
         completedLabel = "Completed",
@@ -81,20 +96,27 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         settings = "Settings",
         selectLanguage = "Choose your language",
         permissionNeeded = "Microphone permission is needed for this exercise.",
+        dragDropInstruction = "Drag the syllables to form the word.",
         dragDropSuccess = "Great. Now listen and choose the correct syllable.",
-        selectionSuccess = "Excellent. Now repeat what you hear.",
+        selectionSuccess = "Excellent. Now find the two that sound the same.",
         selectionError = "That is not correct. Try again.",
+        audioPairInstruction = "Listen and tap the two that are the same.",
+        audioPairSuccess = "Great. Now repeat what you hear.",
         noSoundDetected = "I didn't hear you. Try again.",
         recognitionError = "There was an error. Try again.",
         repeatError = "That was not correct. Try again.",
         tapSyllableHint = "Tap each syllable to hear it",
         back = "Back",
-        learnToRead = "Learn to read"
+        learnToRead = "Learn to read",
+        recapTitle = "Review",
+        levelIntro = "Let's learn the word",
+        allLevelsCompleted = "Congratulations! You completed all levels."
     )
     AppLanguage.FRENCH -> AppStrings(
-        welcome = "Bienvenue sur Aplivit. Choisissez un niveau pour commencer.",
+        welcome = "Bienvenue. Commençons depuis le début.",
+        resumeSession = "Continuons là où tu t'es arrêté.",
         selectLevel = "Sélectionne un niveau pour continuer.",
-        nextLevel = "Bravo ! Sélectionne le niveau suivant pour continuer.",
+        nextLevel = "Bravo ! Continuons avec le niveau suivant.",
         levelCompleted = "Bravo ! Tu as complété le niveau.",
         lockedLevel = "Bloqué",
         completedLabel = "Complété",
@@ -110,14 +132,20 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         settings = "Paramètres",
         selectLanguage = "Choisis ta langue",
         permissionNeeded = "Permission du microphone nécessaire pour cet exercice.",
+        dragDropInstruction = "Fais glisser les syllabes pour former le mot.",
         dragDropSuccess = "Bien. Maintenant écoute et choisis la bonne syllabe.",
-        selectionSuccess = "Excellent. Maintenant répète ce que tu entends.",
+        selectionSuccess = "Excellent. Maintenant trouve les deux qui sonnent pareil.",
         selectionError = "Ce n'est pas correct. Réessaie.",
+        audioPairInstruction = "Écoute et touche les deux qui sont identiques.",
+        audioPairSuccess = "Bien. Maintenant répète ce que tu entends.",
         noSoundDetected = "Je ne t'ai pas entendu. Réessaie.",
         recognitionError = "Il y a eu une erreur. Réessaie.",
         repeatError = "Ce n'était pas correct. Réessaie.",
         tapSyllableHint = "Appuie sur chaque syllabe pour l'entendre",
         back = "Retour",
-        learnToRead = "Apprendre à lire"
+        learnToRead = "Apprendre à lire",
+        recapTitle = "Révision",
+        levelIntro = "Apprenons le mot",
+        allLevelsCompleted = "Félicitations ! Tu as complété tous les niveaux."
     )
 }
