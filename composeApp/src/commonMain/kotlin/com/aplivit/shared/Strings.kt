@@ -3,6 +3,7 @@ package com.aplivit.shared
 import com.aplivit.core.domain.model.AppLanguage
 
 data class AppStrings(
+    val splashWelcome: String,
     val welcome: String,
     val resumeSession: String,
     val selectLevel: String,
@@ -43,6 +44,7 @@ data class AppStrings(
 
 fun stringsFor(language: AppLanguage): AppStrings = when (language) {
     AppLanguage.SPANISH -> AppStrings(
+        splashWelcome = "Bienvenidos a Aplivit",
         welcome = "Bienvenido. Empecemos desde el principio.",
         resumeSession = "Continuamos donde lo dejaste.",
         selectLevel = "Seleccioná un nivel para continuar.",
@@ -81,6 +83,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         allLevelsCompleted = "¡Felicitaciones! Completaste todos los niveles."
     )
     AppLanguage.ENGLISH -> AppStrings(
+        splashWelcome = "Welcome to Aplivit",
         welcome = "Welcome. Let's start from the beginning.",
         resumeSession = "Continuing where you left off.",
         selectLevel = "Select a level to continue.",
@@ -119,6 +122,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         allLevelsCompleted = "Congratulations! You completed all levels."
     )
     AppLanguage.FRENCH -> AppStrings(
+        splashWelcome = "Bienvenue sur Aplivit",
         welcome = "Bienvenue. Commençons depuis le début.",
         resumeSession = "Continuons là où tu t'es arrêté.",
         selectLevel = "Sélectionne un niveau pour continuer.",

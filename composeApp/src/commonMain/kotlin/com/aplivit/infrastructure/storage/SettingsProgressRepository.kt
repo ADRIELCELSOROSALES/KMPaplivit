@@ -1,5 +1,6 @@
 package com.aplivit.infrastructure.storage
 
+import com.aplivit.config.AppConfig
 import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.domain.model.UserProgress
 import com.aplivit.core.port.ProgressRepository
@@ -53,8 +54,9 @@ class SettingsProgressRepository(private val settings: Settings) : ProgressRepos
     }
 
     override fun getSelectedLanguage(): AppLanguage {
-        val code = settings.getString(KEY_SELECTED_LANGUAGE, AppLanguage.ENGLISH.code)
-        return AppLanguage.entries.find { it.code == code } ?: AppLanguage.ENGLISH
+        val default = AppLanguage.fromCode(AppConfig.DEFAULT_LANGUAGE_CODE)
+        val code = settings.getString(KEY_SELECTED_LANGUAGE, default.code)
+        return AppLanguage.entries.find { it.code == code } ?: default
     }
 
     override fun saveSelectedLanguage(language: AppLanguage) {

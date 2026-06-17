@@ -7,11 +7,17 @@ import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.port.SpeechSynthesizer
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
 import kotlin.coroutines.resume
 
 class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
+
+    private companion object {
+        const val READY_POLL_MS = 50L
+        const val READY_TIMEOUT_MS = 3000L
+    }
 
     private var tts: TextToSpeech? = null
     private var isReady = false
@@ -77,9 +83,15 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
 
     override suspend fun speakAndWait(text: String) {
         Log.d("TTS", "speakAndWait() INICIO isReady=$isReady text='$text'")
+        // El motor TTS inicializa de forma asíncrona; esperamos a que esté listo
+        // (con tope de seguridad) para no devolver sin hablar.
+        var waitedMs = 0L
+        while (!isReady && waitedMs < READY_TIMEOUT_MS) {
+            delay(READY_POLL_MS)
+            waitedMs += READY_POLL_MS
+        }
         if (!isReady) {
-            Log.w("TTS", "speakAndWait() TTS no listo, guardando en pendingText")
-            pendingText = text
+            Log.w("TTS", "speakAndWait() TTS no listo tras ${waitedMs}ms, se omite")
             return
         }
         suspendCancellableCoroutine { cont ->

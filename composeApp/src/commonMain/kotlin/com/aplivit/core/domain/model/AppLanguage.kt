@@ -7,5 +7,15 @@ enum class AppLanguage(
 ) {
     SPANISH("es", "Español", "es-ES"),
     ENGLISH("en", "English", "en-US"),
-    FRENCH("fr", "Français", "fr-FR")
+    FRENCH("fr", "Français", "fr-FR");
+
+    companion object {
+        /** 1 = Español, 2 = Francés, 3 = Inglés */
+        fun fromCode(code: Int): AppLanguage = when (code) {
+            1 -> SPANISH
+            2 -> FRENCH
+            3 -> ENGLISH
+            else -> SPANISH
+        }
+    }
 }
