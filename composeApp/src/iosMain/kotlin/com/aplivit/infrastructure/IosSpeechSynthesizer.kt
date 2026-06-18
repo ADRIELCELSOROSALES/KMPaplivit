@@ -34,10 +34,19 @@ class IosSpeechSynthesizer : SpeechSynthesizer {
     override fun speakWord(text: String) = speakWithRate(text.lowercase(), 0.4f)
     override fun speakSentence(text: String) = speakWithRate(text, 0.4f)
 
-    override suspend fun speakAndWait(text: String) {
+    override suspend fun speakSyllableAndWait(text: String) =
+        // Lowercase: evita que el TTS lea sílabas en mayúscula como números romanos.
+        speakAndWaitWithRate(text.lowercase(), 0.3f)
+
+    override suspend fun speakWordAndWait(text: String) =
+        speakAndWaitWithRate(text.lowercase(), 0.4f)
+
+    override suspend fun speakAndWait(text: String) = speakAndWaitWithRate(text, 0.4f)
+
+    private suspend fun speakAndWaitWithRate(text: String, rate: Float) {
         suspendCancellableCoroutine { cont ->
             synthDelegate.onFinish = { cont.resume(Unit) }
-            speakWithRate(text, 0.4f)
+            speakWithRate(text, rate)
             cont.invokeOnCancellation {
                 synthDelegate.onFinish = null
                 stop()

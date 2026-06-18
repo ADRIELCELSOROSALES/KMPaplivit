@@ -103,6 +103,12 @@ fun GameScreen(
                 onSyllableMoved = { syllable -> vm.onSyllableMoved(syllable) },
                 onResult = { correct -> vm.onDragDropCompleted(correct) }
             )
+            GameStep.ORDER -> OrderGameScreen(
+                level = level,
+                feedback = state.feedback,
+                strings = state.strings,
+                onResult = { correct -> vm.onOrderCompleted(correct) }
+            )
             GameStep.SELECTION -> SelectionGameScreen(
                 level = level,
                 feedback = state.feedback,

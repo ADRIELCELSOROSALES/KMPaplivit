@@ -81,8 +81,21 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
         speakWithRate(text, 1.0f)
     }
 
+    override suspend fun speakSyllableAndWait(text: String) {
+        // Lowercase: evita que el TTS lea sílabas en mayúscula como números romanos.
+        speakAndWaitWithRate(text.lowercase(), 0.5f)
+    }
+
+    override suspend fun speakWordAndWait(text: String) {
+        speakAndWaitWithRate(text.lowercase(), 1.0f)
+    }
+
     override suspend fun speakAndWait(text: String) {
-        Log.d("TTS", "speakAndWait() INICIO isReady=$isReady text='$text'")
+        speakAndWaitWithRate(text, 1.0f)
+    }
+
+    private suspend fun speakAndWaitWithRate(text: String, rate: Float) {
+        Log.d("TTS", "speakAndWait() INICIO isReady=$isReady text='$text' rate=$rate")
         // El motor TTS inicializa de forma asíncrona; esperamos a que esté listo
         // (con tope de seguridad) para no devolver sin hablar.
         var waitedMs = 0L
@@ -136,7 +149,7 @@ class AndroidSpeechSynthesizer(context: Context) : SpeechSynthesizer {
 
             val bundle = Bundle()
             bundle.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId)
-            tts?.setSpeechRate(1.0f)  // reset rate — may have been lowered by speakSyllable
+            tts?.setSpeechRate(rate)  // velocidad explícita (sílaba lenta vs. palabra normal)
             tts?.speak(text, TextToSpeech.QUEUE_FLUSH, bundle, utteranceId)
 
             cont.invokeOnCancellation {
