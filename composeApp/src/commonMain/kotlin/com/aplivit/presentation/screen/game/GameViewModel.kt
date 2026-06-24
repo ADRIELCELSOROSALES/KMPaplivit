@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-enum class GameStep { DRAG_DROP, ORDER, SELECTION, LINK, AUDIO_PAIR, REPEAT, COMPLETED }
+enum class GameStep { DRAG_DROP, ORDER, SELECTION, LINK, IMAGE_LINK, AUDIO_PAIR, REPEAT, COMPLETED }
 
 data class GameUiState(
     val level: Level? = null,
@@ -145,12 +145,30 @@ class GameViewModel(
     fun onLinkCompleted(correct: Boolean) {
         val strings = _state.value.strings
         if (correct) {
+            val level = _state.value.level
+            val hasImage = level != null && levelHasImage(level)
             viewModelScope.launch {
-                tts.speakAndWait(strings.linkSuccess)
-                _state.value = _state.value.copy(
-                    currentStep = GameStep.AUDIO_PAIR,
-                    feedback = null
-                )
+                if (hasImage) {
+                    tts.speakAndWait(strings.imageLinkSuccess)
+                    _state.value = _state.value.copy(currentStep = GameStep.IMAGE_LINK, feedback = null)
+                } else {
+                    tts.speakAndWait(strings.linkSuccess)
+                    _state.value = _state.value.copy(currentStep = GameStep.AUDIO_PAIR, feedback = null)
+                }
+            }
+        } else {
+            val errors = _state.value.errors + 1
+            tts.speak(strings.tryAgain)
+            _state.value = _state.value.copy(errors = errors, feedback = strings.tryAgain)
+        }
+    }
+
+    fun onImageLinkCompleted(correct: Boolean) {
+        val strings = _state.value.strings
+        if (correct) {
+            viewModelScope.launch {
+                tts.speakAndWait(strings.linkSuccess)  // mismo mensaje que lleva al juego de par de audio
+                _state.value = _state.value.copy(currentStep = GameStep.AUDIO_PAIR, feedback = null)
             }
         } else {
             val errors = _state.value.errors + 1

@@ -121,6 +121,12 @@ fun GameScreen(
                 strings = state.strings,
                 onResult = { correct -> vm.onLinkCompleted(correct) }
             )
+            GameStep.IMAGE_LINK -> ImageLinkGameScreen(
+                level = level,
+                feedback = state.feedback,
+                strings = state.strings,
+                onResult = { correct -> vm.onImageLinkCompleted(correct) }
+            )
             GameStep.AUDIO_PAIR -> AudioPairGameScreen(
                 level = level,
                 feedback = state.feedback,
