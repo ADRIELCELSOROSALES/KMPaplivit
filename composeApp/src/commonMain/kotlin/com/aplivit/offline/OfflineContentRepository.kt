@@ -5,9 +5,11 @@ import com.aplivit.core.port.ConnectivityChecker
 import com.aplivit.core.port.ContentRepository
 import com.aplivit.core.port.ContentSyncResult
 import com.aplivit.core.port.FlushResult
+import com.aplivit.core.port.ProgressRepository
 import com.aplivit.infrastructure.nowEpochMillis
 import com.aplivit.infrastructure.remote.AttemptApi
 import com.aplivit.infrastructure.remote.ContentApi
+import com.aplivit.infrastructure.remote.MyLanguageApi
 import com.aplivit.infrastructure.remote.dto.RemoteExerciseDto
 import com.aplivit.infrastructure.remote.dto.SyncAttemptItemDto
 import com.aplivit.infrastructure.remote.dto.SyncAttemptsRequestDto
@@ -28,6 +30,8 @@ class OfflineContentRepository(
     private val queue: AttemptQueue,
     private val connectivity: ConnectivityChecker,
     private val levelMapper: BackendLevelMapper,
+    private val progressRepository: ProgressRepository,
+    private val myLanguageApi: MyLanguageApi,
     // Tamaño del lote a cachear desde la posición actual del alumno (RF-13). pending-exercises NO
     // tiene cursor/offset: siempre devuelve desde la posición actual hacia adelante, así que se
     // pide UN lote (no se pagina sobre has_more, eso duplicaría). 200 = máximo que acepta el
@@ -37,15 +41,27 @@ class OfflineContentRepository(
 
     override fun cachedExercises(): List<RemoteExerciseDto> = cache.load()?.exercises ?: emptyList()
 
+    override fun cachedLanguage(): String? = cache.cachedLanguage()
+
     override fun pendingAttemptCount(): Int = queue.size()
 
     override suspend fun refreshContent(): ContentSyncResult {
         if (!connectivity.isConnected()) return ContentSyncResult.Offline
 
+        // El backend sirve el contenido en el idioma de preferencia del alumno (RF-09b): se fija
+        // ese idioma ANTES de pedir el contenido, para que venga traducido al idioma seleccionado.
+        val language = progressRepository.getSelectedLanguage()
+        runCatching { myLanguageApi.setLanguage(language.toRemote()) }
+
         val version = runCatching { contentApi.getContentVersion() }
             .getOrElse { return ContentSyncResult.Failed(it.message) }
 
-        if (cache.cachedContentVersion() == version.contentVersion) return ContentSyncResult.UpToDate
+        // Cache válido solo si coinciden versión E idioma (el cache es por idioma).
+        if (cache.cachedContentVersion() == version.contentVersion &&
+            cache.cachedLanguage() == language.code
+        ) {
+            return ContentSyncResult.UpToDate
+        }
 
         val page = try {
             contentApi.getPendingExercises(batchLimit)
@@ -53,7 +69,7 @@ class OfflineContentRepository(
             return ContentSyncResult.Failed(e.message)
         }
 
-        cache.save(CachedContent(version.schemaVersion, version.contentVersion, page.items))
+        cache.save(CachedContent(version.schemaVersion, version.contentVersion, language.code, page.items))
         return ContentSyncResult.Updated(page.items.size, version.contentVersion)
     }
 

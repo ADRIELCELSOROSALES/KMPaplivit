@@ -17,16 +17,21 @@ class GetLevelsUseCase(
     private val levelMapper: BackendLevelMapper
 ) {
     suspend fun execute(language: AppLanguage = AppLanguage.SPANISH): List<Level> {
-        val cached = levelMapper.toLevels(contentRepository.cachedExercises())
-        if (cached.isNotEmpty()) return cached
+        // Usar el cache solo si es del idioma seleccionado (el cache es por idioma).
+        if (contentRepository.cachedLanguage() == language.code) {
+            val cached = levelMapper.toLevels(contentRepository.cachedExercises())
+            if (cached.isNotEmpty()) return cached
+        }
 
-        // Cache vacío (primer arranque): intentar traer del backend ANTES de caer al JSON local,
-        // así Home muestra el contenido del backend ya en la primera carga (evita el race con el
-        // sync en background). Si no hay red/sesión, refreshContent es no-op y se usa el local.
+        // Cache vacío o de otro idioma: traer del backend en el idioma actual ANTES de caer al
+        // JSON local (evita el race con el sync y sirve el idioma correcto). No-op sin red/sesión.
         contentRepository.refreshContent()
-        val fromBackend = levelMapper.toLevels(contentRepository.cachedExercises())
-        if (fromBackend.isNotEmpty()) return fromBackend
+        if (contentRepository.cachedLanguage() == language.code) {
+            val fromBackend = levelMapper.toLevels(contentRepository.cachedExercises())
+            if (fromBackend.isNotEmpty()) return fromBackend
+        }
 
+        // Respaldo local (levels_<code>.json, ya en el idioma correcto).
         return levelsLoader.load(language)
     }
 }

@@ -25,6 +25,7 @@ import com.aplivit.auth.providePlatformGameSignIn
 import com.aplivit.infrastructure.remote.AttemptApi
 import com.aplivit.infrastructure.remote.AuthApi
 import com.aplivit.infrastructure.remote.ContentApi
+import com.aplivit.infrastructure.remote.MyLanguageApi
 import com.aplivit.infrastructure.remote.createApiHttpClient
 import com.aplivit.infrastructure.storage.SettingsProgressRepository
 import com.aplivit.offline.AttemptQueue
@@ -60,10 +61,11 @@ val appModule = module {
     single { AuthApi(get()) }
     single { ContentApi(get()) }
     single { AttemptApi(get()) }
+    single { MyLanguageApi(get()) }
     single { ContentCache(get()) }
     single { AttemptQueue(get()) }
     single { SessionManager(get(), get(), get()) }
-    single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get(), get()) }
+    single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get(), get(), get(), get()) }
     single { BackendExerciseMapper() }
     single { BackendLevelMapper() }
     single { SyncCoordinator(get(), get(), get()) }
@@ -74,7 +76,7 @@ val appModule = module {
     factory { UnlockNextLevelUseCase(get()) }
     factory { NavigationUseCase(get()) }
     factory { SessionResumeUseCase(get()) }
-    factory { SettingsViewModel(get(), get()) }
+    factory { SettingsViewModel(get(), get(), get()) }
     factory { TouchViewModel(get(), get()) }
     factory { LetterTracingViewModel(get(), get()) }
 }

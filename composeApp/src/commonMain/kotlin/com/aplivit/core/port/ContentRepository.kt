@@ -11,6 +11,9 @@ interface ContentRepository {
     /** Ejercicios cacheados localmente (lo que la app usa para jugar, con o sin internet). */
     fun cachedExercises(): List<RemoteExerciseDto>
 
+    /** Código de idioma ("es"/"en"/"fr") del contenido cacheado, o null si no hay cache. */
+    fun cachedLanguage(): String?
+
     /** Cantidad de intentos aún sin confirmar contra el backend. */
     fun pendingAttemptCount(): Int
 
