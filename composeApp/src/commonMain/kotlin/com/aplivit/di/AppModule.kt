@@ -7,6 +7,7 @@ import com.aplivit.core.domain.usecase.SessionResumeUseCase
 import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
 import com.aplivit.core.port.ConnectivityChecker
+import com.aplivit.core.port.ContentRepository
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
@@ -14,10 +15,23 @@ import com.aplivit.core.port.UsageTracker
 import com.aplivit.infrastructure.content.LevelsLoader
 import com.aplivit.infrastructure.storage.SettingsUsageTracker
 import com.aplivit.infrastructure.provideConnectivityChecker
+import com.aplivit.infrastructure.provideHttpClientEngine
 import com.aplivit.infrastructure.provideSettings
 import com.aplivit.infrastructure.provideSpeechRecognizer
 import com.aplivit.infrastructure.provideSpeechSynthesizer
+import com.aplivit.auth.SessionManager
+import com.aplivit.auth.TokenStore
+import com.aplivit.auth.providePlatformGameSignIn
+import com.aplivit.infrastructure.remote.AttemptApi
+import com.aplivit.infrastructure.remote.AuthApi
+import com.aplivit.infrastructure.remote.ContentApi
+import com.aplivit.infrastructure.remote.createApiHttpClient
 import com.aplivit.infrastructure.storage.SettingsProgressRepository
+import com.aplivit.offline.AttemptQueue
+import com.aplivit.offline.BackendExerciseMapper
+import com.aplivit.offline.ContentCache
+import com.aplivit.offline.OfflineContentRepository
+import com.aplivit.offline.SyncCoordinator
 import com.aplivit.presentation.screen.exercise.LetterTracingViewModel
 import com.aplivit.presentation.screen.exercise.TouchViewModel
 import com.aplivit.presentation.screen.settings.SettingsViewModel
@@ -31,6 +45,26 @@ val appModule = module {
     single<ProgressRepository> { SettingsProgressRepository(get()) }
     single<UsageTracker> { SettingsUsageTracker(get()) }
     single { LevelsLoader() }
+
+    // --- Auth del alumno (JWT) ---
+    single { TokenStore(get()) }
+    single { providePlatformGameSignIn() }
+
+    // --- Red + contenido offline-first ---
+    single { provideHttpClientEngine() }
+    single {
+        val tokenStore = get<TokenStore>()
+        createApiHttpClient(get()) { tokenStore.token() }
+    }
+    single { AuthApi(get()) }
+    single { ContentApi(get()) }
+    single { AttemptApi(get()) }
+    single { ContentCache(get()) }
+    single { AttemptQueue(get()) }
+    single { SessionManager(get(), get(), get()) }
+    single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get()) }
+    single { BackendExerciseMapper() }
+    single { SyncCoordinator(get(), get(), get()) }
 
     factory { GetLevelsUseCase(get()) }
     factory { CompleteGameUseCase(get()) }
