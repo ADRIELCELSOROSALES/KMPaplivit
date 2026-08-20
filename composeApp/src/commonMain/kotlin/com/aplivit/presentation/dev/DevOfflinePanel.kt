@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aplivit.auth.SessionManager
+import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.port.ConnectivityChecker
 import com.aplivit.core.port.ContentRepository
 import com.aplivit.offline.BackendExerciseMapper
@@ -44,6 +45,7 @@ fun DevOfflinePanel(modifier: Modifier = Modifier) {
     val content: ContentRepository = koinInject()
     val mapper: BackendExerciseMapper = koinInject()
     val connectivity: ConnectivityChecker = koinInject()
+    val getLevels: GetLevelsUseCase = koinInject()
     val scope = rememberCoroutineScope()
 
     var status by remember { mutableStateOf("iniciando…") }
@@ -67,7 +69,11 @@ fun DevOfflinePanel(modifier: Modifier = Modifier) {
                 is MappedExercise.Unsupported -> "unsupported"
                 null -> "—"
             }
-            status = "cache=${cached.size} ej · pend=${content.pendingAttemptCount()} · 1º=$firstDesc"
+            // Path REAL que consume Home: niveles reconstruidos desde el backend.
+            val levels = getLevels.execute()
+            log("getLevels: ${levels.size} niveles · 1º='${levels.firstOrNull()?.word}' · último='${levels.lastOrNull()?.word}'")
+
+            status = "cache=${cached.size} ej · niveles=${levels.size} · 1º=$firstDesc"
             log(status)
 
             // Ciclo de escritura automático: validar local -> encolar -> sync (RF-14).

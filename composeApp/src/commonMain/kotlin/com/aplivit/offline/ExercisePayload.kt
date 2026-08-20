@@ -14,10 +14,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ExercisePayload(
     @SerialName("appType") val appType: String? = null,
-    // VOCALIZE
-    @SerialName("vocalizeType") val vocalizeType: String? = null,
-    @SerialName("content") val content: String? = null,
+    // LEVEL: un ejercicio de backend = un nivel de la app. La app genera sus mini-juegos desde
+    // estos datos (mismo formato de juego local, contenido decidido por el backend).
+    @SerialName("level") val level: Int? = null,
+    @SerialName("word") val word: String? = null,
+    @SerialName("syllables") val syllables: List<String>? = null,
     @SerialName("instruction") val instruction: String? = null,
-    @SerialName("language") val language: String? = null
-    // (TOUCH/LINK/SENTENCE/AUDIO_PAIR agregan sus campos ricos acá cuando se autoren.)
+    @SerialName("language") val language: String? = null,
+    // VOCALIZE (contenido granular, si se usa)
+    @SerialName("vocalizeType") val vocalizeType: String? = null,
+    @SerialName("content") val content: String? = null
 )

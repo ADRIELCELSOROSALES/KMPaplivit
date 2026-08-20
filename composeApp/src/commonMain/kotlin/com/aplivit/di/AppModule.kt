@@ -29,6 +29,7 @@ import com.aplivit.infrastructure.remote.createApiHttpClient
 import com.aplivit.infrastructure.storage.SettingsProgressRepository
 import com.aplivit.offline.AttemptQueue
 import com.aplivit.offline.BackendExerciseMapper
+import com.aplivit.offline.BackendLevelMapper
 import com.aplivit.offline.ContentCache
 import com.aplivit.offline.OfflineContentRepository
 import com.aplivit.offline.SyncCoordinator
@@ -64,9 +65,10 @@ val appModule = module {
     single { SessionManager(get(), get(), get()) }
     single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get()) }
     single { BackendExerciseMapper() }
+    single { BackendLevelMapper() }
     single { SyncCoordinator(get(), get(), get()) }
 
-    factory { GetLevelsUseCase(get()) }
+    factory { GetLevelsUseCase(get(), get(), get()) }
     factory { CompleteGameUseCase(get()) }
     factory { ValidatePronunciationUseCase() }
     factory { UnlockNextLevelUseCase(get()) }
