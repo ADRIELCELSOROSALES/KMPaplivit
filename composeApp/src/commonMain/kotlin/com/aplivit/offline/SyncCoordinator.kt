@@ -3,6 +3,7 @@ package com.aplivit.offline
 import com.aplivit.auth.SessionManager
 import com.aplivit.core.port.ConnectivityChecker
 import com.aplivit.core.port.ContentRepository
+import kotlinx.coroutines.delay
 
 /**
  * Orquesta la sincronización offline-first en un solo lugar, para invocar desde el ciclo de vida
@@ -26,11 +27,21 @@ class SyncCoordinator(
     suspend fun sync(): Boolean {
         // Gate de sesión: sin JWT de alumno no hay endpoints StudentOnly que consumir.
         if (!session.isSignedIn()) return false
-        if (!connectivity.isConnected()) return false
+        // En el arranque en frío ConnectivityManager puede reportar "sin red" durante los primeros
+        // ms del proceso (falso negativo): se reintenta brevemente antes de rendirse.
+        if (!awaitConnectivity()) return false
 
         // Primero subir lo hecho offline, después traer contenido nuevo.
         content.flushPendingAttempts()
         content.refreshContent()
         return true
+    }
+
+    private suspend fun awaitConnectivity(attempts: Int = 4, delayMs: Long = 500): Boolean {
+        repeat(attempts) { i ->
+            if (connectivity.isConnected()) return true
+            if (i < attempts - 1) delay(delayMs)
+        }
+        return connectivity.isConnected()
     }
 }
