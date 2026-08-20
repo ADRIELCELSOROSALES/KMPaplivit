@@ -17,8 +17,16 @@ class GetLevelsUseCase(
     private val levelMapper: BackendLevelMapper
 ) {
     suspend fun execute(language: AppLanguage = AppLanguage.SPANISH): List<Level> {
+        val cached = levelMapper.toLevels(contentRepository.cachedExercises())
+        if (cached.isNotEmpty()) return cached
+
+        // Cache vacío (primer arranque): intentar traer del backend ANTES de caer al JSON local,
+        // así Home muestra el contenido del backend ya en la primera carga (evita el race con el
+        // sync en background). Si no hay red/sesión, refreshContent es no-op y se usa el local.
+        contentRepository.refreshContent()
         val fromBackend = levelMapper.toLevels(contentRepository.cachedExercises())
         if (fromBackend.isNotEmpty()) return fromBackend
+
         return levelsLoader.load(language)
     }
 }
