@@ -63,7 +63,7 @@ val appModule = module {
     single { ContentCache(get()) }
     single { AttemptQueue(get()) }
     single { SessionManager(get(), get(), get()) }
-    single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get()) }
+    single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get(), get()) }
     single { BackendExerciseMapper() }
     single { BackendLevelMapper() }
     single { SyncCoordinator(get(), get(), get()) }

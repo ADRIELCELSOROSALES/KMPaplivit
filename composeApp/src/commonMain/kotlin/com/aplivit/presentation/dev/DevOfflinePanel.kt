@@ -76,11 +76,9 @@ fun DevOfflinePanel(modifier: Modifier = Modifier) {
             status = "cache=${cached.size} ej · niveles=${levels.size} · 1º=$firstDesc"
             log(status)
 
-            // Ciclo de escritura automático: validar local -> encolar -> sync (RF-14).
-            cached.firstOrNull()?.let { ex ->
-                val r = content.submitAttempt(ex, givenAnswer = "MA", voiceIsCorrect = true)
-                log("submit: correct=${r.isCorrect} online=${r.sentOnline} pend=${content.pendingAttemptCount()}")
-            }
+            // Completar el nivel 1 vía la ruta de producción (la misma que usa GameScreen).
+            val done = content.submitLevelCompleted(1)
+            log("submitLevelCompleted(1)=$done pend=${content.pendingAttemptCount()}")
         }.onFailure { status = "ERROR: ${it::class.simpleName}: ${it.message}"; log(status) }
     }
 

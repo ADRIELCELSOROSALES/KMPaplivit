@@ -29,6 +29,13 @@ interface ContentRepository {
 
     /** Sube en lote los intentos acumulados offline (RF-14). No-op sin internet o cola vacía. */
     suspend fun flushPendingAttempts(): FlushResult
+
+    /**
+     * Marca un nivel como completado: registra el intento del ejercicio de backend de ese nivel
+     * (valida/encola/sincroniza vía [submitAttempt]). Devuelve false si el nivel no está en el
+     * catálogo cacheado (ej. corriendo con el contenido local de respaldo).
+     */
+    suspend fun submitLevelCompleted(levelId: Int): Boolean
 }
 
 sealed interface ContentSyncResult {

@@ -27,6 +27,7 @@ class OfflineContentRepository(
     private val cache: ContentCache,
     private val queue: AttemptQueue,
     private val connectivity: ConnectivityChecker,
+    private val levelMapper: BackendLevelMapper,
     // Tamaño del lote a cachear desde la posición actual del alumno (RF-13). pending-exercises NO
     // tiene cursor/offset: siempre devuelve desde la posición actual hacia adelante, así que se
     // pide UN lote (no se pagina sobre has_more, eso duplicaría). 200 = máximo que acepta el
@@ -118,5 +119,14 @@ class OfflineContentRepository(
             alreadySynced = response.alreadySyncedCount,
             errors = response.errorCount
         )
+    }
+
+    override suspend fun submitLevelCompleted(levelId: Int): Boolean {
+        val dto = cache.load()?.exercises
+            ?.firstOrNull { levelMapper.toLevel(it)?.id == levelId }
+            ?: return false
+        // Nivel de tipo VoiceRecognition (client-evaluated): completarlo = intento correcto.
+        submitAttempt(dto, givenAnswer = dto.content.targetWord ?: "", voiceIsCorrect = true)
+        return true
     }
 }

@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +22,7 @@ import com.aplivit.core.domain.usecase.GetLevelsUseCase
 import com.aplivit.core.domain.usecase.NavigationUseCase
 import com.aplivit.core.domain.usecase.UnlockNextLevelUseCase
 import com.aplivit.core.domain.usecase.ValidatePronunciationUseCase
+import com.aplivit.core.port.ContentRepository
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechRecognizer
 import com.aplivit.core.port.SpeechSynthesizer
@@ -41,6 +44,8 @@ fun GameScreen(
     val recognizer: SpeechRecognizer = koinInject()
     val repo: ProgressRepository = koinInject()
     val navUseCase: NavigationUseCase = koinInject()
+    val contentRepo: ContentRepository = koinInject()
+    val scope = rememberCoroutineScope()
 
     val vm: GameViewModel = remember(levelId) {
         GameViewModel(levelId, getLevels, completeGame, unlockNext, validate, recognizer, tts, repo)
@@ -89,6 +94,11 @@ fun GameScreen(
         },
         onBackClick = onBackNavigate,
         onForwardClick = {
+            // Solo al completar recién el nivel (no al revisar uno ya hecho): registra el intento
+            // del ejercicio de backend de este nivel (progreso → backend). No-op si no está cacheado.
+            if (state.currentStep == GameStep.COMPLETED) {
+                scope.launch { runCatching { contentRepo.submitLevelCompleted(levelId) } }
+            }
             val (nextLevel, _) = navUseCase.goForward(levelId, 1)
             onCompleted(nextLevel)
         },
