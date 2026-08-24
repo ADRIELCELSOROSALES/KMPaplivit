@@ -24,10 +24,15 @@ fun App() {
     val session: SessionManager = koinInject()
     val syncCoordinator: SyncCoordinator = koinInject()
 
-    // Auth de dev (único lugar) + sync offline-first al abrir: sube intentos pendientes y refresca
-    // el catálogo. No-op sin sesión/red; nunca bloquea ni rompe la UI (runCatching).
+    // Login al abrir + sync offline-first. Primero el login nativo real (Play Games en Android /
+    // Game Center en iOS); si falla o el usuario cancela, cae al token de dev (fallback para iOS,
+    // aún sin Game Center, o si PGS todavía no está del todo configurado). El sync sube intentos
+    // pendientes y refresca el catálogo. Nada acá bloquea ni rompe la UI (runCatching).
     LaunchedEffect(Unit) {
-        DevAuth.AUTO_LOGIN_TOKEN?.let { if (!session.isSignedIn()) session.useTokenForDev(it) }
+        if (!session.isSignedIn()) {
+            val signedIn = runCatching { session.signIn() }.getOrDefault(false)
+            if (!signedIn) DevAuth.AUTO_LOGIN_TOKEN?.let { session.useTokenForDev(it) }
+        }
         runCatching { syncCoordinator.sync() }
     }
 

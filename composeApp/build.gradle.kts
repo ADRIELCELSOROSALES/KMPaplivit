@@ -52,6 +52,9 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.ktor.client.okhttp)
+            // Login nativo del alumno: Play Games Services v2 (server_auth_code) + await() sobre Task.
+            implementation(libs.play.services.games)
+            implementation(libs.kotlinx.coroutines.play.services)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
