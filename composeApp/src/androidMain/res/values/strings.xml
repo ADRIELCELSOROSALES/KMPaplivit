@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">KMPAplivit</string>
+    <!--
+        Project ID numérico de Play Games Services (Play Console -> Play Games Services ->
+        Configuración). NO es el OAuth client id: es el "ID del proyecto" que muestra esa pantalla.
+        REEMPLAZAR por el número real; con el placeholder, PlayGamesSdk.initialize falla en runtime.
+    -->
+    <string name="game_services_project_id" translatable="false">274074848157</string>
 </resources>

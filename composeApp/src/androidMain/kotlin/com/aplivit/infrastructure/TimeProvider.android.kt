@@ -4,6 +4,8 @@ import java.util.Calendar
 
 actual fun nowEpochSeconds(): Long = System.currentTimeMillis() / 1000L
 
+actual fun nowEpochMillis(): Long = System.currentTimeMillis()
+
 actual fun todayIsoDate(): String {
     val c = Calendar.getInstance()
     return "%04d-%02d-%02d".format(
