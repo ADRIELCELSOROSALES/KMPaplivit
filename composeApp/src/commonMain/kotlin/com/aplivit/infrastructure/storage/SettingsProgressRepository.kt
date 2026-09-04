@@ -69,6 +69,20 @@ class SettingsProgressRepository(private val settings: Settings) : ProgressRepos
 
     override fun markLaunched() = settings.putBoolean(KEY_IS_FIRST_LAUNCH, false)
 
+    // ── Reset del espejo local (cambio de cuenta) ─────────────────────────
+
+    override fun resetProgress() {
+        AppLanguage.entries.forEach { language ->
+            val prefix = language.code
+            settings.remove("${prefix}_$KEY_CURRENT_LEVEL")
+            settings.remove("${prefix}_$KEY_CURRENT_EXERCISE")
+            settings.remove("${prefix}_$KEY_MAX_UNLOCKED_LEVEL")
+            settings.remove("${prefix}_$KEY_MAX_UNLOCKED_EXERCISE")
+            settings.remove("${prefix}_$KEY_COMPLETED_LEVELS")
+            settings.remove("${prefix}_$KEY_TOTAL_ERRORS")
+        }
+    }
+
     // ── Keys ──────────────────────────────────────────────────────────────
 
     companion object {

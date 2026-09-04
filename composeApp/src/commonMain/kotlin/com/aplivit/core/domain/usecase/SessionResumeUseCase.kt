@@ -21,12 +21,17 @@ class SessionResumeUseCase(private val progressRepository: ProgressRepository) {
 
     fun getResumeInfo(): ResumeInfo {
         val progress = progressRepository.loadProgress()
-        val isFirst = progressRepository.isFirstLaunch()
+
+        // Hay avance si el progreso lo dice, sin importar si esta instalación es nueva: al
+        // loguearse en otro dispositivo el progreso llega del backend y el alumno NO está
+        // empezando de cero, aunque sea su primer arranque en este teléfono.
+        val hasProgress = progress.currentLevel > 1 || progress.completedLevels.isNotEmpty()
+
         return ResumeInfo(
             targetLevel = progress.currentLevel,
             targetExercise = progress.currentExercise,
-            isFirstTime = isFirst,
-            hasProgress = !isFirst && (progress.currentLevel > 1 || progress.completedLevels.isNotEmpty())
+            isFirstTime = progressRepository.isFirstLaunch() && !hasProgress,
+            hasProgress = hasProgress
         )
     }
 }

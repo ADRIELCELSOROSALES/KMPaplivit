@@ -1,117 +1,171 @@
 #!/usr/bin/env python3
 """
-Exporter de contenido de la app aplivit -> bundle canonico hibrido.
+Exportador ÚNICO del contenido de la app aplivit hacia el backend aplivlit.
 
-Lee los levels_<lang>.json empaquetados en la app y emite un unico
-content-bundle.v1.json en el schema que:
-  1. se pushea al backend (Course -> Lesson -> Exercise), y
-  2. la app cachea localmente para funcionar offline.
+Regla del formato (la que entiende la app, ver BackendLevelMapper.kt):
+    UN ejercicio de backend = UN nivel de la app.
+    El nivel viaja en `payload` (appType=LEVEL, level, word, syllables, instruction), que el
+    backend guarda opaco y la app usa para reconstruir sus mini-juegos.
+Si el contenido publicado no respeta eso, la app no puede mapear ningún nivel y cae al JSON
+local de respaldo (en silencio, salvo el aviso de GetLevelsUseCase). Por eso este script verifica
+el bundle antes de escribirlo.
 
-Schema hibrido: campos que el backend entiende (type/order/content) + un
-"payload" opaco con los campos ricos propios de la app (subtipos, salience,
-imagenes, indices...). externalId estable en cada nivel para permitir upsert
-idempotente cuando el backend lo soporte.
+Emite dos artefactos:
+  content-bundle.v1.json  -> POST /api/content/import
+                             (camelCase, `payload` como OBJETO, solo el idioma base español)
+  translations.v1.json    -> POST /api/exercises/{exerciseId}/translations  (o PUT .../{language})
+                             (snake_case, `payload` como STRING, un item por idioma no base)
 
 Uso:
     python3 tools/content-export/export.py
+
+Import (el id del ejercicio se resuelve por externalId con GET /api/exercises):
+    curl -X POST "$API/api/content/import" -H "Authorization: Bearer $ADMIN_JWT" \
+         -H 'Content-Type: application/json' -d @tools/content-export/content-bundle.v1.json
 """
-import json
 import hashlib
+import json
 import pathlib
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 FILES_DIR = REPO / "composeApp/src/commonMain/composeResources/files"
-OUT = pathlib.Path(__file__).resolve().parent / "content-bundle.v1.json"
+HERE = pathlib.Path(__file__).resolve().parent
 
-# code de idioma -> metadata del curso destino
-LANGS = {
-    "es": ("Alfabetización - Español", "Curso de lectoescritura por sílabas (español)."),
-    "en": ("Literacy - English", "Syllable-based literacy course (English)."),
-    "fr": ("Alphabétisation - Français", "Cours de lecture par syllabes (français)."),
-}
+BUNDLE_OUT = HERE / "content-bundle.v1.json"
+TRANSLATIONS_OUT = HERE / "translations.v1.json"
+
+SCHEMA_VERSION = 1
+
+# Idioma base del catálogo (el que se importa como contenido del ejercicio).
+BASE_LANG = "es"
+# Idiomas que van como traducción (RF-09b). Clave = código de la app, valor = enum del backend.
+TRANSLATED_LANGS = {"en": "English", "fr": "French"}
+
+# Todos los niveles son de vocalización guiada: la app los completa con el motor de voz, así que
+# el backend no los evalúa (client-evaluated).
+EXERCISE_TYPE = "VoiceRecognition"
+DIFFICULTY = "Beginner"
 
 
-def build_course(lang: str, title: str, description: str) -> dict:
-    raw = json.loads((FILES_DIR / f"levels_{lang}.json").read_text(encoding="utf-8"))
-    lessons = []
-    for lvl in raw:
-        lid = lvl["id"]
-        syllables = lvl["syllables"]
-        exercises = []
-        order = 1
-        # Una actividad de vocalizacion por cada silaba (el alumno pronuncia silaba por silaba).
-        for i, syl in enumerate(syllables, start=1):
-            exercises.append({
-                "externalId": f"{lang}-lvl-{lid}-vocalize-syl-{i}",
-                "type": "VoiceRecognition",      # enum del backend
-                "order": order,
-                "content": {                      # campos que el backend entiende hoy
-                    "syllables": [syl],
-                },
-                "payload": {                      # HIBRIDO: schema propio de la app
-                    "appType": "VOCALIZE",
-                    "vocalizeType": "SYLLABLE",
-                    "content": syl,
-                    "instruction": lvl["instruction"],
-                    "language": lang,
+def read_levels(lang: str) -> list[dict]:
+    return json.loads((FILES_DIR / f"levels_{lang}.json").read_text(encoding="utf-8"))
+
+
+def level_payload(level: dict, lang: str) -> dict:
+    return {
+        "appType": "LEVEL",
+        "level": level["id"],
+        "word": level["word"],
+        "syllables": level["syllables"],
+        "instruction": level["instruction"],
+        "language": lang,
+    }
+
+
+def build_exercises(levels: list[dict]) -> list[dict]:
+    exercises = []
+    for level in levels:
+        exercises.append({
+            # externalId estable: es la clave del upsert idempotente del import. NO cambiarla sin
+            # migrar, o el import marca eliminados los ejercicios viejos y crea otros nuevos,
+            # perdiendo la relación con los intentos ya registrados (y con ellos, el progreso).
+            "externalId": f"{BASE_LANG}-lvl-{level['id']}",
+            "type": EXERCISE_TYPE,
+            "difficultyLevel": DIFFICULTY,
+            # El orden en la secuencia global (RF-06) = el número de nivel.
+            "order": level["id"],
+            # Campos que el backend sí entiende, para que pase su validación por tipo.
+            "content": {"targetWord": level["word"], "syllables": level["syllables"]},
+            "payload": level_payload(level, BASE_LANG),
+        })
+    return exercises
+
+
+def build_translations(base_levels: list[dict]) -> list[dict]:
+    translations = []
+    for lang, backend_language in TRANSLATED_LANGS.items():
+        levels = read_levels(lang)
+        by_id = {lvl["id"]: lvl for lvl in levels}
+        missing = [lvl["id"] for lvl in base_levels if lvl["id"] not in by_id]
+        if missing:
+            raise SystemExit(f"ERROR: levels_{lang}.json no tiene los niveles {missing}")
+
+        for base in base_levels:
+            level = by_id[base["id"]]
+            translations.append({
+                "externalId": f"{BASE_LANG}-lvl-{base['id']}",
+                "language": backend_language,
+                "content": {
+                    "target_word": level["word"],
+                    "syllables": level["syllables"],
+                    # En este endpoint el payload va stringificado (ver ExerciseContentRequest).
+                    "payload": json.dumps(level_payload(level, lang), ensure_ascii=False),
                 },
             })
-            order += 1
-        # Y una actividad final de vocalizar la palabra completa.
-        exercises.append({
-            "externalId": f"{lang}-lvl-{lid}-vocalize-word",
-            "type": "VoiceRecognition",
-            "order": order,
-            "content": {
-                "targetWord": lvl["word"],
-                "syllables": syllables,
-            },
-            "payload": {
-                "appType": "VOCALIZE",
-                "vocalizeType": "WORD",
-                "content": lvl["word"],
-                "instruction": lvl["instruction"],
-                "language": lang,
-            },
-        })
-        lessons.append({
-            "externalId": f"{lang}-lvl-{lid}",
-            "title": f"Nivel {lid} - {lvl['word']}",
-            "order": lid,
-            # Los game modes ricos adicionales (Touch/Link/Sentence/AudioPair) hoy se generan en
-            # codigo en la app; se autoran dentro de este mismo schema (campo "payload") mas adelante.
-            "exercises": exercises,
-        })
-    return {
-        "externalId": f"course-{lang}",
-        "title": title,
-        "description": description,
-        "difficultyLevel": "Beginner",
-        "language": lang,
-        "lessons": lessons,
-    }
+    return translations
+
+
+def verify(exercises: list[dict]) -> None:
+    """Mismas reglas que BackendLevelMapper.toLevel: sin esto, la app ignora todo el catálogo."""
+    if not exercises:
+        raise SystemExit("ERROR: bundle vacío")
+
+    external_ids = [e["externalId"] for e in exercises]
+    if len(set(external_ids)) != len(external_ids):
+        raise SystemExit("ERROR: externalId duplicado")
+
+    orders = [e["order"] for e in exercises]
+    if len(set(orders)) != len(orders):
+        raise SystemExit("ERROR: order duplicado (el backend lo exige único por dificultad)")
+
+    for exercise in exercises:
+        payload = exercise.get("payload") or {}
+        level_id = payload.get("level")
+        if payload.get("appType") != "LEVEL":
+            raise SystemExit(f"ERROR: {exercise['externalId']} no tiene payload.appType=LEVEL")
+        if not isinstance(level_id, int) or level_id < 1:
+            raise SystemExit(f"ERROR: {exercise['externalId']} sin payload.level válido")
+        if not payload.get("word"):
+            raise SystemExit(f"ERROR: {exercise['externalId']} sin payload.word")
+        if not payload.get("syllables"):
+            raise SystemExit(f"ERROR: {exercise['externalId']} sin payload.syllables")
+
+    levels = sorted(e["payload"]["level"] for e in exercises)
+    if levels != list(range(1, len(levels) + 1)):
+        raise SystemExit(
+            "ERROR: los niveles deben ser 1..N sin huecos (la app deriva de ahí qué niveles "
+            f"están completos); llegaron: {levels}"
+        )
+
+
+def content_version(exercises: list[dict]) -> str:
+    raw = json.dumps(exercises, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()[:12]
 
 
 def main() -> None:
-    courses = [build_course(l, t, d) for l, (t, d) in LANGS.items()]
+    base_levels = read_levels(BASE_LANG)
+    exercises = build_exercises(base_levels)
+    verify(exercises)
 
-    # contentVersion determinista: hash del contenido. Cambia solo si el contenido cambia,
-    # asi la app compara su version cacheada contra esta para decidir si re-descarga.
-    payload = json.dumps(courses, ensure_ascii=False, sort_keys=True).encode("utf-8")
-    version = hashlib.sha256(payload).hexdigest()[:12]
-
+    version = content_version(exercises)
     bundle = {
-        "schemaVersion": 1,
+        "schemaVersion": SCHEMA_VERSION,
         "contentVersion": version,
-        "courses": courses,
+        "exercises": exercises,
     }
-    OUT.write_text(json.dumps(bundle, ensure_ascii=False, indent=2), encoding="utf-8")
+    translations = {
+        "schemaVersion": SCHEMA_VERSION,
+        "contentVersion": version,
+        "translations": build_translations(base_levels),
+    }
 
-    n_lessons = sum(len(c["lessons"]) for c in bundle["courses"])
-    n_ex = sum(len(le["exercises"]) for c in bundle["courses"] for le in c["lessons"])
-    print(f"OK -> {OUT}")
-    print(f"   contentVersion={version}")
-    print(f"   cursos={len(bundle['courses'])}  lecciones={n_lessons}  ejercicios={n_ex}")
+    BUNDLE_OUT.write_text(json.dumps(bundle, ensure_ascii=False, indent=2), encoding="utf-8")
+    TRANSLATIONS_OUT.write_text(json.dumps(translations, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    print(f"OK -> {BUNDLE_OUT.name}: {len(exercises)} niveles, contentVersion={version}")
+    print(f"OK -> {TRANSLATIONS_OUT.name}: {len(translations['translations'])} traducciones "
+          f"({', '.join(TRANSLATED_LANGS)})")
 
 
 if __name__ == "__main__":

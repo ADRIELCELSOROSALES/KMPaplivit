@@ -1,14 +1,15 @@
 package com.aplivit.auth
 
 /**
- * Punto ÚNICO de login de desarrollo, hasta implementar el login real de Play Games / Game Center
- * (que requiere el OAuth web client id de Google / la capability de Game Center — config externa).
+ * Token de desarrollo para probar el ciclo completo contra el backend sin el login nativo
+ * (Play Games / Game Center), p. ej. en el simulador de iOS.
  *
- * Con [AUTO_LOGIN_TOKEN] != null, la app se auto-loguea con ese JWT si no hay sesión, para poder
- * probar el ciclo completo contra el backend. Poner null (o borrar este archivo y su uso en App.kt)
- * cuando el login real esté listo. NO usar en release.
+ * NUNCA va hardcodeado en el código: cada plataforma lo lee de una fuente local no versionada y
+ * SOLO en builds debug. En release devuelve siempre null.
+ *  - Android: `aplivit.devJwt=<jwt>` en `local.properties` (o la env var `APLIVIT_DEV_JWT`),
+ *    que el build inyecta como `BuildConfig.DEV_AUTH_TOKEN` únicamente en el build type debug.
+ *  - iOS: variable de entorno `APLIVIT_DEV_JWT` en el scheme de Xcode (Run > Arguments).
+ *
+ * El JWT se genera con el DevTokenGenerator del backend.
  */
-object DevAuth {
-    val AUTO_LOGIN_TOKEN: String? =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5N2U2YTAzYi03ZDQ1LTQ2OTItOTU1My1hMTFiZWIxZDIyZTIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJTdHVkZW50IiwiZW1haWwiOiIiLCJpc3MiOiJBcGxpdml0IiwiYXVkIjoiQXBsaXZpdCIsImlhdCI6MTc4NzIzMzE2OCwibmJmIjoxNzg3MjMzMTY4LCJleHAiOjE3ODk4MjUxNjh9.hjI0pUlJfDwDerKFmnlUmUyrylChwk33aID963X398s"
-}
+expect fun devAuthToken(): String?

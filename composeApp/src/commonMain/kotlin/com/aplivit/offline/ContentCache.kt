@@ -11,10 +11,13 @@ import kotlinx.serialization.json.Json
 data class CachedContent(
     val schemaVersion: Int,
     val contentVersion: String,
-    // Idioma en el que se descargó el contenido (código AppLanguage: "es"/"en"/"fr"). El cache es
-    // por idioma: si cambia el idioma seleccionado hay que re-descargar.
+    // Idioma REAL del contenido descargado (código AppLanguage: "es"/"en"/"fr"). Puede no ser el
+    // pedido: si el backend no tiene traducción a ese idioma (RF-09b) devuelve el idioma base.
     val language: String,
-    val exercises: List<RemoteExerciseDto>
+    val exercises: List<RemoteExerciseDto>,
+    // Idioma que la app pidió (preferencia del alumno). Se guarda aparte de [language] para no
+    // re-descargar en loop cuando el backend no tiene ese idioma y responde siempre en el base.
+    val requestedLanguage: String = language
 )
 
 /**
@@ -39,6 +42,9 @@ class ContentCache(private val settings: Settings) {
 
     /** Idioma del contenido cacheado, o null si nunca se descargó. */
     fun cachedLanguage(): String? = load()?.language
+
+    /** Idioma con el que se pidió el contenido cacheado, o null si nunca se descargó. */
+    fun cachedRequestedLanguage(): String? = load()?.requestedLanguage
 
     fun clear() {
         settings.remove(KEY)

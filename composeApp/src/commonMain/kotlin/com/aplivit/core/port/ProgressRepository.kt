@@ -16,4 +16,11 @@ interface ProgressRepository {
 
     /** Call once to record that the app has been opened at least once. */
     fun markLaunched()
+
+    /**
+     * Borra el progreso guardado de TODOS los idiomas, dejando el idioma seleccionado y el flag
+     * de primer arranque. Se usa cuando el dispositivo pasa a ser de otra cuenta: el progreso
+     * local es un espejo del alumno logueado, no del teléfono.
+     */
+    fun resetProgress()
 }

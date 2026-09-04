@@ -75,7 +75,12 @@ class HomeViewModel(
                     completionAnnounced = true
                     strings.nextLevel                       // "Muy bien! Seguimos con el siguiente nivel."
                 }
-                resumeInfo.hasProgress -> strings.resumeSession  // "Continuamos donde lo dejaste."
+                resumeInfo.hasProgress -> {
+                    // Primer arranque en este teléfono pero con avance de la cuenta: ya no es un
+                    // alumno nuevo, se lo saluda retomando.
+                    progressRepository.markLaunched()
+                    strings.resumeSession                   // "Continuamos donde lo dejaste."
+                }
                 else -> null
             }
 
