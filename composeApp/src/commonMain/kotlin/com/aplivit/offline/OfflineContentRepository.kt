@@ -6,10 +6,12 @@ import com.aplivit.core.port.ContentRepository
 import com.aplivit.core.port.ContentSyncResult
 import com.aplivit.core.port.FlushResult
 import com.aplivit.core.port.ProgressRepository
+import com.aplivit.core.port.ProgressSyncResult
 import com.aplivit.infrastructure.nowEpochMillis
 import com.aplivit.infrastructure.remote.AttemptApi
 import com.aplivit.infrastructure.remote.ContentApi
 import com.aplivit.infrastructure.remote.MyLanguageApi
+import com.aplivit.infrastructure.remote.ProgressApi
 import com.aplivit.infrastructure.remote.dto.RemoteExerciseDto
 import com.aplivit.infrastructure.remote.dto.SyncAttemptItemDto
 import com.aplivit.infrastructure.remote.dto.SyncAttemptsRequestDto
@@ -22,6 +24,9 @@ import com.aplivit.infrastructure.remote.dto.SyncAttemptsRequestDto
  *
  * Intentos: se validan localmente igual que el server (RF-12), se persisten SIEMPRE en la cola
  * (durabilidad) y se sincronizan cuando hay red (RF-14/15). Nada se pierde si no hay conexión.
+ *
+ * Progreso: el backend es la fuente de verdad (RF-06/RF-07); [syncProgress] lo baja al espejo
+ * local para que la app pueda arrancar donde quedó la cuenta y seguir funcionando sin red.
  */
 class OfflineContentRepository(
     private val contentApi: ContentApi,
@@ -32,6 +37,7 @@ class OfflineContentRepository(
     private val levelMapper: BackendLevelMapper,
     private val progressRepository: ProgressRepository,
     private val myLanguageApi: MyLanguageApi,
+    private val progressApi: ProgressApi,
     // Tamaño del lote a cachear desde la posición actual del alumno (RF-13). pending-exercises NO
     // tiene cursor/offset: siempre devuelve desde la posición actual hacia adelante, así que se
     // pide UN lote (no se pagina sobre has_more, eso duplicaría). 200 = máximo que acepta el
@@ -56,9 +62,12 @@ class OfflineContentRepository(
         val version = runCatching { contentApi.getContentVersion() }
             .getOrElse { return ContentSyncResult.Failed(it.message) }
 
-        // Cache válido solo si coinciden versión E idioma (el cache es por idioma).
+        // Cache válido solo si coinciden versión E idioma pedido (el cache es por idioma). Se
+        // compara contra el idioma PEDIDO, no el devuelto: si el backend no tiene traducción a
+        // ese idioma responde siempre en el base, y comparar contra el devuelto re-descargaría
+        // en cada llamada.
         if (cache.cachedContentVersion() == version.contentVersion &&
-            cache.cachedLanguage() == language.code
+            cache.cachedRequestedLanguage() == language.code
         ) {
             return ContentSyncResult.UpToDate
         }
@@ -69,7 +78,20 @@ class OfflineContentRepository(
             return ContentSyncResult.Failed(e.message)
         }
 
-        cache.save(CachedContent(version.schemaVersion, version.contentVersion, language.code, page.items))
+        // Idioma efectivo del contenido devuelto (RF-09b): si el backend no tiene traducción al
+        // idioma del alumno, cae al idioma base. Se cachea con ESE idioma para no mostrar, por
+        // ejemplo, contenido en español rotulado como inglés: si no coincide con el pedido,
+        // GetLevelsUseCase usa el JSON local de respaldo, que sí está en el idioma correcto.
+        val resolvedLanguage = page.items.firstOrNull()?.language?.toAppCodeOrNull() ?: language.code
+        cache.save(
+            CachedContent(
+                schemaVersion = version.schemaVersion,
+                contentVersion = version.contentVersion,
+                language = resolvedLanguage,
+                exercises = page.items,
+                requestedLanguage = language.code
+            )
+        )
         return ContentSyncResult.Updated(page.items.size, version.contentVersion)
     }
 
@@ -134,6 +156,59 @@ class OfflineContentRepository(
             synced = response.syncedCount,
             alreadySynced = response.alreadySyncedCount,
             errors = response.errorCount
+        )
+    }
+
+    override suspend fun syncProgress(): ProgressSyncResult {
+        if (!connectivity.isConnected()) return ProgressSyncResult.Offline
+
+        val remote = runCatching { progressApi.getMyProgress() }
+            .getOrElse { return ProgressSyncResult.Failed(it.message) }
+        val next = runCatching { progressApi.getNextExercise() }
+            .getOrElse { return ProgressSyncResult.Failed(it.message) }
+
+        // next == null -> el alumno ya resolvió toda la secuencia publicada.
+        val resumeLevel = next?.let { levelMapper.toLevel(it)?.id }
+        if (next != null && resumeLevel == null) {
+            // El backend tiene contenido que la app no sabe convertir en niveles (payload sin
+            // level/word). No se toca el progreso local: se avisa en vez de fingir que está todo
+            // hecho. Se arregla del lado del contenido (ver tools/content-export).
+            return ProgressSyncResult.Failed(
+                "el próximo ejercicio del backend no trae datos de nivel en el payload"
+            )
+        }
+
+        val language = progressRepository.getSelectedLanguage()
+        val local = progressRepository.loadProgress(language)
+
+        // Niveles completados según el backend: la secuencia es global y ordenada, y hay UN
+        // ejercicio de backend por nivel (ver tools/content-export), así que todo lo anterior al
+        // próximo nivel ya está resuelto. Si no queda próximo, está completa hasta `total`.
+        val completedRemotely = when {
+            resumeLevel != null -> (1 until resumeLevel).toSet()
+            remote.total > 0 -> (1..remote.total).toSet()
+            else -> emptySet()
+        }
+
+        // Con intentos todavía sin subir, el backend está atrasado a propósito: no se retrocede
+        // al alumno a un nivel que ya jugó offline.
+        val backendLevel = resumeLevel ?: (completedRemotely.maxOrNull() ?: local.currentLevel)
+        val targetLevel = if (queue.size() > 0) maxOf(backendLevel, local.currentLevel) else backendLevel
+
+        progressRepository.saveProgress(
+            local.copy(
+                currentLevel = targetLevel,
+                currentExercise = if (targetLevel != local.currentLevel) 1 else local.currentExercise,
+                maxUnlockedLevel = maxOf(local.maxUnlockedLevel, targetLevel),
+                completedLevels = local.completedLevels + completedRemotely
+            ),
+            language
+        )
+
+        return ProgressSyncResult.Synced(
+            resumeLevel = resumeLevel,
+            completed = remote.completed,
+            total = remote.total
         )
     }
 

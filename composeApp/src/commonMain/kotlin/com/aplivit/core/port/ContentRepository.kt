@@ -39,6 +39,14 @@ interface ContentRepository {
      * catálogo cacheado (ej. corriendo con el contenido local de respaldo).
      */
     suspend fun submitLevelCompleted(levelId: Int): Boolean
+
+    /**
+     * Trae el progreso del alumno desde el backend (fuente de verdad, RF-06/RF-07) y lo baja al
+     * espejo local, para que la app arranque en el nivel donde quedó ESA cuenta —incluso en un
+     * dispositivo nuevo—. Llamar después de [flushPendingAttempts] para que el backend ya tenga
+     * los intentos hechos offline.
+     */
+    suspend fun syncProgress(): ProgressSyncResult
 }
 
 sealed interface ContentSyncResult {
@@ -60,3 +68,19 @@ data class FlushResult(
     val errors: Int = 0,
     val skippedOffline: Boolean = false
 )
+
+sealed interface ProgressSyncResult {
+    data object Offline : ProgressSyncResult
+    data class Failed(val message: String?) : ProgressSyncResult
+
+    /**
+     * @property resumeLevel nivel donde debe continuar el alumno, o null si ya completó todo.
+     * @property completed ejercicios resueltos según el backend.
+     * @property total ejercicios publicados en la secuencia.
+     */
+    data class Synced(
+        val resumeLevel: Int?,
+        val completed: Int,
+        val total: Int
+    ) : ProgressSyncResult
+}

@@ -1,0 +1,1105 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "e1d9e7af0834",
+  "translations": [
+    {
+      "externalId": "es-lvl-1",
+      "language": "English",
+      "content": {
+        "target_word": "MAKE",
+        "syllables": [
+          "MA",
+          "KE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 1, \"word\": \"MAKE\", \"syllables\": [\"MA\", \"KE\"], \"instruction\": \"Let's learn the syllable MA. Listen and repeat.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-2",
+      "language": "English",
+      "content": {
+        "target_word": "PAGE",
+        "syllables": [
+          "PA",
+          "GE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 2, \"word\": \"PAGE\", \"syllables\": [\"PA\", \"GE\"], \"instruction\": \"Now let's learn PA.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-3",
+      "language": "English",
+      "content": {
+        "target_word": "CAKE",
+        "syllables": [
+          "CA",
+          "KE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 3, \"word\": \"CAKE\", \"syllables\": [\"CA\", \"KE\"], \"instruction\": \"Let's form the word CAKE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-4",
+      "language": "English",
+      "content": {
+        "target_word": "LAKE",
+        "syllables": [
+          "LA",
+          "KE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 4, \"word\": \"LAKE\", \"syllables\": [\"LA\", \"KE\"], \"instruction\": \"Let's learn LA and KE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-5",
+      "language": "English",
+      "content": {
+        "target_word": "BIKE",
+        "syllables": [
+          "BI",
+          "KE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 5, \"word\": \"BIKE\", \"syllables\": [\"BI\", \"KE\"], \"instruction\": \"Let's form BIKE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-6",
+      "language": "English",
+      "content": {
+        "target_word": "LIKE",
+        "syllables": [
+          "LI",
+          "KE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 6, \"word\": \"LIKE\", \"syllables\": [\"LI\", \"KE\"], \"instruction\": \"Let's form LIKE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-7",
+      "language": "English",
+      "content": {
+        "target_word": "RICE",
+        "syllables": [
+          "RI",
+          "CE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 7, \"word\": \"RICE\", \"syllables\": [\"RI\", \"CE\"], \"instruction\": \"Let's learn RI and CE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-8",
+      "language": "English",
+      "content": {
+        "target_word": "NICE",
+        "syllables": [
+          "NI",
+          "CE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 8, \"word\": \"NICE\", \"syllables\": [\"NI\", \"CE\"], \"instruction\": \"Let's form NICE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-9",
+      "language": "English",
+      "content": {
+        "target_word": "FACE",
+        "syllables": [
+          "FA",
+          "CE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 9, \"word\": \"FACE\", \"syllables\": [\"FA\", \"CE\"], \"instruction\": \"Let's form FACE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-10",
+      "language": "English",
+      "content": {
+        "target_word": "LACE",
+        "syllables": [
+          "LA",
+          "CE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 10, \"word\": \"LACE\", \"syllables\": [\"LA\", \"CE\"], \"instruction\": \"Let's form LACE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-11",
+      "language": "English",
+      "content": {
+        "target_word": "BASE",
+        "syllables": [
+          "BA",
+          "SE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 11, \"word\": \"BASE\", \"syllables\": [\"BA\", \"SE\"], \"instruction\": \"Let's learn BA and SE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-12",
+      "language": "English",
+      "content": {
+        "target_word": "CASE",
+        "syllables": [
+          "CA",
+          "SE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 12, \"word\": \"CASE\", \"syllables\": [\"CA\", \"SE\"], \"instruction\": \"Let's form CASE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-13",
+      "language": "English",
+      "content": {
+        "target_word": "ROSE",
+        "syllables": [
+          "RO",
+          "SE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 13, \"word\": \"ROSE\", \"syllables\": [\"RO\", \"SE\"], \"instruction\": \"Let's learn RO and SE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-14",
+      "language": "English",
+      "content": {
+        "target_word": "NOSE",
+        "syllables": [
+          "NO",
+          "SE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 14, \"word\": \"NOSE\", \"syllables\": [\"NO\", \"SE\"], \"instruction\": \"Let's form NOSE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-15",
+      "language": "English",
+      "content": {
+        "target_word": "POSE",
+        "syllables": [
+          "PO",
+          "SE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 15, \"word\": \"POSE\", \"syllables\": [\"PO\", \"SE\"], \"instruction\": \"Let's form POSE.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-16",
+      "language": "English",
+      "content": {
+        "target_word": "HERO",
+        "syllables": [
+          "HE",
+          "RO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 16, \"word\": \"HERO\", \"syllables\": [\"HE\", \"RO\"], \"instruction\": \"Let's learn HE and RO. A hero!\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-17",
+      "language": "English",
+      "content": {
+        "target_word": "SOLO",
+        "syllables": [
+          "SO",
+          "LO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 17, \"word\": \"SOLO\", \"syllables\": [\"SO\", \"LO\"], \"instruction\": \"Let's form SOLO.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-18",
+      "language": "English",
+      "content": {
+        "target_word": "POLO",
+        "syllables": [
+          "PO",
+          "LO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 18, \"word\": \"POLO\", \"syllables\": [\"PO\", \"LO\"], \"instruction\": \"Let's learn PO and LO.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-19",
+      "language": "English",
+      "content": {
+        "target_word": "LOGO",
+        "syllables": [
+          "LO",
+          "GO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 19, \"word\": \"LOGO\", \"syllables\": [\"LO\", \"GO\"], \"instruction\": \"Let's form LOGO.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-20",
+      "language": "English",
+      "content": {
+        "target_word": "BODY",
+        "syllables": [
+          "BO",
+          "DY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 20, \"word\": \"BODY\", \"syllables\": [\"BO\", \"DY\"], \"instruction\": \"Let's learn BO and DY. Our body!\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-21",
+      "language": "English",
+      "content": {
+        "target_word": "MINI",
+        "syllables": [
+          "MI",
+          "NI"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 21, \"word\": \"MINI\", \"syllables\": [\"MI\", \"NI\"], \"instruction\": \"Let's form MINI.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-22",
+      "language": "English",
+      "content": {
+        "target_word": "DELI",
+        "syllables": [
+          "DE",
+          "LI"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 22, \"word\": \"DELI\", \"syllables\": [\"DE\", \"LI\"], \"instruction\": \"Let's learn DE and LI.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-23",
+      "language": "English",
+      "content": {
+        "target_word": "MENU",
+        "syllables": [
+          "ME",
+          "NU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 23, \"word\": \"MENU\", \"syllables\": [\"ME\", \"NU\"], \"instruction\": \"Let's form MENU.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-24",
+      "language": "English",
+      "content": {
+        "target_word": "BABY",
+        "syllables": [
+          "BA",
+          "BY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 24, \"word\": \"BABY\", \"syllables\": [\"BA\", \"BY\"], \"instruction\": \"Let's learn BA and BY. A baby!\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-25",
+      "language": "English",
+      "content": {
+        "target_word": "LADY",
+        "syllables": [
+          "LA",
+          "DY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 25, \"word\": \"LADY\", \"syllables\": [\"LA\", \"DY\"], \"instruction\": \"Let's form LADY.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-26",
+      "language": "English",
+      "content": {
+        "target_word": "NAVY",
+        "syllables": [
+          "NA",
+          "VY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 26, \"word\": \"NAVY\", \"syllables\": [\"NA\", \"VY\"], \"instruction\": \"Let's learn NA and VY. Navy blue!\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-27",
+      "language": "English",
+      "content": {
+        "target_word": "COZY",
+        "syllables": [
+          "CO",
+          "ZY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 27, \"word\": \"COZY\", \"syllables\": [\"CO\", \"ZY\"], \"instruction\": \"Let's form COZY.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-28",
+      "language": "English",
+      "content": {
+        "target_word": "MUSIC",
+        "syllables": [
+          "MU",
+          "SIC"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 28, \"word\": \"MUSIC\", \"syllables\": [\"MU\", \"SIC\"], \"instruction\": \"Let's learn MU and SIC. Music!\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-29",
+      "language": "English",
+      "content": {
+        "target_word": "MAGIC",
+        "syllables": [
+          "MA",
+          "GIC"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 29, \"word\": \"MAGIC\", \"syllables\": [\"MA\", \"GIC\"], \"instruction\": \"Let's form MAGIC.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-30",
+      "language": "English",
+      "content": {
+        "target_word": "TOTAL",
+        "syllables": [
+          "TO",
+          "TAL"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 30, \"word\": \"TOTAL\", \"syllables\": [\"TO\", \"TAL\"], \"instruction\": \"Let's learn TO and TAL. Total!\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-31",
+      "language": "English",
+      "content": {
+        "target_word": "GOOD MORNING",
+        "syllables": [
+          "GOOD",
+          "MORNING"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 31, \"word\": \"GOOD MORNING\", \"syllables\": [\"GOOD\", \"MORNING\"], \"instruction\": \"Good morning! A greeting for the start of the day.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-32",
+      "language": "English",
+      "content": {
+        "target_word": "GOOD NIGHT",
+        "syllables": [
+          "GOOD",
+          "NIGHT"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 32, \"word\": \"GOOD NIGHT\", \"syllables\": [\"GOOD\", \"NIGHT\"], \"instruction\": \"Good night! A greeting when going to sleep.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-33",
+      "language": "English",
+      "content": {
+        "target_word": "THANK YOU",
+        "syllables": [
+          "THANK",
+          "YOU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 33, \"word\": \"THANK YOU\", \"syllables\": [\"THANK\", \"YOU\"], \"instruction\": \"We say THANK YOU to show gratitude.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-34",
+      "language": "English",
+      "content": {
+        "target_word": "YOU RE WELCOME",
+        "syllables": [
+          "YOU",
+          "RE",
+          "WELCOME"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 34, \"word\": \"YOU RE WELCOME\", \"syllables\": [\"YOU\", \"RE\", \"WELCOME\"], \"instruction\": \"We say YOU'RE WELCOME after someone thanks us.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-35",
+      "language": "English",
+      "content": {
+        "target_word": "PLEASE HELP",
+        "syllables": [
+          "PLEASE",
+          "HELP"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 35, \"word\": \"PLEASE HELP\", \"syllables\": [\"PLEASE\", \"HELP\"], \"instruction\": \"We use PLEASE to ask for things politely.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-36",
+      "language": "English",
+      "content": {
+        "target_word": "HOW ARE YOU",
+        "syllables": [
+          "HOW",
+          "ARE",
+          "YOU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 36, \"word\": \"HOW ARE YOU\", \"syllables\": [\"HOW\", \"ARE\", \"YOU\"], \"instruction\": \"We ask HOW ARE YOU to greet someone.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-37",
+      "language": "English",
+      "content": {
+        "target_word": "I AM FINE",
+        "syllables": [
+          "I",
+          "AM",
+          "FINE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 37, \"word\": \"I AM FINE\", \"syllables\": [\"I\", \"AM\", \"FINE\"], \"instruction\": \"We say I AM FINE when we feel good.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-38",
+      "language": "English",
+      "content": {
+        "target_word": "SEE YOU LATER",
+        "syllables": [
+          "SEE",
+          "YOU",
+          "LATER"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 38, \"word\": \"SEE YOU LATER\", \"syllables\": [\"SEE\", \"YOU\", \"LATER\"], \"instruction\": \"We say SEE YOU LATER to say goodbye.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-39",
+      "language": "English",
+      "content": {
+        "target_word": "EXCUSE ME",
+        "syllables": [
+          "EXCUSE",
+          "ME"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 39, \"word\": \"EXCUSE ME\", \"syllables\": [\"EXCUSE\", \"ME\"], \"instruction\": \"We say EXCUSE ME to get someone's attention.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-40",
+      "language": "English",
+      "content": {
+        "target_word": "I AM SORRY",
+        "syllables": [
+          "I",
+          "AM",
+          "SORRY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 40, \"word\": \"I AM SORRY\", \"syllables\": [\"I\", \"AM\", \"SORRY\"], \"instruction\": \"We say I AM SORRY to apologize.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-41",
+      "language": "English",
+      "content": {
+        "target_word": "NICE TO MEET YOU",
+        "syllables": [
+          "NICE",
+          "TO",
+          "MEET",
+          "YOU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 41, \"word\": \"NICE TO MEET YOU\", \"syllables\": [\"NICE\", \"TO\", \"MEET\", \"YOU\"], \"instruction\": \"We say NICE TO MEET YOU when meeting someone new.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-42",
+      "language": "English",
+      "content": {
+        "target_word": "GOOD AFTERNOON",
+        "syllables": [
+          "GOOD",
+          "AFTERNOON"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 42, \"word\": \"GOOD AFTERNOON\", \"syllables\": [\"GOOD\", \"AFTERNOON\"], \"instruction\": \"Good afternoon! A greeting for midday.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-43",
+      "language": "English",
+      "content": {
+        "target_word": "I DON'T KNOW",
+        "syllables": [
+          "I",
+          "DON'T",
+          "KNOW"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 43, \"word\": \"I DON'T KNOW\", \"syllables\": [\"I\", \"DON'T\", \"KNOW\"], \"instruction\": \"We say I DON'T KNOW when we are unsure.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-44",
+      "language": "English",
+      "content": {
+        "target_word": "ENJOY YOUR MEAL",
+        "syllables": [
+          "ENJOY",
+          "YOUR",
+          "MEAL"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 44, \"word\": \"ENJOY YOUR MEAL\", \"syllables\": [\"ENJOY\", \"YOUR\", \"MEAL\"], \"instruction\": \"We say ENJOY YOUR MEAL before eating.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-45",
+      "language": "English",
+      "content": {
+        "target_word": "HAVE A NICE DAY",
+        "syllables": [
+          "HAVE",
+          "A",
+          "NICE",
+          "DAY"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 45, \"word\": \"HAVE A NICE DAY\", \"syllables\": [\"HAVE\", \"A\", \"NICE\", \"DAY\"], \"instruction\": \"We say HAVE A NICE DAY to wish someone well.\", \"language\": \"en\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-1",
+      "language": "French",
+      "content": {
+        "target_word": "MAMAN",
+        "syllables": [
+          "MA",
+          "MAN"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 1, \"word\": \"MAMAN\", \"syllables\": [\"MA\", \"MAN\"], \"instruction\": \"Apprenons la syllabe MA. Écoute et répète.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-2",
+      "language": "French",
+      "content": {
+        "target_word": "PAPA",
+        "syllables": [
+          "PA",
+          "PA"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 2, \"word\": \"PAPA\", \"syllables\": [\"PA\", \"PA\"], \"instruction\": \"Apprenons PA.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-3",
+      "language": "French",
+      "content": {
+        "target_word": "ROBE",
+        "syllables": [
+          "RO",
+          "BE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 3, \"word\": \"ROBE\", \"syllables\": [\"RO\", \"BE\"], \"instruction\": \"Formons le mot ROBE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-4",
+      "language": "French",
+      "content": {
+        "target_word": "TUBE",
+        "syllables": [
+          "TU",
+          "BE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 4, \"word\": \"TUBE\", \"syllables\": [\"TU\", \"BE\"], \"instruction\": \"Apprenons TU et BE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-5",
+      "language": "French",
+      "content": {
+        "target_word": "CAFE",
+        "syllables": [
+          "CA",
+          "FE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 5, \"word\": \"CAFE\", \"syllables\": [\"CA\", \"FE\"], \"instruction\": \"Formons CAFE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-6",
+      "language": "French",
+      "content": {
+        "target_word": "ROSE",
+        "syllables": [
+          "RO",
+          "SE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 6, \"word\": \"ROSE\", \"syllables\": [\"RO\", \"SE\"], \"instruction\": \"Formons ROSE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-7",
+      "language": "French",
+      "content": {
+        "target_word": "LUNE",
+        "syllables": [
+          "LU",
+          "NE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 7, \"word\": \"LUNE\", \"syllables\": [\"LU\", \"NE\"], \"instruction\": \"Apprenons LU et NE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-8",
+      "language": "French",
+      "content": {
+        "target_word": "DUNE",
+        "syllables": [
+          "DU",
+          "NE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 8, \"word\": \"DUNE\", \"syllables\": [\"DU\", \"NE\"], \"instruction\": \"Formons DUNE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-9",
+      "language": "French",
+      "content": {
+        "target_word": "FUME",
+        "syllables": [
+          "FU",
+          "ME"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 9, \"word\": \"FUME\", \"syllables\": [\"FU\", \"ME\"], \"instruction\": \"Formons FUME.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-10",
+      "language": "French",
+      "content": {
+        "target_word": "MULE",
+        "syllables": [
+          "MU",
+          "LE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 10, \"word\": \"MULE\", \"syllables\": [\"MU\", \"LE\"], \"instruction\": \"Apprenons MU et LE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-11",
+      "language": "French",
+      "content": {
+        "target_word": "SOLE",
+        "syllables": [
+          "SO",
+          "LE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 11, \"word\": \"SOLE\", \"syllables\": [\"SO\", \"LE\"], \"instruction\": \"Formons SOLE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-12",
+      "language": "French",
+      "content": {
+        "target_word": "MODE",
+        "syllables": [
+          "MO",
+          "DE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 12, \"word\": \"MODE\", \"syllables\": [\"MO\", \"DE\"], \"instruction\": \"Apprenons MO et DE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-13",
+      "language": "French",
+      "content": {
+        "target_word": "CODE",
+        "syllables": [
+          "CO",
+          "DE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 13, \"word\": \"CODE\", \"syllables\": [\"CO\", \"DE\"], \"instruction\": \"Formons CODE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-14",
+      "language": "French",
+      "content": {
+        "target_word": "NODE",
+        "syllables": [
+          "NO",
+          "DE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 14, \"word\": \"NODE\", \"syllables\": [\"NO\", \"DE\"], \"instruction\": \"Formons NODE.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-15",
+      "language": "French",
+      "content": {
+        "target_word": "DOME",
+        "syllables": [
+          "DO",
+          "ME"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 15, \"word\": \"DOME\", \"syllables\": [\"DO\", \"ME\"], \"instruction\": \"Apprenons DO et ME. Le dôme!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-16",
+      "language": "French",
+      "content": {
+        "target_word": "BOBO",
+        "syllables": [
+          "BO",
+          "BO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 16, \"word\": \"BOBO\", \"syllables\": [\"BO\", \"BO\"], \"instruction\": \"Apprenons BO. Bobo!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-17",
+      "language": "French",
+      "content": {
+        "target_word": "DODO",
+        "syllables": [
+          "DO",
+          "DO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 17, \"word\": \"DODO\", \"syllables\": [\"DO\", \"DO\"], \"instruction\": \"Formons DODO. Il est l'heure de dormir!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-18",
+      "language": "French",
+      "content": {
+        "target_word": "VELO",
+        "syllables": [
+          "VE",
+          "LO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 18, \"word\": \"VELO\", \"syllables\": [\"VE\", \"LO\"], \"instruction\": \"Apprenons VE et LO. Le vélo!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-19",
+      "language": "French",
+      "content": {
+        "target_word": "MOTO",
+        "syllables": [
+          "MO",
+          "TO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 19, \"word\": \"MOTO\", \"syllables\": [\"MO\", \"TO\"], \"instruction\": \"Formons MOTO. La moto!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-20",
+      "language": "French",
+      "content": {
+        "target_word": "MENU",
+        "syllables": [
+          "ME",
+          "NU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 20, \"word\": \"MENU\", \"syllables\": [\"ME\", \"NU\"], \"instruction\": \"Apprenons ME et NU. Le menu!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-21",
+      "language": "French",
+      "content": {
+        "target_word": "TOFU",
+        "syllables": [
+          "TO",
+          "FU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 21, \"word\": \"TOFU\", \"syllables\": [\"TO\", \"FU\"], \"instruction\": \"Formons TOFU.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-22",
+      "language": "French",
+      "content": {
+        "target_word": "POLO",
+        "syllables": [
+          "PO",
+          "LO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 22, \"word\": \"POLO\", \"syllables\": [\"PO\", \"LO\"], \"instruction\": \"Formons POLO.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-23",
+      "language": "French",
+      "content": {
+        "target_word": "SOLO",
+        "syllables": [
+          "SO",
+          "LO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 23, \"word\": \"SOLO\", \"syllables\": [\"SO\", \"LO\"], \"instruction\": \"Apprenons SO et LO. Solo!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-24",
+      "language": "French",
+      "content": {
+        "target_word": "LOGO",
+        "syllables": [
+          "LO",
+          "GO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 24, \"word\": \"LOGO\", \"syllables\": [\"LO\", \"GO\"], \"instruction\": \"Formons LOGO.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-25",
+      "language": "French",
+      "content": {
+        "target_word": "COCO",
+        "syllables": [
+          "CO",
+          "CO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 25, \"word\": \"COCO\", \"syllables\": [\"CO\", \"CO\"], \"instruction\": \"Apprenons CO. La noix de coco!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-26",
+      "language": "French",
+      "content": {
+        "target_word": "GALA",
+        "syllables": [
+          "GA",
+          "LA"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 26, \"word\": \"GALA\", \"syllables\": [\"GA\", \"LA\"], \"instruction\": \"Apprenons GA et LA. Le gala!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-27",
+      "language": "French",
+      "content": {
+        "target_word": "NANA",
+        "syllables": [
+          "NA",
+          "NA"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 27, \"word\": \"NANA\", \"syllables\": [\"NA\", \"NA\"], \"instruction\": \"Formons NANA.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-28",
+      "language": "French",
+      "content": {
+        "target_word": "KILO",
+        "syllables": [
+          "KI",
+          "LO"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 28, \"word\": \"KILO\", \"syllables\": [\"KI\", \"LO\"], \"instruction\": \"Apprenons KI et LO. Le kilo!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-29",
+      "language": "French",
+      "content": {
+        "target_word": "PILE",
+        "syllables": [
+          "PI",
+          "LE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 29, \"word\": \"PILE\", \"syllables\": [\"PI\", \"LE\"], \"instruction\": \"Formons PILE. La pile!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-30",
+      "language": "French",
+      "content": {
+        "target_word": "BIJOU",
+        "syllables": [
+          "BI",
+          "JOU"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 30, \"word\": \"BIJOU\", \"syllables\": [\"BI\", \"JOU\"], \"instruction\": \"Apprenons BI et JOU. Le bijou!\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-31",
+      "language": "French",
+      "content": {
+        "target_word": "BONJOUR",
+        "syllables": [
+          "BON",
+          "JOUR"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 31, \"word\": \"BONJOUR\", \"syllables\": [\"BON\", \"JOUR\"], \"instruction\": \"Bonjour! Salutation du matin.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-32",
+      "language": "French",
+      "content": {
+        "target_word": "BONNE NUIT",
+        "syllables": [
+          "BONNE",
+          "NUIT"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 32, \"word\": \"BONNE NUIT\", \"syllables\": [\"BONNE\", \"NUIT\"], \"instruction\": \"Bonne nuit! On dit ça avant de dormir.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-33",
+      "language": "French",
+      "content": {
+        "target_word": "MERCI BEAUCOUP",
+        "syllables": [
+          "MERCI",
+          "BEAUCOUP"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 33, \"word\": \"MERCI BEAUCOUP\", \"syllables\": [\"MERCI\", \"BEAUCOUP\"], \"instruction\": \"On dit MERCI BEAUCOUP pour remercier.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-34",
+      "language": "French",
+      "content": {
+        "target_word": "DE RIEN",
+        "syllables": [
+          "DE",
+          "RIEN"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 34, \"word\": \"DE RIEN\", \"syllables\": [\"DE\", \"RIEN\"], \"instruction\": \"On dit DE RIEN quand quelqu'un nous remercie.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-35",
+      "language": "French",
+      "content": {
+        "target_word": "S'IL VOUS PLAIT",
+        "syllables": [
+          "S'IL",
+          "VOUS",
+          "PLAIT"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 35, \"word\": \"S'IL VOUS PLAIT\", \"syllables\": [\"S'IL\", \"VOUS\", \"PLAIT\"], \"instruction\": \"On dit S'IL VOUS PLAÎT pour demander poliment.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-36",
+      "language": "French",
+      "content": {
+        "target_word": "COMMENT ALLEZ VOUS",
+        "syllables": [
+          "COMMENT",
+          "ALLEZ",
+          "VOUS"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 36, \"word\": \"COMMENT ALLEZ VOUS\", \"syllables\": [\"COMMENT\", \"ALLEZ\", \"VOUS\"], \"instruction\": \"On dit COMMENT ALLEZ-VOUS pour saluer.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-37",
+      "language": "French",
+      "content": {
+        "target_word": "JE VAIS BIEN",
+        "syllables": [
+          "JE",
+          "VAIS",
+          "BIEN"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 37, \"word\": \"JE VAIS BIEN\", \"syllables\": [\"JE\", \"VAIS\", \"BIEN\"], \"instruction\": \"On répond JE VAIS BIEN quand on se sent bien.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-38",
+      "language": "French",
+      "content": {
+        "target_word": "AU REVOIR",
+        "syllables": [
+          "AU",
+          "REVOIR"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 38, \"word\": \"AU REVOIR\", \"syllables\": [\"AU\", \"REVOIR\"], \"instruction\": \"On dit AU REVOIR pour se séparer.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-39",
+      "language": "French",
+      "content": {
+        "target_word": "EXCUSEZ MOI",
+        "syllables": [
+          "EXCUSEZ",
+          "MOI"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 39, \"word\": \"EXCUSEZ MOI\", \"syllables\": [\"EXCUSEZ\", \"MOI\"], \"instruction\": \"On dit EXCUSEZ-MOI pour s'excuser ou attirer l'attention.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-40",
+      "language": "French",
+      "content": {
+        "target_word": "JE SUIS DESOLÉ",
+        "syllables": [
+          "JE",
+          "SUIS",
+          "DESOLÉ"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 40, \"word\": \"JE SUIS DESOLÉ\", \"syllables\": [\"JE\", \"SUIS\", \"DESOLÉ\"], \"instruction\": \"On dit JE SUIS DÉSOLÉ pour s'excuser.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-41",
+      "language": "French",
+      "content": {
+        "target_word": "ENCHANTÉ DE VOUS RENCONTRER",
+        "syllables": [
+          "ENCHANTÉ",
+          "DE",
+          "VOUS",
+          "RENCONTRER"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 41, \"word\": \"ENCHANTÉ DE VOUS RENCONTRER\", \"syllables\": [\"ENCHANTÉ\", \"DE\", \"VOUS\", \"RENCONTRER\"], \"instruction\": \"On dit ENCHANTÉ quand on rencontre quelqu'un.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-42",
+      "language": "French",
+      "content": {
+        "target_word": "BONNE JOURNÉE",
+        "syllables": [
+          "BONNE",
+          "JOURNÉE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 42, \"word\": \"BONNE JOURNÉE\", \"syllables\": [\"BONNE\", \"JOURNÉE\"], \"instruction\": \"On dit BONNE JOURNÉE pour souhaiter une bonne journée.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-43",
+      "language": "French",
+      "content": {
+        "target_word": "JE NE SAIS PAS",
+        "syllables": [
+          "JE",
+          "NE",
+          "SAIS",
+          "PAS"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 43, \"word\": \"JE NE SAIS PAS\", \"syllables\": [\"JE\", \"NE\", \"SAIS\", \"PAS\"], \"instruction\": \"On dit JE NE SAIS PAS quand on ne sait pas.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-44",
+      "language": "French",
+      "content": {
+        "target_word": "BON APPÉTIT",
+        "syllables": [
+          "BON",
+          "APPÉTIT"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 44, \"word\": \"BON APPÉTIT\", \"syllables\": [\"BON\", \"APPÉTIT\"], \"instruction\": \"On dit BON APPÉTIT avant de manger.\", \"language\": \"fr\"}"
+      }
+    },
+    {
+      "externalId": "es-lvl-45",
+      "language": "French",
+      "content": {
+        "target_word": "BONNE CHANCE",
+        "syllables": [
+          "BONNE",
+          "CHANCE"
+        ],
+        "payload": "{\"appType\": \"LEVEL\", \"level\": 45, \"word\": \"BONNE CHANCE\", \"syllables\": [\"BONNE\", \"CHANCE\"], \"instruction\": \"On dit BONNE CHANCE pour souhaiter de la réussite.\", \"language\": \"fr\"}"
+      }
+    }
+  ]
+}

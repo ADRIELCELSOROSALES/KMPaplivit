@@ -26,8 +26,10 @@ import com.aplivit.infrastructure.remote.AttemptApi
 import com.aplivit.infrastructure.remote.AuthApi
 import com.aplivit.infrastructure.remote.ContentApi
 import com.aplivit.infrastructure.remote.MyLanguageApi
+import com.aplivit.infrastructure.remote.ProgressApi
 import com.aplivit.infrastructure.remote.createApiHttpClient
 import com.aplivit.infrastructure.storage.SettingsProgressRepository
+import com.aplivit.offline.AccountGuard
 import com.aplivit.offline.AttemptQueue
 import com.aplivit.offline.BackendExerciseMapper
 import com.aplivit.offline.BackendLevelMapper
@@ -56,19 +58,40 @@ val appModule = module {
     single { provideHttpClientEngine() }
     single {
         val tokenStore = get<TokenStore>()
-        createApiHttpClient(get()) { tokenStore.token() }
+        val scope = this
+        createApiHttpClient(
+            engine = get(),
+            tokenProvider = { tokenStore.token() },
+            // SessionManager se resuelve recién acá (y no como dependencia del cliente) para no
+            // crear un ciclo: SessionManager -> AuthApi -> HttpClient.
+            onUnauthorized = { scope.get<SessionManager>().renewSession() }
+        )
     }
     single { AuthApi(get()) }
     single { ContentApi(get()) }
     single { AttemptApi(get()) }
     single { MyLanguageApi(get()) }
+    single { ProgressApi(get()) }
     single { ContentCache(get()) }
     single { AttemptQueue(get()) }
     single { SessionManager(get(), get(), get()) }
-    single<ContentRepository> { OfflineContentRepository(get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<ContentRepository> {
+        OfflineContentRepository(
+            contentApi = get(),
+            attemptApi = get(),
+            cache = get(),
+            queue = get(),
+            connectivity = get(),
+            levelMapper = get(),
+            progressRepository = get(),
+            myLanguageApi = get(),
+            progressApi = get()
+        )
+    }
     single { BackendExerciseMapper() }
     single { BackendLevelMapper() }
-    single { SyncCoordinator(get(), get(), get()) }
+    single { AccountGuard(get(), get(), get(), get(), get()) }
+    single { SyncCoordinator(get(), get(), get(), get()) }
 
     factory { GetLevelsUseCase(get(), get(), get()) }
     factory { CompleteGameUseCase(get()) }
