@@ -1,7 +1,10 @@
-TEAM_ID=
-
 PRODUCT_NAME=KMPAplivit
-PRODUCT_BUNDLE_IDENTIFIER=com.kmpaplivit.KMPAplivit$(TEAM_ID)
+
+// Bundle ID definitivo, alineado con el applicationId de Android (com.aplivit).
+// Tiene que coincidir EXACTO con el App ID registrado en la cuenta de Apple y con
+// Authentication:GameCenter:BundleId del backend: ese string entra en el payload que Apple firma
+// (playerID + bundleID + timestamp + salt), asi que si difiere en un caracter el login da 401.
+PRODUCT_BUNDLE_IDENTIFIER=com.aplivit
 
 CURRENT_PROJECT_VERSION=1
 MARKETING_VERSION=1.0

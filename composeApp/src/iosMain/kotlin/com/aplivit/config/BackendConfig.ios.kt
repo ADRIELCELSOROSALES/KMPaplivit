@@ -11,4 +11,4 @@ package com.aplivit.config
  *
  * Simulador: puede usar "http://localhost:5050" directo, sin túnel.
  */
-actual val apiBaseUrl: String = "https://encoding-barn-matrix-springer.trycloudflare.com"
+actual val apiBaseUrl: String = "https://proceeding-query-bugs-ride.trycloudflare.com"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Game Center: habilita el login nativo del alumno (GKLocalPlayer + firma de verificación de
+	  identidad, ver PlatformGameSignIn.ios.kt). Requiere que el App ID tenga la capability
+	  Game Center habilitada en la cuenta de Apple Developer; sin eso, firmar para un dispositivo
+	  falla con "Provisioning profile doesn't support the Game Center capability".
+	-->
+	<key>com.apple.developer.game-center</key>
+	<true/>
+</dict>
+</plist>
