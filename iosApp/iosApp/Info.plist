@@ -4,6 +4,13 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!--
+	  La app no usa criptografia propia, solo HTTPS del sistema: con esto TestFlight y App Store
+	  Connect dejan de preguntar por cumplimiento de exportacion en cada subida.
+	-->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<!-- DEV: permite HTTP plano hacia el backend local. Quitar cuando el backend sea HTTPS fijo. -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
