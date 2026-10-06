@@ -16,3 +16,6 @@ actual fun provideConnectivityChecker(): ConnectivityChecker = IosConnectivityCh
 
 actual fun provideSettings(): Settings =
     NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults)
+
+actual fun provideHttpClientEngine(): io.ktor.client.engine.HttpClientEngine =
+    io.ktor.client.engine.darwin.Darwin.create()

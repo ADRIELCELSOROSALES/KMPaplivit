@@ -3,6 +3,7 @@ package com.aplivit.shared
 import com.aplivit.core.domain.model.AppLanguage
 
 data class AppStrings(
+    val splashWelcome: String,
     val welcome: String,
     val resumeSession: String,
     val selectLevel: String,
@@ -24,10 +25,13 @@ data class AppStrings(
     val permissionNeeded: String,
     val dragDropInstruction: String,
     val dragDropSuccess: String,
+    val orderSuccess: String,
     val selectionSuccess: String,
     val selectionError: String,
     val linkInstruction: String,
     val linkSuccess: String,
+    val imageLinkInstruction: String,
+    val imageLinkSuccess: String,
     val audioPairInstruction: String,
     val audioPairSuccess: String,
     val noSoundDetected: String,
@@ -43,6 +47,7 @@ data class AppStrings(
 
 fun stringsFor(language: AppLanguage): AppStrings = when (language) {
     AppLanguage.SPANISH -> AppStrings(
+        splashWelcome = "Bienvenidos a Aplivit",
         welcome = "Bienvenido. Empecemos desde el principio.",
         resumeSession = "Continuamos donde lo dejaste.",
         selectLevel = "Seleccioná un nivel para continuar.",
@@ -63,11 +68,14 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         selectLanguage = "Elegí tu idioma",
         permissionNeeded = "Se necesita permiso de micrófono para este ejercicio.",
         dragDropInstruction = "Arrastrá las sílabas para armar la palabra.",
-        dragDropSuccess = "Muy bien. Ahora escuchá y elegí la sílaba correcta.",
+        dragDropSuccess = "Muy bien. Ahora tocá las sílabas en orden.",
+        orderSuccess = "Muy bien. Ahora escuchá y elegí la sílaba correcta.",
         selectionSuccess = "Muy bien. Ahora uní las dos que son iguales arrastrando una línea.",
         selectionError = "Eso no es correcto. Intentá de nuevo.",
         linkInstruction = "Arrastrá de izquierda a derecha para unir las dos iguales.",
         linkSuccess = "Excelente. Ahora encontrá las dos iguales que suenan.",
+        imageLinkInstruction = "Uní cada palabra con su imagen.",
+        imageLinkSuccess = "¡Muy bien! Ahora uní cada palabra con su imagen.",
         audioPairInstruction = "Escuchá y tocá las dos iguales.",
         audioPairSuccess = "Muy bien. Ahora repetí lo que escuchás.",
         noSoundDetected = "No te escuché. Intentá de nuevo.",
@@ -81,6 +89,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         allLevelsCompleted = "¡Felicitaciones! Completaste todos los niveles."
     )
     AppLanguage.ENGLISH -> AppStrings(
+        splashWelcome = "Welcome to Aplivit",
         welcome = "Welcome. Let's start from the beginning.",
         resumeSession = "Continuing where you left off.",
         selectLevel = "Select a level to continue.",
@@ -101,11 +110,14 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         selectLanguage = "Choose your language",
         permissionNeeded = "Microphone permission is needed for this exercise.",
         dragDropInstruction = "Drag the syllables to form the word.",
-        dragDropSuccess = "Great. Now listen and choose the correct syllable.",
+        dragDropSuccess = "Great. Now tap the syllables in order.",
+        orderSuccess = "Great. Now listen and choose the correct syllable.",
         selectionSuccess = "Great. Now drag a line to connect the two that are the same.",
         selectionError = "That is not correct. Try again.",
         linkInstruction = "Drag from left to right to connect the two that are the same.",
         linkSuccess = "Excellent. Now find the two that sound the same.",
+        imageLinkInstruction = "Connect each word with its picture.",
+        imageLinkSuccess = "Great! Now connect each word with its picture.",
         audioPairInstruction = "Listen and tap the two that are the same.",
         audioPairSuccess = "Great. Now repeat what you hear.",
         noSoundDetected = "I didn't hear you. Try again.",
@@ -119,6 +131,7 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         allLevelsCompleted = "Congratulations! You completed all levels."
     )
     AppLanguage.FRENCH -> AppStrings(
+        splashWelcome = "Bienvenue sur Aplivit",
         welcome = "Bienvenue. Commençons depuis le début.",
         resumeSession = "Continuons là où tu t'es arrêté.",
         selectLevel = "Sélectionne un niveau pour continuer.",
@@ -139,11 +152,14 @@ fun stringsFor(language: AppLanguage): AppStrings = when (language) {
         selectLanguage = "Choisis ta langue",
         permissionNeeded = "Permission du microphone nécessaire pour cet exercice.",
         dragDropInstruction = "Fais glisser les syllabes pour former le mot.",
-        dragDropSuccess = "Bien. Maintenant écoute et choisis la bonne syllabe.",
+        dragDropSuccess = "Bien. Maintenant touche les syllabes dans l'ordre.",
+        orderSuccess = "Bien. Maintenant écoute et choisis la bonne syllabe.",
         selectionSuccess = "Bien. Maintenant trace une ligne pour relier les deux identiques.",
         selectionError = "Ce n'est pas correct. Réessaie.",
         linkInstruction = "Glisse de gauche à droite pour relier les deux identiques.",
         linkSuccess = "Excellent. Maintenant trouve les deux qui sonnent pareil.",
+        imageLinkInstruction = "Relie chaque mot avec son image.",
+        imageLinkSuccess = "Très bien ! Maintenant relie chaque mot avec son image.",
         audioPairInstruction = "Écoute et touche les deux qui sont identiques.",
         audioPairSuccess = "Bien. Maintenant répète ce que tu entends.",
         noSoundDetected = "Je ne t'ai pas entendu. Réessaie.",

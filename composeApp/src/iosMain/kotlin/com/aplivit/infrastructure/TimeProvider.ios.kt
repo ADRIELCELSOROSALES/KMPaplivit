@@ -6,6 +6,8 @@ import platform.Foundation.timeIntervalSince1970
 
 actual fun nowEpochSeconds(): Long = NSDate().timeIntervalSince1970.toLong()
 
+actual fun nowEpochMillis(): Long = (NSDate().timeIntervalSince1970 * 1000.0).toLong()
+
 actual fun todayIsoDate(): String {
     val fmt = NSDateFormatter()
     fmt.dateFormat = "yyyy-MM-dd"

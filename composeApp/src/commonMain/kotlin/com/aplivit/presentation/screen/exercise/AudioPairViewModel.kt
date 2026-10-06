@@ -43,29 +43,28 @@ class AudioPairViewModel(
         val exercise = _state.value.exercise ?: return
         if (index in _state.value.foundCorrect) return
         if (_state.value.flashState.containsKey(index)) return
+        if (_state.value.flashState.size >= 2) return
 
         val isCorrect = exercise.options[index].equals(exercise.target, ignoreCase = true)
-        val strings = stringsFor(progressRepository.getSelectedLanguage())
+        val newFlashState = _state.value.flashState +
+            (index to if (isCorrect) FlashState.CORRECT else FlashState.INCORRECT)
+        _state.value = _state.value.copy(flashState = newFlashState)
 
-        _state.value = _state.value.copy(
-            flashState = _state.value.flashState + (index to if (isCorrect) FlashState.CORRECT else FlashState.INCORRECT)
-        )
+        if (newFlashState.size < 2) return
 
         viewModelScope.launch {
-            tts.speak(if (isCorrect) strings.correct else strings.tryAgain)
-            delay(1000)
-            _state.value = _state.value.copy(
-                flashState = _state.value.flashState - index
-            )
-            if (isCorrect) {
-                val newFound = _state.value.foundCorrect + index
-                val allCorrectIndices = exercise.options
-                    .mapIndexedNotNull { i, opt -> if (opt.equals(exercise.target, ignoreCase = true)) i else null }
-                    .toSet()
+            delay(700)
+            val strings = stringsFor(progressRepository.getSelectedLanguage())
+            val allCorrect = newFlashState.values.all { it == FlashState.CORRECT }
+            tts.speak(if (allCorrect) strings.correct else strings.tryAgain)
+            if (allCorrect) {
                 _state.value = _state.value.copy(
-                    foundCorrect = newFound,
-                    isCompleted = newFound.containsAll(allCorrectIndices)
+                    foundCorrect = newFlashState.keys,
+                    isCompleted = true
                 )
+            } else {
+                delay(1000)
+                _state.value = _state.value.copy(flashState = emptyMap())
             }
         }
     }

@@ -64,7 +64,9 @@ class HomeViewModel(
             tts.setLanguage(language)
             delay(150)
 
-            val message = when {
+            // El nivel se selecciona automáticamente, por eso no hace falta pedir
+            // "seleccioná un nivel": en ese caso no decimos nada (message = null).
+            val message: String? = when {
                 resumeInfo.isFirstTime -> {
                     progressRepository.markLaunched()
                     strings.welcome                         // "Bienvenido. Empecemos desde el principio."
@@ -73,12 +75,17 @@ class HomeViewModel(
                     completionAnnounced = true
                     strings.nextLevel                       // "Muy bien! Seguimos con el siguiente nivel."
                 }
-                resumeInfo.hasProgress -> strings.resumeSession  // "Continuamos donde lo dejaste."
-                else -> strings.selectLevel
+                resumeInfo.hasProgress -> {
+                    // Primer arranque en este teléfono pero con avance de la cuenta: ya no es un
+                    // alumno nuevo, se lo saluda retomando.
+                    progressRepository.markLaunched()
+                    strings.resumeSession                   // "Continuamos donde lo dejaste."
+                }
+                else -> null
             }
 
             println("TTS_VM [HomeViewModel] hablando: '$message'")
-            tts.speakAndWait(message)
+            if (message != null) tts.speakAndWait(message)
             println("TTS_VM [HomeViewModel] speakAndWait COMPLETÓ")
 
             // Navegación DESPUÉS de que el TTS termina, para no interrumpir la instrucción del nivel

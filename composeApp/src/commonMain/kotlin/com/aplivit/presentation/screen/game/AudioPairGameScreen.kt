@@ -1,6 +1,7 @@
 package com.aplivit.presentation.screen.game
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +22,9 @@ import com.aplivit.core.domain.model.AudioPairExercise
 import com.aplivit.core.domain.model.Level
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
+import androidx.compose.ui.text.font.FontWeight
 import com.aplivit.presentation.component.AppColors
+import com.aplivit.presentation.component.SalientText
 import com.aplivit.presentation.component.SyllableCard
 import com.aplivit.presentation.screen.exercise.AudioPairViewModel
 import com.aplivit.presentation.screen.exercise.FlashState
@@ -58,35 +61,44 @@ fun AudioPairGameScreen(
         if (state.isCompleted) onCompleted()
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+    Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        SyllableCard(
+            text = exercise.target,
+            backgroundColor = AppColors.Outline,
+            textColor = AppColors.InkDark,
+            salientEnabled = false,
+            onClick = { vm.playTarget() },
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
+        Column(
+            modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            exercise.options.forEachIndexed { index, option ->
-                AudioPairOptionCard(
-                    option = option,
-                    flash = state.flashState[index],
-                    isFound = index in state.foundCorrect,
-                    salienceEnabled = exercise.useSalience,
-                    onClick = { vm.onOptionTapped(index) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                exercise.options.forEachIndexed { index, option ->
+                    AudioPairOptionCard(
+                        option = option,
+                        flash = state.flashState[index],
+                        isFound = index in state.foundCorrect,
+                        salienceEnabled = exercise.useSalience,
+                        onClick = { vm.onOptionTapped(index) }
+                    )
+                }
+            }
+
+            if (feedback != null) {
+                Text(
+                    text = feedback,
+                    color = AppColors.FeedbackIncorrect,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
                 )
             }
-        }
-
-        if (feedback != null) {
-            Text(
-                text = feedback,
-                color = AppColors.FeedbackIncorrect,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
-            )
         }
     }
 }
@@ -99,21 +111,32 @@ private fun AudioPairOptionCard(
     salienceEnabled: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = when {
+    val textColor = when {
         flash == FlashState.CORRECT -> AppColors.FeedbackCorrect
         flash == FlashState.INCORRECT -> AppColors.FeedbackIncorrect
         isFound -> AppColors.FeedbackCorrect
-        else -> AppColors.BgWhite
+        else -> AppColors.InkDark
     }
-    val textColor = if (backgroundColor == AppColors.BgWhite) AppColors.InkDark else AppColors.BgWhite
     val enabled = !isFound && flash == null
-    SyllableCard(
-        text = option,
-        backgroundColor = backgroundColor,
-        textColor = textColor,
-        salientEnabled = salienceEnabled && enabled,
-        onClick = onClick
-    )
+    val fontSize = when {
+        option.length <= 3 -> 36.sp
+        option.length <= 6 -> 28.sp
+        option.length <= 9 -> 20.sp
+        else -> 16.sp
+    }
+    SalientText(
+        onClick = onClick,
+        salientEnabled = salienceEnabled && enabled
+    ) {
+        Text(
+            text = option,
+            fontSize = fontSize,
+            fontWeight = FontWeight.Bold,
+            color = textColor,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+        )
+    }
 }
 
 private fun buildExercise(level: Level): AudioPairExercise {

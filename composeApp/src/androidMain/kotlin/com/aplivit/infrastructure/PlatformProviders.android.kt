@@ -21,3 +21,6 @@ actual fun provideConnectivityChecker(): ConnectivityChecker =
 @Suppress("DEPRECATION")
 actual fun provideSettings(): Settings =
     SharedPreferencesSettings(PreferenceManager.getDefaultSharedPreferences(AppContext.context))
+
+actual fun provideHttpClientEngine(): io.ktor.client.engine.HttpClientEngine =
+    io.ktor.client.engine.okhttp.OkHttp.create()

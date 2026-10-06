@@ -3,6 +3,7 @@ package com.aplivit.presentation.screen.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aplivit.core.domain.model.AppLanguage
+import com.aplivit.core.port.ContentRepository
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ data class SettingsUiState(
 
 class SettingsViewModel(
     private val progressRepository: ProgressRepository,
-    private val tts: SpeechSynthesizer
+    private val tts: SpeechSynthesizer,
+    private val contentRepository: ContentRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsUiState())
@@ -30,6 +32,8 @@ class SettingsViewModel(
         _state.value = _state.value.copy(selectedLanguage = language)
         viewModelScope.launch {
             tts.setLanguage(language)
+            // Sincroniza el idioma con el backend y re-baja el contenido en el idioma nuevo.
+            runCatching { contentRepository.refreshContent() }
         }
     }
 }

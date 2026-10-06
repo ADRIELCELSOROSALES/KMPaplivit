@@ -1,0 +1,1086 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "e1d9e7af0834",
+  "exercises": [
+    {
+      "externalId": "es-lvl-1",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 1,
+      "content": {
+        "targetWord": "MAMA",
+        "syllables": [
+          "MA",
+          "MA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 1,
+        "word": "MAMA",
+        "syllables": [
+          "MA",
+          "MA"
+        ],
+        "instruction": "En este nivel aprenderemos MA. Escuchá y repetí.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-2",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 2,
+      "content": {
+        "targetWord": "MESA",
+        "syllables": [
+          "ME",
+          "SA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 2,
+        "word": "MESA",
+        "syllables": [
+          "ME",
+          "SA"
+        ],
+        "instruction": "Ahora practicamos ME y SA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-3",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 3,
+      "content": {
+        "targetWord": "MISA",
+        "syllables": [
+          "MI",
+          "SA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 3,
+        "word": "MISA",
+        "syllables": [
+          "MI",
+          "SA"
+        ],
+        "instruction": "Combinamos MI y SA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-4",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 4,
+      "content": {
+        "targetWord": "PAPA",
+        "syllables": [
+          "PA",
+          "PA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 4,
+        "word": "PAPA",
+        "syllables": [
+          "PA",
+          "PA"
+        ],
+        "instruction": "Aprendemos PA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-5",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 5,
+      "content": {
+        "targetWord": "PECA",
+        "syllables": [
+          "PE",
+          "CA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 5,
+        "word": "PECA",
+        "syllables": [
+          "PE",
+          "CA"
+        ],
+        "instruction": "Practicamos PE y CA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-6",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 6,
+      "content": {
+        "targetWord": "PIPA",
+        "syllables": [
+          "PI",
+          "PA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 6,
+        "word": "PIPA",
+        "syllables": [
+          "PI",
+          "PA"
+        ],
+        "instruction": "Combinamos PI y PA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-7",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 7,
+      "content": {
+        "targetWord": "SALA",
+        "syllables": [
+          "SA",
+          "LA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 7,
+        "word": "SALA",
+        "syllables": [
+          "SA",
+          "LA"
+        ],
+        "instruction": "Aprendemos SA y LA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-8",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 8,
+      "content": {
+        "targetWord": "SETA",
+        "syllables": [
+          "SE",
+          "TA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 8,
+        "word": "SETA",
+        "syllables": [
+          "SE",
+          "TA"
+        ],
+        "instruction": "Practicamos SE y TA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-9",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 9,
+      "content": {
+        "targetWord": "SIMA",
+        "syllables": [
+          "SI",
+          "MA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 9,
+        "word": "SIMA",
+        "syllables": [
+          "SI",
+          "MA"
+        ],
+        "instruction": "Combinamos SI y MA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-10",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 10,
+      "content": {
+        "targetWord": "LACA",
+        "syllables": [
+          "LA",
+          "CA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 10,
+        "word": "LACA",
+        "syllables": [
+          "LA",
+          "CA"
+        ],
+        "instruction": "Aprendemos LA y CA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-11",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 11,
+      "content": {
+        "targetWord": "LEMA",
+        "syllables": [
+          "LE",
+          "MA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 11,
+        "word": "LEMA",
+        "syllables": [
+          "LE",
+          "MA"
+        ],
+        "instruction": "Practicamos LE y MA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-12",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 12,
+      "content": {
+        "targetWord": "LIMA",
+        "syllables": [
+          "LI",
+          "MA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 12,
+        "word": "LIMA",
+        "syllables": [
+          "LI",
+          "MA"
+        ],
+        "instruction": "Combinamos LI y MA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-13",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 13,
+      "content": {
+        "targetWord": "CAMA",
+        "syllables": [
+          "CA",
+          "MA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 13,
+        "word": "CAMA",
+        "syllables": [
+          "CA",
+          "MA"
+        ],
+        "instruction": "Aprendemos CA y MA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-14",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 14,
+      "content": {
+        "targetWord": "TAPA",
+        "syllables": [
+          "TA",
+          "PA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 14,
+        "word": "TAPA",
+        "syllables": [
+          "TA",
+          "PA"
+        ],
+        "instruction": "Practicamos TA y PA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-15",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 15,
+      "content": {
+        "targetWord": "TELA",
+        "syllables": [
+          "TE",
+          "LA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 15,
+        "word": "TELA",
+        "syllables": [
+          "TE",
+          "LA"
+        ],
+        "instruction": "Combinamos TE y LA.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-16",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 16,
+      "content": {
+        "targetWord": "HOLA",
+        "syllables": [
+          "HO",
+          "LA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 16,
+        "word": "HOLA",
+        "syllables": [
+          "HO",
+          "LA"
+        ],
+        "instruction": "Aprendemos HO. ¡Hola!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-17",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 17,
+      "content": {
+        "targetWord": "POLO",
+        "syllables": [
+          "PO",
+          "LO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 17,
+        "word": "POLO",
+        "syllables": [
+          "PO",
+          "LO"
+        ],
+        "instruction": "Practicamos PO y LO.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-18",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 18,
+      "content": {
+        "targetWord": "GATO",
+        "syllables": [
+          "GA",
+          "TO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 18,
+        "word": "GATO",
+        "syllables": [
+          "GA",
+          "TO"
+        ],
+        "instruction": "Conocemos GA. ¡Un gato!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-19",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 19,
+      "content": {
+        "targetWord": "BOCA",
+        "syllables": [
+          "BO",
+          "CA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 19,
+        "word": "BOCA",
+        "syllables": [
+          "BO",
+          "CA"
+        ],
+        "instruction": "Aprendemos BO. ¡La boca!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-20",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 20,
+      "content": {
+        "targetWord": "DEDO",
+        "syllables": [
+          "DE",
+          "DO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 20,
+        "word": "DEDO",
+        "syllables": [
+          "DE",
+          "DO"
+        ],
+        "instruction": "Practicamos DO. ¡Un dedo!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-21",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 21,
+      "content": {
+        "targetWord": "NIDO",
+        "syllables": [
+          "NI",
+          "DO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 21,
+        "word": "NIDO",
+        "syllables": [
+          "NI",
+          "DO"
+        ],
+        "instruction": "Combinamos NI y DO. ¡Un nido!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-22",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 22,
+      "content": {
+        "targetWord": "ROPA",
+        "syllables": [
+          "RO",
+          "PA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 22,
+        "word": "ROPA",
+        "syllables": [
+          "RO",
+          "PA"
+        ],
+        "instruction": "Aprendemos RO. ¡La ropa!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-23",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 23,
+      "content": {
+        "targetWord": "LUNA",
+        "syllables": [
+          "LU",
+          "NA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 23,
+        "word": "LUNA",
+        "syllables": [
+          "LU",
+          "NA"
+        ],
+        "instruction": "Practicamos LU y NA. ¡La luna!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-24",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 24,
+      "content": {
+        "targetWord": "MANO",
+        "syllables": [
+          "MA",
+          "NO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 24,
+        "word": "MANO",
+        "syllables": [
+          "MA",
+          "NO"
+        ],
+        "instruction": "Combinamos MA y NO. ¡Una mano!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-25",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 25,
+      "content": {
+        "targetWord": "UNO",
+        "syllables": [
+          "U",
+          "NO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 25,
+        "word": "UNO",
+        "syllables": [
+          "U",
+          "NO"
+        ],
+        "instruction": "El número UNO: U y NO.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-26",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 26,
+      "content": {
+        "targetWord": "LOBO",
+        "syllables": [
+          "LO",
+          "BO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 26,
+        "word": "LOBO",
+        "syllables": [
+          "LO",
+          "BO"
+        ],
+        "instruction": "Aprendemos LO y BO. ¡Un lobo!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-27",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 27,
+      "content": {
+        "targetWord": "LAGO",
+        "syllables": [
+          "LA",
+          "GO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 27,
+        "word": "LAGO",
+        "syllables": [
+          "LA",
+          "GO"
+        ],
+        "instruction": "Practicamos GO. ¡Un lago!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-28",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 28,
+      "content": {
+        "targetWord": "NUBE",
+        "syllables": [
+          "NU",
+          "BE"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 28,
+        "word": "NUBE",
+        "syllables": [
+          "NU",
+          "BE"
+        ],
+        "instruction": "Combinamos NU y BE. ¡Una nube!",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-29",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 29,
+      "content": {
+        "targetWord": "ROJO",
+        "syllables": [
+          "RO",
+          "JO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 29,
+        "word": "ROJO",
+        "syllables": [
+          "RO",
+          "JO"
+        ],
+        "instruction": "El color ROJO: RO y JO.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-30",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 30,
+      "content": {
+        "targetWord": "GRACIAS",
+        "syllables": [
+          "GRA",
+          "CIAS"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 30,
+        "word": "GRACIAS",
+        "syllables": [
+          "GRA",
+          "CIAS"
+        ],
+        "instruction": "Aprendemos a decir GRACIAS: GRA y CIAS.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-31",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 31,
+      "content": {
+        "targetWord": "BUENOS DIAS",
+        "syllables": [
+          "BUENOS",
+          "DIAS"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 31,
+        "word": "BUENOS DIAS",
+        "syllables": [
+          "BUENOS",
+          "DIAS"
+        ],
+        "instruction": "¡Buenos días! Saludo para empezar el día.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-32",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 32,
+      "content": {
+        "targetWord": "BUENAS NOCHES",
+        "syllables": [
+          "BUENAS",
+          "NOCHES"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 32,
+        "word": "BUENAS NOCHES",
+        "syllables": [
+          "BUENAS",
+          "NOCHES"
+        ],
+        "instruction": "¡Buenas noches! Saludo para despedirse de noche.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-33",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 33,
+      "content": {
+        "targetWord": "MUCHAS GRACIAS",
+        "syllables": [
+          "MUCHAS",
+          "GRACIAS"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 33,
+        "word": "MUCHAS GRACIAS",
+        "syllables": [
+          "MUCHAS",
+          "GRACIAS"
+        ],
+        "instruction": "Decimos MUCHAS GRACIAS para agradecer.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-34",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 34,
+      "content": {
+        "targetWord": "DE NADA",
+        "syllables": [
+          "DE",
+          "NADA"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 34,
+        "word": "DE NADA",
+        "syllables": [
+          "DE",
+          "NADA"
+        ],
+        "instruction": "Respondemos DE NADA cuando nos dan las gracias.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-35",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 35,
+      "content": {
+        "targetWord": "POR FAVOR",
+        "syllables": [
+          "POR",
+          "FAVOR"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 35,
+        "word": "POR FAVOR",
+        "syllables": [
+          "POR",
+          "FAVOR"
+        ],
+        "instruction": "Usamos POR FAVOR para pedir las cosas con amabilidad.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-36",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 36,
+      "content": {
+        "targetWord": "COMO ESTAS",
+        "syllables": [
+          "COMO",
+          "ESTAS"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 36,
+        "word": "COMO ESTAS",
+        "syllables": [
+          "COMO",
+          "ESTAS"
+        ],
+        "instruction": "Preguntamos COMO ESTAS para saber cómo está alguien.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-37",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 37,
+      "content": {
+        "targetWord": "ESTOY BIEN",
+        "syllables": [
+          "ESTOY",
+          "BIEN"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 37,
+        "word": "ESTOY BIEN",
+        "syllables": [
+          "ESTOY",
+          "BIEN"
+        ],
+        "instruction": "Respondemos ESTOY BIEN cuando nos sentimos bien.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-38",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 38,
+      "content": {
+        "targetWord": "HASTA LUEGO",
+        "syllables": [
+          "HASTA",
+          "LUEGO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 38,
+        "word": "HASTA LUEGO",
+        "syllables": [
+          "HASTA",
+          "LUEGO"
+        ],
+        "instruction": "Decimos HASTA LUEGO para despedirnos.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-39",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 39,
+      "content": {
+        "targetWord": "CON PERMISO",
+        "syllables": [
+          "CON",
+          "PERMISO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 39,
+        "word": "CON PERMISO",
+        "syllables": [
+          "CON",
+          "PERMISO"
+        ],
+        "instruction": "Decimos CON PERMISO para pasar o interrumpir con cortesía.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-40",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 40,
+      "content": {
+        "targetWord": "LO SIENTO",
+        "syllables": [
+          "LO",
+          "SIENTO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 40,
+        "word": "LO SIENTO",
+        "syllables": [
+          "LO",
+          "SIENTO"
+        ],
+        "instruction": "Decimos LO SIENTO para pedir disculpas.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-41",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 41,
+      "content": {
+        "targetWord": "QUE TAL",
+        "syllables": [
+          "QUE",
+          "TAL"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 41,
+        "word": "QUE TAL",
+        "syllables": [
+          "QUE",
+          "TAL"
+        ],
+        "instruction": "Preguntamos QUE TAL como saludo informal.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-42",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 42,
+      "content": {
+        "targetWord": "MUCHO GUSTO",
+        "syllables": [
+          "MUCHO",
+          "GUSTO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 42,
+        "word": "MUCHO GUSTO",
+        "syllables": [
+          "MUCHO",
+          "GUSTO"
+        ],
+        "instruction": "Decimos MUCHO GUSTO al conocer a alguien.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-43",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 43,
+      "content": {
+        "targetWord": "NO ENTIENDO",
+        "syllables": [
+          "NO",
+          "ENTIENDO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 43,
+        "word": "NO ENTIENDO",
+        "syllables": [
+          "NO",
+          "ENTIENDO"
+        ],
+        "instruction": "Decimos NO ENTIENDO cuando no comprendemos algo.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-44",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 44,
+      "content": {
+        "targetWord": "BUEN PROVECHO",
+        "syllables": [
+          "BUEN",
+          "PROVECHO"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 44,
+        "word": "BUEN PROVECHO",
+        "syllables": [
+          "BUEN",
+          "PROVECHO"
+        ],
+        "instruction": "Decimos BUEN PROVECHO antes de comer.",
+        "language": "es"
+      }
+    },
+    {
+      "externalId": "es-lvl-45",
+      "type": "VoiceRecognition",
+      "difficultyLevel": "Beginner",
+      "order": 45,
+      "content": {
+        "targetWord": "BUENAS TARDES",
+        "syllables": [
+          "BUENAS",
+          "TARDES"
+        ]
+      },
+      "payload": {
+        "appType": "LEVEL",
+        "level": 45,
+        "word": "BUENAS TARDES",
+        "syllables": [
+          "BUENAS",
+          "TARDES"
+        ],
+        "instruction": "¡Buenas tardes! Saludo de la tarde.",
+        "language": "es"
+      }
+    }
+  ]
+}

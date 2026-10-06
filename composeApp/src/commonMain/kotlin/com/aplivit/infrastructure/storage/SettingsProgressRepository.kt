@@ -1,5 +1,6 @@
 package com.aplivit.infrastructure.storage
 
+import com.aplivit.config.AppConfig
 import com.aplivit.core.domain.model.AppLanguage
 import com.aplivit.core.domain.model.UserProgress
 import com.aplivit.core.port.ProgressRepository
@@ -53,8 +54,9 @@ class SettingsProgressRepository(private val settings: Settings) : ProgressRepos
     }
 
     override fun getSelectedLanguage(): AppLanguage {
-        val code = settings.getString(KEY_SELECTED_LANGUAGE, AppLanguage.ENGLISH.code)
-        return AppLanguage.entries.find { it.code == code } ?: AppLanguage.ENGLISH
+        val default = AppLanguage.fromCode(AppConfig.DEFAULT_LANGUAGE_CODE)
+        val code = settings.getString(KEY_SELECTED_LANGUAGE, default.code)
+        return AppLanguage.entries.find { it.code == code } ?: default
     }
 
     override fun saveSelectedLanguage(language: AppLanguage) {
@@ -66,6 +68,20 @@ class SettingsProgressRepository(private val settings: Settings) : ProgressRepos
     override fun isFirstLaunch(): Boolean = settings.getBoolean(KEY_IS_FIRST_LAUNCH, true)
 
     override fun markLaunched() = settings.putBoolean(KEY_IS_FIRST_LAUNCH, false)
+
+    // ── Reset del espejo local (cambio de cuenta) ─────────────────────────
+
+    override fun resetProgress() {
+        AppLanguage.entries.forEach { language ->
+            val prefix = language.code
+            settings.remove("${prefix}_$KEY_CURRENT_LEVEL")
+            settings.remove("${prefix}_$KEY_CURRENT_EXERCISE")
+            settings.remove("${prefix}_$KEY_MAX_UNLOCKED_LEVEL")
+            settings.remove("${prefix}_$KEY_MAX_UNLOCKED_EXERCISE")
+            settings.remove("${prefix}_$KEY_COMPLETED_LEVELS")
+            settings.remove("${prefix}_$KEY_TOTAL_ERRORS")
+        }
+    }
 
     // ── Keys ──────────────────────────────────────────────────────────────
 

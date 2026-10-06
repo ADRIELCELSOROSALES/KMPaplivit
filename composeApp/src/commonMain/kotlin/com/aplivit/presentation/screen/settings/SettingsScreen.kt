@@ -42,7 +42,8 @@ private val languageFlags = mapOf(
 fun SettingsScreen(onBack: () -> Unit) {
     val repo: ProgressRepository = koinInject()
     val tts: SpeechSynthesizer = koinInject()
-    val vm: SettingsViewModel = remember { SettingsViewModel(repo, tts) }
+    val contentRepository: com.aplivit.core.port.ContentRepository = koinInject()
+    val vm: SettingsViewModel = remember { SettingsViewModel(repo, tts, contentRepository) }
     val state by vm.state.collectAsState()
 
     val strings = stringsFor(state.selectedLanguage)
