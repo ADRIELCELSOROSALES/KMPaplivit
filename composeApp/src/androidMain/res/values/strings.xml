@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KMPAplivit</string>
+    <string name="app_name">Aplivit</string>
     <!--
         Project ID numérico de Play Games Services (Play Console -> Play Games Services ->
         Configuración). NO es el OAuth client id: es el "ID del proyecto" que muestra esa pantalla.

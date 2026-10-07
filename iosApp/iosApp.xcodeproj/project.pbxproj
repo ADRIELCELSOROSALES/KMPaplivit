@@ -180,6 +180,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Aplivit;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "APLiVit necesita el micrófono para escuchar tu voz durante los ejercicios de lectura.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "APLiVit usa el reconocimiento de voz para evaluar tu pronunciación en los ejercicios.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -280,6 +281,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Aplivit;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "APLiVit necesita el micrófono para escuchar tu voz durante los ejercicios de lectura.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "APLiVit usa el reconocimiento de voz para evaluar tu pronunciación en los ejercicios.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
