@@ -9,15 +9,18 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+/** Propiedades locales no versionadas (credenciales de firma, token de dev). */
+val localProperties: Properties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+
 /**
  * JWT de alumno para probar contra el backend sin el login nativo (ver [com.aplivit.auth.devAuthToken]).
  * Vive en `local.properties` (no versionado) o en la env var APLIVIT_DEV_JWT, NUNCA en el código.
  * Solo se inyecta en el build type debug: release lo fija en "".
  */
-val devAuthToken: String = Properties().apply {
-    val localProperties = rootProject.file("local.properties")
-    if (localProperties.exists()) localProperties.inputStream().use { load(it) }
-}.getProperty("aplivit.devJwt")
+val devAuthToken: String = localProperties.getProperty("aplivit.devJwt")
     ?: System.getenv("APLIVIT_DEV_JWT")
     ?: ""
 
@@ -100,11 +103,35 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    /**
+     * Firma del AAB que se sube a Play Console. El keystore y su clave viven fuera del repo
+     * (local.properties o variables de entorno, para CI): nunca se versionan. Si no estan
+     * definidos, el build de release queda sin firmar en vez de fallar, para no romperle el
+     * build a quien solo quiera compilar.
+     */
+    val keystorePath = localProperties.getProperty("aplivit.keystore") ?: System.getenv("APLIVIT_KEYSTORE")
+    val keystoreAlias = localProperties.getProperty("aplivit.keystoreAlias") ?: System.getenv("APLIVIT_KEYSTORE_ALIAS")
+    val keystorePassword = localProperties.getProperty("aplivit.keystorePassword") ?: System.getenv("APLIVIT_KEYSTORE_PASSWORD")
+    val hasSigningConfig = keystorePath != null && keystoreAlias != null && keystorePassword != null
+
+    signingConfigs {
+        if (hasSigningConfig) {
+            create("release") {
+                storeFile = file(keystorePath!!)
+                storePassword = keystorePassword
+                keyAlias = keystoreAlias
+                keyPassword = keystorePassword
+            }
+        }
+    }
+
     buildTypes {
         getByName("debug") {
             buildConfigField("String", "DEV_AUTH_TOKEN", "\"$devAuthToken\"")
         }
         getByName("release") {
+            if (hasSigningConfig) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             // El token de dev no existe en release, pase lo que pase en local.properties.
             buildConfigField("String", "DEV_AUTH_TOKEN", "\"\"")
