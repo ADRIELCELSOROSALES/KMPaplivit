@@ -40,6 +40,12 @@ class IosSpeechRecognizer(
     private var audioSessionActivated = false
     private var tapInstalled = false
 
+    /** Generación del último parcial recibido, para saber si el alumno dejó de hablar. */
+    private var partialGeneration = 0
+
+    /** Identifica cada escucha, para que el tope de una no corte la siguiente. */
+    private var listenAttempt = 0
+
     init {
         SFSpeechRecognizer.requestAuthorization { _ -> }
         AVAudioSession.sharedInstance().requestRecordPermission { _ -> }
@@ -80,10 +86,19 @@ class IosSpeechRecognizer(
         }
 
         var resultDelivered = false
+        var heardSomething = false
+
+        fun deliver(result: RecognitionResult) {
+            if (resultDelivered) return
+            resultDelivered = true
+            println("STT [resultado] $result")
+            stopListening()
+            onResult(result)
+        }
 
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest().also {
-            // true = iOS envía audio al servidor continuamente y es más confiable en audios cortos.
-            // Con false, si el clip es muy corto puede devolver result=null sin error → onResult nunca se llama.
+            // Imprescindible: con audio continuo, iOS solo marca la transcripción como final
+            // cuando se corta el audio. Los parciales son la única señal de que el alumno habló.
             it.shouldReportPartialResults = true
         }
 
@@ -91,23 +106,27 @@ class IosSpeechRecognizer(
             if (resultDelivered) return@recognitionTaskWithRequest
 
             if (error != null) {
-                resultDelivered = true
+                // Al cerrar el audio sin voz, iOS reporta un error ("no speech detected"). Para el
+                // alumno eso no es una falla de la app: simplemente no se escuchó nada.
                 println("STT [task] error=${error.localizedDescription}")
-                onResult(RecognitionResult.Error)
+                deliver(if (heardSomething) RecognitionResult.Error else RecognitionResult.NoSound)
                 return@recognitionTaskWithRequest
             }
 
-            result?.let {
-                if (it.isFinal()) {
-                    resultDelivered = true
-                    val text = it.bestTranscription.formattedString
-                    println("STT [task] final='$text'")
-                    if (text.isBlank()) {
-                        onResult(RecognitionResult.NoSound)
-                    } else {
-                        onResult(RecognitionResult.Transcription(text))
-                    }
-                }
+            val transcription = result?.bestTranscription?.formattedString.orEmpty()
+            if (result != null && result.isFinal()) {
+                println("STT [task] final='$transcription'")
+                deliver(
+                    if (transcription.isBlank()) RecognitionResult.NoSound
+                    else RecognitionResult.Transcription(transcription)
+                )
+                return@recognitionTaskWithRequest
+            }
+
+            if (transcription.isNotBlank()) {
+                heardSomething = true
+                // El alumno sigue hablando: se reinicia la cuenta de silencio.
+                scheduleSilenceCheck(transcription)
             }
         }
 
@@ -116,7 +135,33 @@ class IosSpeechRecognizer(
         audioEngine.prepare()
         if (!audioEngine.startAndReturnError(null)) {
             println("STT [engine] no arranco")
-            onResult(RecognitionResult.Error)
+            deliver(RecognitionResult.Error)
+            return
+        }
+
+        // Tope duro: si no llega nada, se cierra el audio igual para que el ejercicio no quede
+        // colgado en "escuchando" hasta que el alumno toque un botón.
+        val attempt = ++listenAttempt
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, MAX_LISTEN_NANOS), dispatch_get_main_queue()) {
+            if (attempt == listenAttempt && !resultDelivered) {
+                println("STT [tope] se corta el audio tras la ventana maxima")
+                recognitionRequest?.endAudio()
+            }
+        }
+    }
+
+    /**
+     * iOS no corta solo la escucha (a diferencia del reconocedor de Android, que detecta el fin
+     * del habla): si no se cierra el audio, la transcripción nunca llega a ser final y la pantalla
+     * se queda en "escuchando" para siempre. Acá se cierra sola tras una pausa del alumno.
+     */
+    private fun scheduleSilenceCheck(lastTranscription: String) {
+        val generation = ++partialGeneration
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, SILENCE_NANOS), dispatch_get_main_queue()) {
+            if (generation == partialGeneration) {
+                println("STT [silencio] pausa tras '$lastTranscription': se cierra el audio")
+                recognitionRequest?.endAudio()
+            }
         }
     }
 
@@ -243,5 +288,11 @@ class IosSpeechRecognizer(
 
         /** Ventana de escucha del modo amplitud, igual que en Android (3 segundos). */
         const val LISTEN_WINDOW_NANOS = 3_000_000_000L
+
+        /** Pausa del alumno que se toma como "ya terminó de hablar". */
+        const val SILENCE_NANOS = 1_500_000_000L
+
+        /** Tope de escucha: pasado esto se cierra el audio aunque no se haya oído nada. */
+        const val MAX_LISTEN_NANOS = 8_000_000_000L
     }
 }
