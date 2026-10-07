@@ -86,6 +86,9 @@ fun GameScreen(
             }
         },
         onListenClick = {
+            // No se puede escuchar y hablar a la vez: con el microfono abierto iOS deja la salida
+            // en el auricular y el TTS parece mudo, y el reconocedor se escucharia a si mismo.
+            if (state.isListening) vm.stopListening()
             if (state.currentStep == GameStep.AUDIO_PAIR) {
                 tts.speakSyllable(level.syllables.first().text)
             } else {
