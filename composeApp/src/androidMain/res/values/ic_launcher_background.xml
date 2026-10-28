@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Capa de fondo del adaptive icon. El arte de la app es blanco con el logo centrado, asi
+        que el fondo es blanco: lo que se ve dentro de la mascara del sistema es el logo, y el
+        blanco rellena hasta el borde sin importar la forma que use el launcher.
+    -->
+    <color name="ic_launcher_background">#FFFFFF</color>
+</resources>

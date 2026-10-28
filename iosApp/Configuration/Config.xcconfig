@@ -1,7 +1,15 @@
-TEAM_ID=
-
 PRODUCT_NAME=KMPAplivit
-PRODUCT_BUNDLE_IDENTIFIER=com.kmpaplivit.KMPAplivit$(TEAM_ID)
 
-CURRENT_PROJECT_VERSION=1
+// Bundle ID definitivo de iOS. En Android el applicationId es com.aplivit.app (com.aplivit quedo
+// reservado en otra cuenta de Play Console).
+// Tiene que coincidir EXACTO con el App ID registrado en la cuenta de Apple y con
+// Authentication:GameCenter:BundleId del backend: ese string entra en el payload que Apple firma
+// (playerID + bundleID + timestamp + salt), asi que si difiere en un caracter el login da 401.
+PRODUCT_BUNDLE_IDENTIFIER=com.aplivit
+
+// YES = build de prueba 100% offline: sin login ni backend (ver OfflineMode.kt). Se pisa por
+// linea de comando: xcodebuild ... APLIVIT_OFFLINE_ONLY=YES
+APLIVIT_OFFLINE_ONLY=NO
+
+CURRENT_PROJECT_VERSION=3
 MARKETING_VERSION=1.0
