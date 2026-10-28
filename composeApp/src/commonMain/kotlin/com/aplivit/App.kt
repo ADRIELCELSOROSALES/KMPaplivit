@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.aplivit.auth.SessionManager
 import com.aplivit.auth.devAuthToken
+import com.aplivit.config.offlineOnly
 import com.aplivit.core.port.ProgressRepository
 import com.aplivit.core.port.SpeechSynthesizer
 import com.aplivit.offline.SyncCoordinator
@@ -31,6 +32,11 @@ fun App() {
     // [devAuthToken]). El sync sube intentos pendientes, refresca el catálogo y reconcilia el
     // progreso de la cuenta. Nada acá bloquea ni rompe la UI (runCatching).
     LaunchedEffect(Unit) {
+        // Modo offline: ni login ni sync, se juega directo con el contenido local.
+        if (offlineOnly) {
+            syncFinished = true
+            return@LaunchedEffect
+        }
         if (!session.isSignedIn()) {
             val signedIn = runCatching { session.signIn() }.getOrDefault(false)
             if (!signedIn) devAuthToken()?.let { session.useTokenForDev(it) }

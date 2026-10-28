@@ -33,7 +33,9 @@ import com.aplivit.offline.AccountGuard
 import com.aplivit.offline.AttemptQueue
 import com.aplivit.offline.BackendExerciseMapper
 import com.aplivit.offline.BackendLevelMapper
+import com.aplivit.config.offlineOnly
 import com.aplivit.offline.ContentCache
+import com.aplivit.offline.LocalOnlyContentRepository
 import com.aplivit.offline.OfflineContentRepository
 import com.aplivit.offline.SyncCoordinator
 import com.aplivit.presentation.screen.exercise.LetterTracingViewModel
@@ -76,6 +78,7 @@ val appModule = module {
     single { AttemptQueue(get()) }
     single { SessionManager(get(), get(), get()) }
     single<ContentRepository> {
+        if (offlineOnly) return@single LocalOnlyContentRepository()
         OfflineContentRepository(
             contentApi = get(),
             attemptApi = get(),
