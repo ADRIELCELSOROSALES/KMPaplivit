@@ -15,9 +15,7 @@ package com.aplivit.config
 expect val apiBaseUrl: String
 
 /**
- * Backend de producción, el mismo para iOS y Android.
- *
- * TODO(deploy): reemplazar cuando el backend esté desplegado. Con este valor, una build de
- * release no puede hablar con ningún backend: el host no existe.
+ * Backend de producción (desplegado en Vercel), el mismo para iOS y Android. Ojo: el host es
+ * "aplivlit", no "aplivit". aplivit-admin.vercel.app es el panel de administración, no la API.
  */
-const val PRODUCTION_API_BASE_URL = "https://REEMPLAZAR-URL-DEL-BACKEND"
+const val PRODUCTION_API_BASE_URL = "https://aplivlit-backend.vercel.app"

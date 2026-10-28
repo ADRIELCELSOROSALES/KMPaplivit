@@ -8,6 +8,9 @@
 	  La app no usa criptografia propia, solo HTTPS del sistema: con esto TestFlight y App Store
 	  Connect dejan de preguntar por cumplimiento de exportacion en cada subida.
 	-->
+	<!-- Modo 100% offline (sin login ni backend): build setting APLIVIT_OFFLINE_ONLY, ver OfflineMode.kt. -->
+	<key>AplivitOfflineOnly</key>
+	<string>$(APLIVIT_OFFLINE_ONLY)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<!-- DEV: permite HTTP plano hacia el backend local. Quitar cuando el backend sea HTTPS fijo. -->

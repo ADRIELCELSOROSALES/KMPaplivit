@@ -89,10 +89,13 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.aplivit"
+        // "com.aplivit" quedo reservado en otra cuenta de Play Console (la de pruebas), asi que la
+        // app de Play usa este id. El namespace (paquete Kotlin) no cambia, e iOS sigue con
+        // com.aplivit: Play y App Store son independientes.
+        applicationId = "com.aplivit.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
+        versionCode = 3
         versionName = "1.0"
     }
     packaging {

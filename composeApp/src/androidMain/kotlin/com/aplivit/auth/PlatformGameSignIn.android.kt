@@ -14,7 +14,7 @@ import kotlinx.coroutines.tasks.await
  * El client id **no es secreto** (viaja en cualquier app cliente); el secreto vive solo en el backend.
  */
 private const val WEB_CLIENT_ID =
-    "274074848157-hbqjocoujgftpelfd5bpuatkrtdjn96p.apps.googleusercontent.com"
+    "887597591923-ahcqhpqi9mevikdjlleove5e93n3qe8o.apps.googleusercontent.com"
 
 private class AndroidPlayGamesSignIn : PlatformGameSignIn {
 
